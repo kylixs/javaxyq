@@ -1,0 +1,7 @@
+*.class
+classes
+bin
+tmp
+temp
+.svn
+*.log

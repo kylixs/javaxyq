@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="player_coloring" x="234" y="99" width="169" height="264" background="/wzife/dialog/color.tcp">
+    <Button name="btn1" toggle="true" actionId="head" x="13" y="200" was="/wzife/button/1.tcp" width="22" height="23"/>
+    <Button name="btn2" toggle="true" actionId="hood" x="38" y="200" was="/wzife/button/2.tcp"/>
+    <Button name="btn3" toggle="true" actionId="clothes" x="63" y="200" was="/wzife/button/3.tcp"/>
+    <Button actionId="coloring" x="110" y="200" was="/wzife/button/colorbtn.tcp"/>
+    <Button actionId="turn" x="135" y="200" was="/wzife/button/turnbtn.tcp"/>
+    <Text name="textMaterial" text="所需彩果" x="15" y="234" width="100" height="16" color="white" actionId=""/>
+    <Text name="textCost" text="0" x="80" y="233" width="30" height="16" color="blue" actionId=""/>
+    <Button text="确定" actionId="confirm" x="120" y="230" was="/wzife/button/smallbtn.tcp"/>
+  </Dialog>
+</Dialogs>

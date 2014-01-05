@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="tasklist" width="395" height="350" halign="center" valign="center" background="/wzife/dialog/task.tcp" x="147" y="77">
+    <Text id="" name="lblStoryTask" mousePressed="show_storyTask" x="22" y="60" width="" height="" tooltip="" text="剧情任务" font="" size="" color="black" align="" actionId="null"/>
+    <Text id="" name="lblSchoolTask" mousePressed="show_schoolTask" x="22" y="80" width="150" height="20" tooltip="" text="师门任务" font="" size="" color="black" align="" actionId="null"/>
+    <RichText id="" name="lblTaskDetail" x="210" y="60" width="150" height="250" tooltip="" text="#B任务详情" font="" size="" actionId="null"/>
+    <Button id="" name="" text="" x="374" y="4" width="20" height="20" actionId="close" was="/wzife/button/closebtn.tcp" tooltip="" toggle=""/>
+    <Button id="" name="" text="确定" x="175" y="320" width="" height="" actionId="close" was="/wzife/button/button.tcp" tooltip="" toggle=""/>
+  </Dialog>
+</Dialogs>

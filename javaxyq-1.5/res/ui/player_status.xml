@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="player_status" x="383" y="0" width="257" height="451" background="/wzife/dialog/status.tcp">
+    <Button actionId="close" x="235" y="4" was="/wzife/button/closebtn.tcp"/>
+    <Button actionId="help" x="218" y="4" was="/wzife/button/question.tcp"/>
+    <Button actionId="changeTitle" x="7" y="53" text="称谓" was="/wzife/button/smallbtn.tcp"/>
+    <Button name="+physique" actionId="add_point physique" x="205" y="253" was="/wzife/button/add.tcp"/>
+    <Button name="-physique" actionId="subtract_point physique" x="225" y="253" enable="false" was="/wzife/button/sub.tcp"/>
+    <Button name="+magic" actionId="add_point magic" x="205" y="276" was="/wzife/button/add.tcp"/>
+    <Button name="-magic" actionId="subtract_point magic" x="225" y="276" enable="false" was="/wzife/button/sub.tcp"/>
+    <Button name="+strength" actionId="add_point strength" x="205" y="299" was="/wzife/button/add.tcp"/>
+    <Button name="-strength" actionId="subtract_point strength" x="225" y="299" enable="false" was="/wzife/button/sub.tcp"/>
+    <Button name="+durability" actionId="add_point durability" x="205" y="322" was="/wzife/button/add.tcp"/>
+    <Button name="-durability" actionId="subtract_point durability" x="225" y="322" enable="false" was="/wzife/button/sub.tcp"/>
+    <Button name="+agility" actionId="add_point agility" x="205" y="345" was="/wzife/button/add.tcp"/>
+    <Button name="-agility" actionId="subtract_point agility" x="225" y="345" enable="false" was="/wzife/button/sub.tcp"/>
+    <Button name="assignPoints" actionId="assignPoints" x="172" y="369" text="更改属性" was="/wzife/button/longbtn.tcp"/>
+    <Button name="升级" actionId="level_up" x="172" y="395" text="升级" was="/wzife/button/longbtn.tcp"/>
+    <Button text="技能"  actionId="openSkills" x="172" y="421" was="/wzife/button/longbtn.tcp"/>
+    <Text name="level" text="${level}" x="55" y="33" width="25" height="16"/>
+    <Text name="name" text="${name}" x="138" y="33" width="100" height="16"/>
+    <Text name="title" text="${title}" x="55" y="56" width="100" height="16"/>
+    <Text name="popularity" text="${popularity}" x="210" y="56" width="30" height="16"/>
+    <Text name="faction" text="${faction}" x="55" y="79" width="100" height="16"/>
+    <Text name="factionContribution" text="${factionContribution}" x="210" y="79" width="40" height="16"/>
+    <Text name="school" text="${school}" x="55" y="103" width="100" height="16"/>
+    <Text name="schoolContribution" text="${schoolContribution}" x="210" y="103" width="40" height="16"/>
+    <Text name="hp" text="${hp}/${maxHp}/${tmpMaxHp}" x="55" y="133" width="184" height="16"/>
+    <Text name="mp" text="${mp}/${maxMp}" x="55" y="155" width="184" height="16"/>
+    <Text name="sp" text="${sp}/150" x="55" y="178" width="184" height="16"/>
+    <Text name="energy" text="${energy}/${maxEnergy}" x="55" y="201" width="184" height="16"/>
+    <Text name="stamina" text="${stamina}/${maxStamina}" x="55" y="224" width="184" height="16"/>
+    <Text name="hitrate" text="${hitrate}" x="55" y="255" width="30" height="16"/>
+    <Text name="harm" text="${harm}" x="55" y="277" width="30" height="16"/>
+    <Text name="defense" text="${defense}" x="55" y="300" width="30" height="16"/>
+    <Text name="speed" text="${speed}" x="55" y="322" width="30" height="16"/>
+    <Text name="shun" text="${shun}" x="55" y="346" width="30" height="16"/>
+    <Text name="wakan" text="${wakan}" x="55" y="368" width="30" height="16"/>
+    <Text name="physique" text="${physique+assignPoints.physique}" x="149" y="255" width="30" height="16"/>
+    <Text name="magic" text="${magic+assignPoints.magic}" x="149" y="277" width="30" height="16"/>
+    <Text name="strength" text="${strength+assignPoints.strength}" x="149" y="300" width="30" height="16"/>
+    <Text name="durability" text="${durability+assignPoints.durability}" x="149" y="322" width="30" height="16"/>
+    <Text name="agility" text="${agility+assignPoints.agility}" x="149" y="346" width="30" height="16"/>
+    <Text name="potentiality" text="${potentiality}" x="140" y="368" width="30" height="16"/>
+    <Text name="levelExp" text="${levelExp}" x="85" y="400" width="80" height="16"/>
+    <Text name="exp" text="${exp}" x="85" y="424" width="80" height="16"/>
+  </Dialog>
+</Dialogs>

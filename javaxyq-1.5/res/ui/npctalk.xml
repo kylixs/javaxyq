@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="npctalk" talk="true" x="79" y="250" width="482" height="167" background="/wzife/dialog/npcchat.tcp"/>
+</Dialogs>

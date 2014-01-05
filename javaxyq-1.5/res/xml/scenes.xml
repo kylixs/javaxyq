@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenes>
+	<scene id="wzg" name="五庄观" map="scene/1146.map" mask="scene/1146.msk">
+		<transport toSence="wzg_qkd" x="58" y="38" toX="15" toY="10"></transport>
+	</scene>
+	<scene id="wzg_qkd" name="乾坤殿" map="scene/1147.map" mask="scene/1147.msk">
+		<transport toSence="wzg" x="13" y="8" toX="53" toY="34"></transport>
+	</scene>
+	<scene id="dhw" name="东海湾" map="scene/1506.map" mask="scene/1506.msk">
+	</scene>
+	<scene id="hss" name="化生寺" map="scene/1002.map" mask="scene/1002.msk">
+	</scene>
+	<scene id="olg" name="傲来国" map="scene/1092.map" mask="scene/1092.msk">
+		<transport toSence="olg_drugstore" x="58" y="40" toX="35" toY="10"></transport>
+	</scene>
+	<scene id="olg_drugstore" name="傲来国药店" map="scene/1104.map" mask="scene/1104.msk">
+		<transport toSence="olg" x="40" y="8" toX="59" toY="35"></transport>
+	</scene>
+</scenes>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="contributors" x="95" y="239" width="482" height="167" background="/wzife/dialog/npcchat.tcp" movable="true" closable="true">
+    <Text id="" name="" x="10" y="24" width="" height="" tooltip="" text="开发人员：" font="" size="" color="green" align="" actionId=""/>
+    <Text id="" name="" x="10" y="79" width="" height="" tooltip="" text="游戏资源：" font="" size="" color="green" align="" actionId=""/>
+    <Text id="" name="lbl开发人员" x="25" y="46" width="442" height="21" tooltip="" text="龚德伟(kylixs)" font="" size="" color="white" align="" actionId=""/>
+    <Text id="" name="lbl游戏资源" x="15" y="99" width="442" height="21" tooltip="" text="龚德伟(kylixs)、司空小宝、wangdali、foxer" font="" size="" color="white" align="" actionId=""/>
+  </Dialog>
+</Dialogs>

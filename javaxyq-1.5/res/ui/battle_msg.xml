@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="battle_msg" x="142" y="400" width="400" height="30" tooltip="" background="" initial="" dispose="" closable="" movable="">
+    <Text id="" name="lbl_battle_msg" x="" y="" width="400" height="30" tooltip="" text="" font="" size="" color="white" align="center" actionId=""/>
+  </Dialog>
+</Dialogs>

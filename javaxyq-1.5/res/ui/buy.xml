@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="buy" x="177" y="16" width="272" height="421" tooltip="" background="/wzife/dialog/pawn.tcp" initial="" dispose="" closable="true" movable="true">
+    <Button id="" name="btnConfirm" text="确定" x="118" y="380" width="" height="" actionId="confirm_buy" was="/wzife/button/button.tcp" tooltip="" toggle=""/>
+    <Text id="" name="lbl_price" x="126" y="277" width="84" height="20" tooltip="" text="0" font="" size="" color="black" align="" actionId="null"/>
+    <Editor id="" name="field_amount" x="126" y="300" width="80" height="20" tooltip="" actionId="confirm_buy" foreground="black"/>
+    <Text id="" name="lbl_cost" x="126" y="325" width="84" height="20" tooltip="" text="0" font="" size="" color="blue" align="" actionId="null"/>
+    <Text id="" name="lbl_cash" x="126" y="350" width="84" height="20" tooltip="" text="0" font="" size="" color="blue" align="" actionId="null"/>
+    <Button id="" name="" text="" x="250" y="4" width="" height="" actionId="close" was="/wzife/button/closebtn.tcp" tooltip="" toggle=""/>
+    <Sprite id="" name="" x="0" y="-2" width="272" height="32" tooltip="" path="/wzife/dialog/buy.tcp" actionId="null"/>
+  </Dialog>
+</Dialogs>

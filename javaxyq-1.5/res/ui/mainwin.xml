@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="mainwin" x="0" y="0" width="640" height="480" closable="false" movable="false">
+    <Image x="23" y="33" width="70" height="30" path="/wzife/main/day1.tcp" actionId=""/>
+    <Image x="-1" y="-1" path="/wzife/main/xitai.tcp" actionId=""/>
+    <Image x="1" y="31" path="/wzife/time/01.tcp" actionId=""/>
+    <Button actionId="fullscreen" x="95" y="12" was="/wzife/button/lantern.tcp"/>
+    <Button actionId="world_map" x="95" y="30" was="/wzife/button/lantern.tcp"/>
+    <Button actionId="scene_map" x="95" y="47" was="/wzife/button/lantern.tcp"/>
+    <Text name="scene_name" text="大唐国境" x="23" y="15" width="70" height="14" font="" size="" color="white" align="center" actionId=""/>
+    <Text name="player_coordinate" text="X:-- Y:--" x="17" y="65" width="80" height="10" font="" size="" color="white" align="center" actionId=""/>
+    <Image x="419" y="0" path="/wzife/main/summonframe.was" actionId=""/>
+    <Image x="522" y="0" path="/wzife/main/heroframe.tcp" actionId=""/>
+    <Button actionId="summon_status" x="422" y="3" was="/wzife/photo/summon/0000.tcp" tooltip="没有召唤兽"/>
+    <Button name="btn_player_header" actionId="player_status" x="526" y="3" was="/wzife/photo/facesmall/0001.tcp" tooltip="&lt;html&gt;气血：${hp*100/maxHp}%&lt;br&gt;魔法：${mp*100/maxMp}%&lt;/html&gt;"/>
+    <Sprite name="召唤兽气血-底" x="457" y="0" path="/wzife/main/blank.tcp" tooltip="100%" actionId="" mousePressed="eke_summon_hp"/>
+    <Sprite name="召唤兽气血" x="470" y="3" path="/wzife/main/hp.tcp" tooltip="100%" actionId="" mousePressed="eke_summon_hp"/>
+    <Sprite name="召唤兽魔法-底" x="457" y="12" path="/wzife/main/blank.tcp" tooltip="100%" actionId="" mousePressed="eke_summon_mp"/>
+    <Sprite name="召唤兽魔法" x="470" y="15" path="/wzife/main/mp.tcp" tooltip="100%" actionId="" mousePressed="eke_summon_mp"/>
+    <Sprite name="召唤兽经验-底" x="457" y="24" path="/wzife/main/blank.tcp" tooltip="100%" actionId=""/>
+    <Sprite name="召唤兽经验" x="470" y="27" path="/wzife/main/exp.tcp" tooltip="100%" actionId=""/>
+    <Sprite name="player_hp" x="585" y="3" path="/wzife/main/hp.tcp" tooltip="${hp}/${maxHp} ${hp*100/maxHp}%" mousePressed="eke_player_hp" actionId=""/>
+    <Sprite name="player_hp-空" x="585" y="3" path="/wzife/main/eff_hp.tcp" tooltip="${hp}/${maxHp} ${hp*100/maxHp}%" mousePressed="eke_player_hp" actionId=""/>
+    <Sprite name="player_hp-底" x="572" y="0" path="/wzife/main/blank.tcp" tooltip="${hp}/${maxHp} ${hp*100/maxHp}%" actionId=""/>
+    <Sprite name="player_mp" x="585" y="15" path="/wzife/main/mp.tcp" tooltip="${mp}/${maxMp} ${mp*100/maxMp}%" actionId="" mousePressed="eke_player_mp"/>
+    <Sprite name="player_mp-底" x="572" y="12" path="/wzife/main/blank.tcp" tooltip="${mp}/${maxMp} ${mp*100/maxMp}%" actionId="" mousePressed="eke_player_mp"/>
+    <Sprite name="player_sp" x="585" y="27" path="/wzife/main/sp.tcp" tooltip="${sp}" actionId=""/>
+    <Sprite name="player_sp-底" x="572" y="24" path="/wzife/main/blank.tcp" tooltip="${sp}" actionId=""/>
+    <Sprite name="player_exp" x="585" y="39" path="/wzife/main/exp.tcp" tooltip="${exp} ${exp*100/levelExp}%" actionId=""/>
+    <Sprite name="player_exp-底" x="572" y="36" path="/wzife/main/blank.tcp" tooltip="${exp} ${exp*100/levelExp}%" actionId=""/>
+    <Editor name="chat_input" x="44" y="458" width="252" height="21" actionId="chat"/>
+    <Button actionId="attack" x="323" y="447" was="/wzife/button/attack.tcp"/>
+    <Button actionId="open_item" x="350" y="447" was="/wzife/button/item.tcp"/>
+    <Button actionId="giving" x="376" y="447" was="/wzife/button/give.tcp"/>
+    <Button actionId="exchange" x="402" y="447" was="/wzife/button/trade.tcp"/>
+    <Button actionId="team" x="428" y="447" was="/wzife/button/team.tcp"/>
+    <Button actionId="summon_status" x="455" y="447" was="/wzife/button/pet.tcp"/>
+    <Button actionId="task_list" x="481" y="447" was="/wzife/button/task.tcp"/>
+    <Button actionId="open_org" x="508" y="447" was="/wzife/button/guild.tcp"/>
+    <Button actionId="quick_magic" x="534" y="447" was="/wzife/button/magic.tcp"/>
+    <Button actionId="friend_list" x="560" y="447" was="/wzife/button/friend.tcp"/>
+    <Button actionId="open_motion" x="586" y="447" was="/wzife/button/emote.tcp"/>
+    <Button actionId="system_setting" x="613" y="447" was="/wzife/button/sys.tcp"/>
+    <Sprite x="1" y="449" path="/wzife/main/leftdown.tcp" actionId=""/>
+    <Button actionId="change_channel" x="1" y="458" was="/wzife/chat/currentchannel.tcp"/>
+    <Sprite x="322" y="418" path="/wzife/main/btnframe.tcp" actionId=""/>
+    <Sprite x="40" y="457" path="/wzife/main/chatframe.tcp" actionId=""/>
+  </Dialog>
+</Dialogs>

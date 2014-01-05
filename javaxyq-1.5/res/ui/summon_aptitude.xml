@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="summon_aptitude" x="280" y="3" width="207" height="456" background="/wzife/dialog/aptitude.tcp">
+    <Text name="攻击资质" text="100" x="127" y="99" width="57" height="16" actionId=""/>
+    <Text name="成长" text="100" x="127" y="260" width="57" height="16" actionId=""/>
+    <Text name="五行" text="100" x="127" y="284" width="57" height="16" actionId=""/>
+    <Text name="寿命" text="100" x="128" y="237" width="57" height="16" actionId=""/>
+    <Text name="躲闪资质" text="100" x="128" y="214" width="57" height="16" actionId=""/>
+    <Text name="速度资质" text="100" x="127" y="190" width="57" height="16" actionId=""/>
+    <Text name="法力资质" text="100" x="128" y="168" width="57" height="16" actionId=""/>
+    <Text name="体力资质" text="100" x="127" y="145" width="57" height="16" actionId=""/>
+    <Text name="防御资质" text="100" x="127" y="123" width="57" height="16" actionId=""/>
+  </Dialog>
+</Dialogs>

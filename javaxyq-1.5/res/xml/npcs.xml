@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NPCs>
+	<Scene id="wzg">
+		<NPC id="五庄观.传送道童" character="3044" name="传送道童" direction="1" state="stand"
+			x="60" y="32" movement="direction">
+		</NPC>
+	</Scene>
+	<Scene id="wzg_qkd">
+		<NPC id="五庄观.镇元大仙" character="3062" name="镇元大仙" direction="1" state="stand"
+			x="22" y="12">
+		</NPC>
+	</Scene>
+	<Scene id="dhw">
+		<NPC id="东海湾.船夫" character="3307" name="船夫" direction="1" state="stand"
+			x="59" y="22" movement="walk" period="3000">
+		</NPC>
+		<!-- 
+		<NPC id="东海湾.大海龟" character="2036" name="被吹到岸上的海龟" direction="1" state="stand"
+			x="69" y="17"  movement="walk" period="2000">
+		</NPC>
+		 -->
+	</Scene>
+	<!-- 
+	<Scene id="hss">
+		<NPC id="化生寺.传送僧" character="3049" name="传送僧" direction="1" state="stand"
+			x="60" y="32">
+		</NPC>
+	</Scene>
+	 -->
+	<Scene id="olg">
+		<NPC id="傲来国.配色师" character="3017" name="配色师" direction="0" state="stand"
+			x="20" y="66">
+		</NPC>
+		<NPC id="傲来国.船夫" character="3307" name="船夫" direction="1" state="stand"
+			x="173" y="12" movement="walk" period="3000">
+		</NPC>
+	</Scene>
+	<Scene id="olg_drugstore">
+		<NPC id="傲来国.药店老板" character="3002" name="药店掌柜" direction="0" state="stand"
+			x="14" y="16">
+		</NPC>
+	</Scene>
+	<Scene id="olg_clothesstore">
+	</Scene>
+	
+</NPCs>

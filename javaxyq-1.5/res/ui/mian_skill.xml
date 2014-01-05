@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="main_skill" x="0" y="0" width="451" height="465" background="/wzife/dialog/mskill.tcp"/>
+</Dialogs>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+	<Dialog id="battle_warmagic10" x="226" y="82"
+		width="190" height="305" tooltip="" background="/wzife/dialog/warmagic10.tcp"
+		initial="com.javaxyq.action.battle.warmagic10" dispose="" closable="false"
+		movable="true">
+		<Text id="" name="lbl_default_magic" x="56" y="271" width="100" height="20"
+			tooltip="" text="暂无" font="" size="" color="green" align="center"
+			actionId="" />
+		<Text id="" name="magic1" x="30" y="33" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+		<Text id="" name="magic2" x="117" y="34" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+		<Text id="" name="magic3" x="31" y="76" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+		<Text id="" name="magic4" x="118" y="76" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+		<Text id="" name="magic5" x="30" y="118" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+		<Text id="" name="magic6" x="118" y="118" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+		<Text id="" name="magic7" x="31" y="160" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+		<Text id="" name="magic8" x="118" y="159" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+		<Text id="" name="magic9" x="30" y="202" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+		<Text id="" name="magic10" x="118" y="201" width="40" height="40"
+			tooltip="" text="" font="" size="" color="white" align=""
+			actionId="" />
+	</Dialog>
+</Dialogs>

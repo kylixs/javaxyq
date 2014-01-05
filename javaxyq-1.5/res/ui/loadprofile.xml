@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="loadprofile" x="0" y="0" width="640" height="480" tooltip="" background="" initial="" dispose="" closable="" movable="">
+    <Text id="proflielist" name="proflielist" x="50" y="20" width="540" height="400" tooltip="" text="proflie list" font="" size="" color="" align="" actionId="null"/>
+    <Button id="btn_load" name="btn_load" text="" x="180" y="422" width="" height="" actionId="" was="/wzife/login/accept.tcp" tooltip="" toggle=""/>
+    <Button id="btn_cancel" name="btn_candel" text="" x="371" y="422" width="" height="" actionId="" was="/wzife/login/cancel.tcp" tooltip="" toggle=""/>
+  </Dialog>
+</Dialogs>

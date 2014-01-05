@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="battle_role_cmd" x="521" y="98" width="66" height="143" tooltip="" background="/wzife/dialog/warsummon.tcp" closable="false" movable="true" >
+    <Button id="" name="btn法术" text="" x="3" y="5" width="" height="" actionId="warmagic" was="/wzife/button/warmagic.tcp" tooltip="" toggle=""/>
+    <Button id="" name="btn道具" text="" x="3" y="28" width="" height="" actionId="waritem" was="/wzife/button/waritem.tcp" tooltip="" toggle=""/>
+    <Button id="" name="btn防御" text="" x="3" y="51" width="" height="" actionId="wardefend" was="/wzife/button/wardefend.tcp" tooltip="" toggle=""/>
+    <Button id="" name="btn捕捉" text="" x="3" y="74" width="" height="" actionId="warcatch" was="/wzife/button/warcatch.tcp" tooltip="" toggle=""/>
+    <Button id="" name="btn逃跑" text="" x="3" y="97" width="" height="" actionId="warrunaway" was="/wzife/button/warrunaway.tcp" tooltip="" toggle=""/>
+  </Dialog>
+</Dialogs>

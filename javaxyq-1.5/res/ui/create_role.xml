@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="create_role" x="0" y="0" width="640" height="480" tooltip="" background="" initial="" dispose="" closable="" movable="">
+    <Sprite id="" name="" x="271" y="5" width="" height="" tooltip="" path="/wzife/login/createrole.tcp" actionId="null"/>
+    <Sprite id="" name="" x="575" y="90" width="" height="" tooltip="" path="/wzife/login/race.tcp" actionId="null"/>
+    <Button id="" name="" x="239" y="69" width="" height="" tooltip="飞燕女(人)" was="/wzife/login/photo/create/飞燕女.tcp" actionId="selectRole 0003"/>
+    <Button id="" name="" x="323" y="69" width="" height="" tooltip="英女侠(人)" was="/wzife/login/photo/create/英女侠.tcp" actionId="selectRole 0004"/>
+    <Button id="" name="" x="407" y="69" width="" height="" tooltip="逍遥生(人)" was="/wzife/login/photo/create/逍遥生.tcp" actionId="selectRole 0001"/>
+    <Button id="" name="" x="491" y="68" width="" height="" tooltip="剑侠客(人)" was="/wzife/login/photo/create/剑侠客.tcp" actionId="selectRole 0002"/>
+    <Button id="" name="" x="238" y="153" width="" height="" tooltip="狐美人(魔)" was="/wzife/login/photo/create/狐美人.tcp" actionId="selectRole 0007"/>
+    <Button id="" name="" x="322" y="154" width="" height="" tooltip="骨精灵(魔)" was="/wzife/login/photo/create/骨精灵.tcp" actionId="selectRole 0008"/>
+    <Button id="" name="" x="405" y="151" width="" height="" tooltip="巨魔王(魔)" was="/wzife/login/photo/create/巨魔王.tcp" actionId="selectRole 0005"/>
+    <Button id="" name="" x="489" y="152" width="" height="" tooltip="虎头怪(魔)" was="/wzife/login/photo/create/虎头怪.tcp" actionId="selectRole 0006"/>
+    <Button id="" name="" x="238" y="238" width="" height="" tooltip="舞天姬(仙)" was="/wzife/login/photo/create/舞天姬.tcp" actionId="selectRole 0011"/>
+    <Button id="" name="" x="321" y="238" width="" height="" tooltip="玄彩娥(仙)" was="/wzife/login/photo/create/玄彩娥.tcp" actionId="selectRole 0012"/>
+    <Button id="" name="" x="405" y="237" width="" height="" tooltip="神天兵(仙)" was="/wzife/login/photo/create/神天兵.tcp" actionId="selectRole 0009"/>
+    <Button id="" name="" x="489" y="236" width="" height="" tooltip="龙太子(仙)" was="/wzife/login/photo/create/龙太子.tcp" actionId="selectRole 0010"/>
+    <RichText id="text_info" name="text_info" x="245" y="379" width="200" height="100" tooltip="" text="人物信息#r人物信息#r人物信息#r" font="" size="" actionId="null"/>
+    <Button id="" name="" text="" x="489" y="379" width="" height="" actionId="scroll_up" was="/wzife/button/sup.tcp" tooltip="" toggle=""/>
+    <Button id="" name="" text="" x="489" y="436" width="" height="" actionId="scroll_down" was="/wzife/button/sdown.tcp" tooltip="" toggle=""/>
+    <Button id="" name="btn_scrollblock" text="" x="490" y="398" width="" height="" actionId="" was="/wzife/button/scrollblock.tcp" tooltip="" toggle=""/>
+    <Sprite id="" name="" x="239" y="376" width="" height="" tooltip="" path="/wzife/login/dlgroleinfo.tcp" actionId="null"/>
+    <Button id="btn_roleinfo" name="btn_roleinfo" text="" x="240" y="345" width="" height="" actionId="show_roleinfo" was="/wzife/login/btnroleinfo.tcp" tooltip="" toggle=""/>
+    <Button id="btn_roleweapon" name="btn_roleweapon" text="" x="317" y="344" width="" height="" actionId="show_roleweapon" was="/wzife/login/btnroleweapon.tcp" tooltip="" toggle=""/>
+    <Button id="btn_rolefaction" name="btn_rolefaction" text="" x="394" y="344" width="" height="" actionId="show_rolefaction" was="/wzife/login/btnrolefaction.tcp" tooltip="" toggle=""/>
+    <Button id="btn_back" name="btn_back" text="" x="514" y="375" width="" height="" actionId="goback" was="/wzife/login/back.tcp" tooltip="" toggle=""/>
+    <Button id="btn_next" name="btn_next" text="" x="513" y="416" width="" height="" actionId="gonext" was="/wzife/login/next.tcp" tooltip="" toggle=""/>
+    <Sprite id="icon_player" name="icon_player" x="74" y="335" width="" height="" tooltip="" path="/shape/char/0008/magic.tcp" actionId="null"/>
+    <Button id="btn_color" name="btn_color" text="" x="26" y="417" width="" height="" actionId="change_color" was="/wzife/login/color.tcp" tooltip="" toggle=""/>
+    <Button id="btn_color1" name="btn_color1" text="" x="63" y="432" width="" height="" actionId="change_color1" was="/wzife/login/change1.tcp" tooltip="" toggle=""/>
+    <Button id="btn_color2" name="btn_color2" text="" x="102" y="432" width="" height="" actionId="change_color2" was="/wzife/login/change2.tcp" tooltip="" toggle=""/>
+    <Button id="btn_color3" name="btn_color3" text="" x="141" y="432" width="" height="" actionId="change_color3" was="/wzife/login/change3.tcp" tooltip="" toggle=""/>
+    <Editor id="role_name" name="role_name" x="73" y="307" width="100" height="20" tooltip="" text="骨精灵" font="" size="" color="" align="" actionId="null"/>
+    <Sprite id="" name="" x="18" y="296" width="" height="" tooltip="" path="/wzife/login/inputname.tcp" actionId="null"/>
+    <Sprite id="role_head" name="role_head" x="11" y="45" width="" height="" tooltip="" path="/wzife/login/photo/selected/骨精灵.tcp" actionId="null"/>
+    <Sprite id="" name="" x="207" y="40" width="" height="" tooltip="" path="/wzife/login/create_background.tcp" actionId="null"/>
+  </Dialog>
+</Dialogs>

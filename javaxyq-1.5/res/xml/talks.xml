@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Talks>
+	<Scene id="1146">
+		<NPC id="五庄观.传送道童">
+			<talk id="default">
+				<text > 从这里可以传送到下面的地方，师兄走好。#56</text>
+				<link action="talk" value="changan">长安城</link>
+				<link action="transport" value="1092 123 95">傲来国</link>
+				<link action="transport" value="1506 62 21">东海湾</link>
+				<link action="close">哪也不去</link>
+			</talk>
+ 			<talk id="changan">师傅说这段时间天下不稳,不适宜去花花都市！#32</talk>
+			<talk id="non-member">你不是五庄观的吧?#55师傅说不要跟陌生人说话。#76</talk>
+		</NPC>
+	</Scene>
+	<Scene id="1147">
+		<NPC id="五庄观.镇元大仙">
+		<talk id="default">
+			<text>五庄观是地仙发源地，庄内的人参果与天地同寿，乃是三界之珍稀宝贝！#r你找为师何事？</text>
+			<link action="师门任务" value="wz">为师门做贡献</link>
+			<link action="学习技能" value="">学习技能</link>
+			<link action="talk" value="ask_for_leave">徒儿告退</link>
+		</talk>
+		<talk id="ask_for_leave" >嗯，你自己去练习练习吧！</talk>
+		</NPC>
+	</Scene>
+	<Scene id="1506">
+		<NPC id="东海湾.船夫">
+		<talk id="default">
+		<text>客官,你要到哪里去呢?</text>
+		<link action="transport" value="1146 12 11">五庄观</link>
+		<link action="transport" value="olg 163 8">傲来国</link>
+		<link action="close" value="">一会要去再找你啦</link>
+		</talk>
+		</NPC>
+		<NPC id="东海湾.大海龟">
+		<talk id="default">
+		<text>在路边看到一只大海龟，你要怎么处理它呢?</text>
+		<link action="grab" value="大海龟">抓住它</link>
+		<link action="guide" value="">将它带到东海畔</link>
+		<link action="close" value="">不理它</link>
+		</talk>
+		</NPC>
+	</Scene>
+	<Scene id="olg">
+		<NPC id="傲来国.配色师" >
+			<talk id="default">
+				<text>我是这里最好的配色师，只要你有足够的颜料，我就可以帮你变幻成你最喜欢的颜色。#97</text>
+				<link action="open" value="player_coloring">太好了，我正想改变一下形象呢</link>
+				<!-- 
+				<link action="open" value="">是吗，我想给我的孩子改变下形象</link>
+				 -->
+				<link action="close" value="">好神奇哦，等我想换换形象的时候一定来找你</link>
+			</talk>
+		</NPC>
+		<NPC id="傲来国.船夫">
+			<talk id="default">
+			<text>客官,你要到哪里去呢?</text>
+			<link action="transport" value="1146 12 11">五庄观</link>
+			<link action="transport" value="1506 62 21">东海湾</link>
+			<link action="close" value="">我还想周围看看</link>
+			</talk>
+		</NPC>
+	</Scene>
+	<Scene id="olg_drugstore">
+			<NPC id="傲来国.药店老板" >
+			<talk id="default">
+				<text>我这里有各种草药，价廉物美，请随便挑选。</text>
+				<link action="open" value="buy">购买</link>
+				<link action="close" value="">什么都不想做</link>
+			</talk>
+		</NPC>
+	</Scene>
+	<Scene id="hss">
+		<NPC id="化生寺.传送僧">
+		<talk id="default">
+		<text>施主,贫僧渡到何方?</text>
+		<link action="transport" value="1146 12 11">五庄观</link>
+		<link action="transport" value="1506 62 21">东海湾</link>
+		<link action="close" value="">我想参观一下宝刹</link>
+		</talk>
+		</NPC>
+	</Scene>
+</Talks>

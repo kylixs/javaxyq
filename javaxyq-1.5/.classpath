@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" output="tmp" path="res/scripts"/>
+	<classpathentry kind="src" output="tmp" path="res/ui"/>
+	<classpathentry kind="src" output="tmp" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jl1.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-core-1.8.2.jar" sourcepath="E:/open-source/commons-beanutils-1.8.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Sun/JavaDB/lib/derby.jar"/>
+	<classpathentry kind="lib" path="lib/commons-jexl-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-dbutils-1.3.jar" sourcepath="E:/open-source/commons-dbutils-1.3-src.zip"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/javaxyq-common-1.5"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

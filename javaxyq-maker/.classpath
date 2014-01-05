@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/groovy-all-1.6.5.jar" sourcepath="E:/open-source/groovy-src-1.6.5.zip"/>
+	<classpathentry kind="lib" path="lib/appFramework-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jide_demo.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/javaxyq-common-1.5"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

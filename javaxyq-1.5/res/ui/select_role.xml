@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="select_role" x="0" y="0" width="640" height="480" tooltip="" background="" initial="" dispose="" closable="" movable="">
+    <Button id="btn_create" name="btn_create" text="" x="487" y="324" width="" height="" actionId="createRole" was="/wzife/login/create.tcp" tooltip="" toggle=""/>
+    <Button id="btn_back" name="btn_back" text="" x="486" y="369" width="" height="" actionId="goback" was="/wzife/login/back.tcp" tooltip="" toggle=""/>
+    <Button id="btn_next" name="btn_next" text="" x="484" y="412" width="" height="" actionId="gonext" was="/wzife/login/next.tcp" tooltip="" toggle=""/>
+    <Sprite id="" name="" x="269" y="0" width="" height="" tooltip="" path="/wzife/login/selectrole.tcp" actionId="null"/>
+    <Sprite id="role_head" name="role_head" x="24" y="43" width="" height="" tooltip="" path="/wzife/login/photo/selected/骨精灵.tcp" actionId="null"/>
+    <Sprite id="icon_role1" name="icon_role1" x="280" y="76" width="" height="" tooltip="" path="/shape/char/0001/stand.tcp" actionId="selectRole 1"/>
+    <Sprite id="icon_role2" name="icon_role2" x="380" y="76" width="" height="" tooltip="" path="/shape/char/0002/stand.tcp" actionId="selectRole 2"/>
+    <Sprite id="icon_role3" name="icon_role3" x="480" y="76" width="" height="" tooltip="" path="/shape/char/0003/stand.tcp" actionId="selectRole 3"/>
+    <Sprite id="icon_role4" name="icon_role4" x="280" y="208" width="" height="" tooltip="" path="/shape/char/0008/stand.tcp" actionId="selectRole 4"/>
+    <Sprite id="icon_role5" name="icon_role5" x="380" y="208" width="" height="" tooltip="" path="/shape/char/0010/stand.tcp" actionId="selectRole 5"/>
+    <Sprite id="icon_role6" name="icon_role6" x="480" y="208" width="" height="" tooltip="" path="/shape/char/0009/stand.tcp" actionId="selectRole 6"/>
+    <Text id="" name="role_name" x="133" y="353" width="" height="" tooltip="" text="骨精灵" font="" size="" color="" align="" actionId="null"/>
+    <Text id="" name="role_level" x="133" y="393" width="" height="" tooltip="" text="10" font="" size="" color="" align="" actionId="null"/>
+    <Text id="" name="role_faction" x="306" y="394" width="" height="" tooltip="" text="盘丝洞" font="" size="" color="" align="" actionId="null"/>
+    <Text id="" name="role_appellation" x="306" y="353" width="" height="" tooltip="" text="初出江湖" font="" size="" color="" align="" actionId="null"/>
+    <Sprite id="" name="" x="269" y="49" width="" height="" tooltip="" path="/wzife/login/role_frame.tcp" actionId="null"/>
+    <Sprite id="" name="" x="59" y="344" width="" height="" tooltip="" path="/wzife/login/attrib_frame.tcp" actionId="null"/>
+  </Dialog>
+</Dialogs>

@@ -1,0 +1,10 @@
+#Mon Dec 12 01:49:08 CST 2011
+eclipse.preferences.version=1
+encoding//res/sql/item_medicine.csv=UTF-8
+encoding//res/sql/scene_npc.csv=UTF-8
+encoding//res/sql/scene_teleporter.csv=UTF-8
+encoding//sql/item_medicine.csv=UTF-8
+encoding//sql/scene.csv=UTF-8
+encoding//sql/scene_npc.csv=UTF-8
+encoding//sql/scene_teleporter.csv=UTF-8
+encoding/<project>=GBK

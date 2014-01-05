@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<project name="javaxyq-1.5" default="default" basedir="." >
+	<description>Builds, tests, and runs the project JavaXYQ.</description>
+	<buildnumber file="build.properties" />
+	<property name="project_name" value="JavaXYQ" />
+	<property name="version" value="1.5.0" />
+	<property environment="env" />
+	<property name="publisher" value="gongdewei" />
+	<property name="computer" value="${env.COMPUTERNAME}" />
+
+	<property name="project" value="." />
+	<property name="src_dir" value="${project}/src" />
+	<property name="res_dir" value="${project}/res" />
+	<property name="class_dir" value="${project}/bin" />
+
+	<property name="build_dir" value="${project}/build" />
+	<property name="deploy_dir" value="${project}/deploy" />
+
+	<target name="init">
+		<tstamp>
+			<format property="buildtime" pattern="yyyy-MM-dd HH:mm:ss" />
+			<format property="builddate" pattern="yyyyMMdd" />
+		</tstamp>
+		<echo message="当前时间：${buildtime}" />
+		<echo message="project: ${project_name}" />
+		<echo message="version: ${version}_${builddate}_${build.number}" />
+		<echo message="publisher: ${publisher}" />
+		<echo message="computer: ${computer}" />
+		<mkdir dir="${build_dir}" />
+		<mkdir dir="${deploy_dir}" />
+	</target>
+		
+	<target name="jar" depends="init">
+		<echo message="Jar JavaXYQ.jar"></echo>
+		<delete file="${build_dir}/lib/JavaXYQ.jar"></delete>
+		<jar destfile="${build_dir}/lib/JavaXYQ.jar" update="true">
+			<manifest>
+				<attribute name="Version" value="${version}_${builddate}_${build.number}" />
+				<attribute name="Created-By" value="${publisher}" />
+				<attribute name="Computer-Name" value="${computer}" />
+				<attribute name="Created-Time" value="${buildtime}" />
+			</manifest>
+
+			<fileset dir="${class_dir}">
+				<include name="**/*.class" />
+				<exclude name="com/javaxyq/tools/**"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="build" depends="init">
+		<delete>
+			<fileset dir="${build_dir}" includes="**/**" />
+		</delete>
+		<copy todir="${build_dir}">
+			<fileset dir="${res_dir}">
+				<include name="**" />
+				<include name="**/**" />
+				<include name="**/*.*" />
+				<exclude name="temp/**" />
+				<exclude name="**/*.log" />
+				<exclude name="**/*.bat" />
+			</fileset>
+			<fileset dir="${res_dir}">
+				<include name="javaxyq.bat" />
+			</fileset>
+		</copy>
+		<copy todir="${build_dir}/lib">
+			<fileset dir="${project}/lib">
+				<include name="javaxyq-common.jar" />
+				<include name="jl1.0.jar" />
+				<include name="groovy-all-1.6.5.jar" />
+				<include name="commons-dbutils-1.3.jar" />
+				<include name="commons-jexl-2.0.1.jar" />
+				<include name="commons-logging-1.1.1.jar" />
+				<include name="commons-beanutils-core-1.8.2.jar" />
+				<include name="derby.jar" />
+			</fileset>
+		</copy>		
+		<antcall target="jar"></antcall> 
+	</target>
+
+	<target name="deploy" depends="init">
+		<delete file="${deploy_dir}/JavaXYQ-${version}-build${builddate}.zip"/>
+		<zip destfile="${deploy_dir}/JavaXYQ-${version}-build${builddate}.zip">
+			<fileset dir="${build_dir}">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="src" depends="init">
+		<delete file="${deploy_dir}/JavaXYQ-${version}-src${builddate}.zip" />
+		<delete>
+			<fileset dir="${project}/src" includes="**/*.class" />
+		</delete>
+		<zip destfile="${deploy_dir}/JavaXYQ-${version}-src${builddate}.zip">
+			<fileset dir="${project}">
+				<include name="src/**/**" />
+				<include name="res/**/*.groovy" />
+				<include name="res/**/*.xml" />
+				<exclude name="**/temp/**" />
+				<exclude name="**/*.class" />
+				<exclude name="**/*.map" />
+				<exclude name="**/*.mp3" />
+				<exclude name="**/*.was" />
+				<exclude name="**/*.tcp" />
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="mail">
+		<mail></mail>
+	</target>
+
+	<target name="default" depends="init,build" />
+	
+	<taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask" classpath="ant-googlecode-0.0.2.jar" name="gcupload"/> 
+
+	<target name="resource-manager" depends="init">
+		<delete file="${build_dir}/ResourcesManager.jar"></delete>
+		<jar destfile="${build_dir}/ResourcesManager.jar" update="true">
+			<manifest>
+				<attribute name="Version" value="${version}_${builddate}_${build.number}" />
+				<attribute name="Created-By" value="${publisher}" />
+				<attribute name="Computer-Name" value="${computer}" />
+				<attribute name="Created-Time" value="${buildtime}" />
+				<attribute name="Class-Path" value="lib/appFramework-1.0.jar" />
+				<attribute name="Main-Class" value="com.javaxyq.tools.ResourceManager" />
+			</manifest>
+
+			<fileset dir="${class_dir}">
+				<include name="com/javaxyq/tools/**" />
+				<exclude name="com/javaxyq/tools/**/temp/**"/>
+				<exclude name="com/javaxyq/tools/**/Thumbs.db"/>
+			</fileset>
+		</jar>
+	</target>
+	<target name="rm-autojar">
+		<delete file="${build_dir}/rmapp.jar"></delete>
+		<exec executable="java" dir=".">
+			<arg line=" -jar autojar.jar -dv -c ${class_dir};lib/jide.jar -o ${build_dir}/rmapp.jar -m RM_MANIFEST.MF ${build_dir}/ResourcesManager.jar"/>
+		</exec>
+	</target>
+	<target name="upload-source" depends="init">
+		<gcupload 
+		        username="gongdewei"  
+		        password="nQ7eS9tq9xW2"  
+		        projectname="javaxyq"  
+		        filename="${deploy_dir}/JavaXYQ-${version}-src${builddate}.zip"  
+		        targetfilename="JavaXYQ-${version}-src${builddate}.zip" 
+		        summary="Source of javaxyq ${version}" 
+		        labels="Featured, Type-Package, OpSys-All" />	
+	</target>
+	<target name="upload-build" depends="init">
+		<gcupload 
+		        username="gongdewei"  
+		        password="nQ7eS9tq9xW2"  
+		        projectname="javaxyq"  
+		        filename="${deploy_dir}/JavaXYQ-${version}-build${builddate}.zip"  
+		        targetfilename="JavaXYQ-${version}-build${builddate}.zip" 
+		        summary="javaxyq ${version} 可以执行文件" 
+		        labels="Featured, Type-Package, OpSys-All" />	
+	</target>
+</project>

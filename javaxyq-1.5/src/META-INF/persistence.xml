@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="xyqdbPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.javaxyq.data.MedicineItem</class>
+    <class>com.javaxyq.data.Scene</class>
+    <class>com.javaxyq.data.SceneNpc</class>
+    <class>com.javaxyq.data.SceneTeleporter</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby:xyqdb"/>
+      <property name="javax.persistence.jdbc.password" value="javaxyq"/>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+      <property name="javax.persistence.jdbc.user" value="javaxyq"/>
+    </properties>
+  </persistence-unit>
+</persistence>

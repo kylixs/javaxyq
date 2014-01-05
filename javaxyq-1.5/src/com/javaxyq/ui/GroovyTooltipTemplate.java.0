@@ -1,0 +1,52 @@
+/*
+ * JavaXYQ Source Code
+ * by kylixs
+ * at 2010-5-29
+ * please visit http://javaxyq.googlecode.com
+ * or mail to kylixs@qq.com
+ */
+package com.javaxyq.ui;
+
+import groovy.text.SimpleTemplateEngine;
+import groovy.text.Template;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.javaxyq.core.ApplicationHelper;
+import com.javaxyq.core.Context;
+
+/**
+ * @author gongdewei
+ * @date 2010-5-29 create
+ */
+public class GroovyTooltipTemplate implements TooltipTemplate {
+
+	private Map<String, Template> templates = new HashMap<String, Template>();
+
+	private Context context;
+	
+	public GroovyTooltipTemplate(Context context) {
+		super();
+		this.context = context;
+	}
+
+	@Override
+	public String getTooltipText(String tpl) {
+		Template template = templates.get(tpl);
+		if (template == null) {
+			try {
+				SimpleTemplateEngine engine = new groovy.text.SimpleTemplateEngine();
+				template = engine.createTemplate(tpl);
+				templates.put(tpl, template);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (template != null) {
+			return template.make(ApplicationHelper.getApplication().getDataManager().getProperties(context.getPlayer())).toString();
+		}
+		return null;
+	}
+
+}

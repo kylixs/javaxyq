@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="scene_map" x="104" y="91" width="444" height="311" tooltip="" background="/smap/1092.tcp" closable="true" movable=""/>
+</Dialogs>

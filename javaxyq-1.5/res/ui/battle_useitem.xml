@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="battle_useitem" x="175" y="101" width="295" height="260" tooltip="" background="/wzife/dialog/useitem.tcp" closable="false" movable="true">
+    <Item id="" name="item1" x="19" y="34" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item2" x="71" y="34" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item3" x="122" y="34" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item4" x="173" y="34" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item5" x="224" y="34" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item6" x="20" y="84" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item7" x="71" y="85" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item8" x="122" y="85" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item9" x="173" y="85" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item10" x="224" y="85" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item11" x="20" y="136" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item12" x="71" y="136" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item13" x="122" y="136" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item14" x="173" y="136" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item15" x="224" y="136" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item16" x="20" y="187" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item17" x="71" y="186" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item18" x="122" y="187" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item19" x="173" y="186" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Item id="" name="item20" x="224" y="187" width="50" height="50" tooltip="" text="" font="" size="" color="" align="" actionId=""/>
+    <Button id="" name="close" text="" x="272" y="5" width="" height="" actionId="close" was="/wzife/button/closebtn.tcp" tooltip="关闭"/>
+  </Dialog>
+</Dialogs>

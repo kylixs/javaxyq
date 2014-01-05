@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="item" x="21" y="11" width="313" height="451" background="/wzife/dialog/item.tcp">
+    <Sprite id="" name="face" x="55" y="28" width="129" height="117" tooltip="" path="/wzife/photo/facebig/0001.tcp" actionId=""/>
+    <Button id="" name="" text="" x="290" y="5" width="" height="" actionId="close" was="/wzife/button/closebtn.tcp" tooltip="" />
+    <Button id="" name="" text="" x="271" y="5" width="" height="" actionId="help" was="/wzife/button/question.tcp" tooltip="" />
+    <Text id="" x="15" y="152" width="40" height="20" tooltip="" text="现金" font="" size="52" color="white" align="" actionId=""/>
+    <Text id="" name="lbl_cash" x="65" y="152" width="90" height="20" tooltip="" text="${money}" font="" size="" color="blue" align="" actionId=""/>
+    <Text id="" name="lbl_deposit" x="65" y="172" width="90" height="20" tooltip="" text="${deposit}" font="" size="" color="blue" align="" actionId=""/>
+<!-- 
+    <Sprite id="" name="武器" x="200" y="81" width="" height="" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="腰带" x="202" y="137" width="" height="" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="头盔" x="202" y="26" width="" height="" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="饰品" x="254" y="28" width="" height="" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="靴子" x="252" y="139" width="" height="" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="铠甲" x="258" y="85" width="" height="" tooltip="" path="" actionId=""/>
+ -->
+    <Sprite id="" name="武器底" x="198" y="82" width="" height="" tooltip="" path="/wzife/button/itembk.tcp" actionId=""/>
+    <Sprite id="" name="头盔底" x="200" y="28" width="" height="" tooltip="" path="/wzife/button/itembk.tcp" actionId=""/>
+    <Sprite id="" name="铠甲底" x="253" y="82" width="" height="" tooltip="" path="/wzife/button/itembk.tcp" actionId=""/>
+    <Sprite id="" name="腰带底" x="199" y="137" width="" height="" tooltip="" path="/wzife/button/itembk.tcp" actionId=""/>
+    <Sprite id="" name="靴子底" x="253" y="137" width="" height="" tooltip="" path="/wzife/button/itembk.tcp" actionId=""/>
+    <Sprite id="" name="饰品底" x="253" y="28" width="" height="" tooltip="" path="/wzife/button/itembk.tcp" actionId=""/>
+    <Sprite name="当前对象" x="-1" y="22" width="312" height="177" path="/wzife/dialog/itemm1.tcp" actionId=""/>
+    <Button id="" name="道具" text="" x="29" y="411" width="43" height="22" actionId="" was="/wzife/button/itm.tcp" tooltip="" toggle="true"/>
+    <Button id="" name="行囊" text="" x="86" y="411" width="" height="" actionId="" was="/wzife/button/bag.tcp" tooltip="" toggle="true"/>
+    <Button id="" name="销毁" text="销毁" x="174" y="410" width="" height="" actionId="" was="/wzife/button/smallbtn.tcp" tooltip="" toggle="false"/>
+    <Button id="" name="整理" text="整理" x="225" y="411" width="" height="" actionId="" was="/wzife/button/smallbtn.tcp" tooltip="" toggle="false"/>
+  </Dialog>
+</Dialogs>

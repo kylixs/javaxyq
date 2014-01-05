@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="mainmenu" x="0" y="0" width="640" height="480" tooltip="" background="" initial="" dispose="" closable="" movable="">
+    <Button id="btn_enter" name="" x="491" y="115" tooltip="进入游戏" was="/wzife/login/btn_login.tcp" actionId="enter_game"/>
+    <Button id="btn_exit" name="" x="490" y="317" tooltip="结束游戏" was="/wzife/login/btn_exit.tcp" actionId="exit"/>
+    <Button id="btn_register" name="" x="492" y="166" tooltip="创建新的游戏存档" was="/wzife/login/btn_register.tcp" actionId="newgame"/>
+    <Button id="btn_work" name="" x="491" y="215" tooltip="显示游戏制作人员名单" was="/wzife/login/btn_work.tcp" actionId="work"/>
+    <Button id="btn_home" name="" x="489" y="267" tooltip="打开游戏主页" was="/wzife/login/btn_home.tcp" actionId="home"/>
+    <Sprite id="btn_m1" name="btn_m1" text="" x="184" y="172" actionId="say_m1" path="/wzife/login/m1.tcp" />
+    <Sprite id="btn_m2" name="btn_m2" text="" x="8" y="218" actionId="say_m2" path="/wzife/login/m2.tcp" />
+    <Sprite id="btn_m3" name="btn_m3" text="" x="105" y="246" actionId="say_m3" path="/wzife/login/m3.tcp" />
+    <Sprite id="btn_m4" name="btn_m4" text="" x="312" y="228" actionId="say_m4" path="/wzife/login/m4.tcp" />
+  </Dialog>
+</Dialogs>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+	<Dialog id="battle_warmagic20" x="250" y="9" width="190"
+		height="460" tooltip="" background="/wzife/dialog/warmagic20.tcp"
+		initial="com.javaxyq.action.battle.warmagic20" dispose="" closable="false"
+		movable="true" />
+</Dialogs>

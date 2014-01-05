@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="game_exit" align="center" x="93" y="166" width="482" height="170" background="/wzife/dialog/npcchat.tcp">
+    <Text text="你确定要退出游戏吗?" x="90" y="24" width="300" height="21" font="" size="" color="white" align="center" actionId=""/>
+    <Text text="欢迎留言或者qq群讨论(35896251)" x="90" y="129" width="300" height="16" font="" size="" color="white" align="center" actionId=""/>
+    <Text name="version" text="JavaXYQ 1.4 M1 @ 2009-11-30" x="89" y="146" width="300" height="16" font="" size="" color="white" align="center" actionId=""/>
+    <Button text="退出游戏" actionId="exit_game" x="65" y="54" was="/wzife/button/longbtn.tcp"/>
+    <Button text="继续游戏" actionId="close" x="66" y="87" was="/wzife/button/longbtn.tcp"/>
+    <Button text="访问主页" actionId="visit_homepage" x="165" y="56" was="/wzife/button/longbtn.tcp"/>
+    <Button text="访问博客" actionId="visit_blog" x="165" y="86" was="/wzife/button/longbtn.tcp"/>
+    <Button name="debugbtn" text="打开调试" actionId="toggle_debug" x="270" y="56" was="/wzife/button/longbtn.tcp"/>
+    <Button name="musicbtn" text="关闭音乐" actionId="toggle_music" x="270" y="86" was="/wzife/button/longbtn.tcp"/>
+    <Button text="贡献者" actionId="contributors" x="364" y="56" was="/wzife/button/longbtn.tcp"/>
+  </Dialog>
+</Dialogs>

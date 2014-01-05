@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Actions>
+
+	<Action id="com.javaxyq.action.dialog.*" class="com.javaxyq.action.SystemActions"></Action>
+
+	<Action id="com.javaxyq.action.dialog.player_status" class="com.javaxyq.action.SystemActions" shortcut="alt W"></Action>
+	<Action id="com.javaxyq.action.dialog.item" class="com.javaxyq.action.SystemActions" shortcut="alt E"></Action>
+	<Action id="com.javaxyq.action.dialog.summon_status" class="com.javaxyq.action.SystemActions" shortcut="alt P"></Action>
+	<Action id="com.javaxyq.action.dialog.tasklist" class="com.javaxyq.action.SystemActions" shortcut="alt Q"></Action>
+	<Action id="com.javaxyq.action.dialog.setting" class="com.javaxyq.action.SystemActions" shortcut="alt S"></Action>
+	<Action id="com.javaxyq.action.dialog.main_skill" class="com.javaxyq.action.SystemActions" shortcut="alt L"></Action>
+	<Action id="com.javaxyq.action.dialog.scene_map" class="com.javaxyq.action.SystemActions" shortcut="pressed TAB"></Action>
+	<Action id="com.javaxyq.action.dialog.world_map" class="com.javaxyq.action.SystemActions" shortcut="alt M"></Action>
+	<Action id="com.javaxyq.action.攻击" class="com.javaxyq.action.SystemActions" shortcut="alt A"></Action>
+	<Action id="com.javaxyq.action.防御" class="com.javaxyq.action.SystemActions" shortcut="alt D"></Action>
+	<Action id="com.javaxyq.action.给予" class="com.javaxyq.action.SystemActions" shortcut="alt G"></Action>
+	<Action id="com.javaxyq.action.交易" class="com.javaxyq.action.SystemActions" shortcut="alt X"></Action>
+	<Action id="com.javaxyq.action.表情动画" class="com.javaxyq.action.SystemActions" shortcut="alt -"></Action>
+	<Action id="com.javaxyq.action.全屏切换" class="com.javaxyq.action.SystemActions" shortcut="alt enter"></Action>
+	<Action id="com.javaxyq.action.dialog.帮派" class="" shortcut="alt B"></Action>
+	<Action id="com.javaxyq.action.dialog.法术" class="" shortcut="alt C"></Action>
+	<Action id="com.javaxyq.action.transport" class="com.javaxyq.action.DefaultTransportAction" shortcut=""></Action>
+	
+	<Action id="com.javaxyq.action.MoveLeft" class="com.javaxyq.action.MoveActions" shortcut=""></Action>
+	<Action id="com.javaxyq.action.MoveUp" class="com.javaxyq.action.MoveActions" shortcut=""></Action>
+	<Action id="com.javaxyq.action.MoveRight" class="com.javaxyq.action.MoveActions" shortcut=""></Action>
+	<Action id="com.javaxyq.action.MoveDown" class="com.javaxyq.action.MoveActions" shortcut=""></Action>
+	<Action id="com.javaxyq.action.Stop" class="com.javaxyq.action.MoveActions" shortcut=""></Action>
+	<Action id="com.javaxyq.action.StopNext" class="com.javaxyq.action.MoveActions" shortcut=""></Action>
+	
+	<Listener type="MouseListener" class="com.javaxyq.event.CanvasMouseHandler"></Listener>
+	<Listener type="MouseMotionListener" class="com.javaxyq.event.CanvasMouseHandler"></Listener>
+	<Listener type="KeyListener" class="com.javaxyq.event.CanvasKeyHandler"></Listener>
+	<Listener type="WindowListener" class="com.javaxyq.event.GameWindowHandler"></Listener>
+	<Listener type="WindowStateListener" class="com.javaxyq.event.GameWindowStateHandler"></Listener>
+</Actions>
