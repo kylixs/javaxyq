@@ -14,6 +14,7 @@ public class GameWindowHandler implements WindowListener {
 	}
 
 	public void windowClosing(WindowEvent e) {
+		System.exit(0);
 		ApplicationHelper.getApplication().getContext().getWindow().getHelper().showDialog("game_exit");
 	}
 

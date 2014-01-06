@@ -91,7 +91,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 
 	private int drawCount = 0;
 
-	protected long updateInterval = 20;
+	protected long updateInterval = 10;
 	
 	private final class DrawThread extends Thread {
 		{
@@ -122,6 +122,9 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 	public static final Object UPDATE_LOCK = new Object();
 
 	public static final Object MOVEMENT_LOCK = new Object();
+	
+	public static final Object TILEMASKIMAGE_LOCK = new Object();
+	
 	private boolean canvasValid = true;
 
 	protected int alpha = 0;
@@ -247,14 +250,15 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 		if (lastTime == 0)
 			lastTime = currTime;
 		long elapsedTime = currTime - lastTime;
-		lastTime = currTime;
+//		lastTime = currTime;
 		if (g != null && offscreenGraphics!=null) {
 			this.draw(offscreenGraphics, elapsedTime);
 			// draw to real graphics
 			g.drawImage(offscreenImage, 0, 0, null);
 			g.dispose();
 		}
-		//System.out.println("drawCanvas cost: "+(System.currentTimeMillis()-currTime));
+		lastTime = System.currentTimeMillis();
+		System.out.println("drawCanvas cost: "+(System.currentTimeMillis()-currTime));
 	}
 
 	protected void drawComponents(Graphics g, long elapsedTime) {
@@ -306,15 +310,15 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 		Player player = getPlayer();
 		if (player != null) {
 			player.setHover(isHover(player));
-			// long s1 = System.currentTimeMillis();
+//			long s1 = System.currentTimeMillis();
 			player.update(elapsedTime);
 			Point p = player.getLocation();
 			p = localToView(p);
 			player.draw(g, p.x, p.y);
-			// long s2 = System.currentTimeMillis();
-			// if(s2-s1>0) {
-			// System.out.printf("update player uses: %sms\n",s2-s1);
-			// }
+//			long s2 = System.currentTimeMillis();
+//			if(s2-s1>0) {
+//				 System.out.printf("%s update player uses: %sms, elapsedTime: %s \n", s2, s2-s1, elapsedTime);
+//			}
 		}
 	}
 

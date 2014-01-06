@@ -39,6 +39,7 @@ import com.javaxyq.util.WASDecoder;
  * 
  * @author 龚德伟
  * @history 2008-5-14 龚德伟 完善人物键盘行走的处理
+ *          2013-12-31 wpaul modify
  */
 public class Player extends AbstractWidget implements EventTarget {
 
@@ -56,7 +57,7 @@ public class Player extends AbstractWidget implements EventTarget {
 	/** 历史冒泡对话 */
 	private List<FloatPanel> chatPanels;
 
-	private Sprite person;
+	public Sprite person;
 
 	private Sprite weapon;
 
@@ -188,10 +189,41 @@ public class Player extends AbstractWidget implements EventTarget {
 	 * @return
 	 */
 	private int calculateStepDirection(Point step) {
+		System.out.println("dx,dy is:"+step.x+","+step.y);
+		System.out.println("scenex,y is:"+sceneX+","+sceneY);
+		
 		int dx = step.x - this.sceneX;
 		int dy = step.y - this.sceneY;
+		double r = Math.sqrt(dx*dx+dy*dy);
+	
+		double cos=dx/r;
+		int angle=(int) Math.floor(Math.acos(cos)*180/Math.PI);
+		if(dy>0){
+		    angle=360-angle;
+		}
+
 		int dir = 0;
-		if (dx < 0) {
+		System.out.println("angle is:"+angle);
+        if(angle>337 || angle<=22){
+        	dir = Sprite.DIR_RIGHT;
+		}else if(angle>22 && angle<=67){
+			dir = Sprite.DIR_DOWN_RIGHT;
+		}else if(angle>67 && angle<=112){
+			dir = Sprite.DIR_DOWN;
+		}else if(angle>112 && angle<=157){
+			dir = Sprite.DIR_DOWN_LEFT;
+		}else if(angle>157 && angle<=202){
+			dir = Sprite.DIR_LEFT;
+		}else if(angle>202 && angle<=247){
+			dir = Sprite.DIR_UP_LEFT;
+		}else if(angle>247 && angle<=292){
+			dir = Sprite.DIR_UP;
+		}else if(angle>292 && angle<=337){
+			dir = Sprite.DIR_UP_RIGHT;
+		}
+		
+		
+		/*if (dx < 0) {
 			if (dy < 0) {
 				dir = Sprite.DIR_DOWN_LEFT;
 			} else if (dy > 0) {
@@ -216,7 +248,7 @@ public class Player extends AbstractWidget implements EventTarget {
 				// no move
 				dir = -1;
 			}
-		}
+		}*/
 
 		return dir;
 	}
@@ -440,8 +472,8 @@ public class Player extends AbstractWidget implements EventTarget {
 					PlayerEvent evt = new PlayerEvent(this, PlayerEvent.MOVE);
 					evt.setAttribute(PlayerEvent.MOVE_INCREMENT, d);
 					fireEvent(evt);
-					// System.out.printf("pos:(%s,%s)\tmove->:(%s,%s)\n", x, y,
-					// d.x, d.y);
+					 System.out.printf("pos:(%s,%s)\tmove->:(%s,%s)\n", x, y,
+					 d.x, d.y);
 				}
 			}
 		}
@@ -598,9 +630,9 @@ public class Player extends AbstractWidget implements EventTarget {
 			System.out.println("path is empty.");
 		} else {
 			// System.out.println("new path:");
-			// for (Point p : path) {
-			// System.out.printf("(%s,%s)\n", p.x, p.y);
-			// }
+			 //for (Point p : path) {
+			 //System.out.printf("(%s,%s)\n", p.x, p.y);
+			 //}
 			// System.out.println();
 		}
 	}
@@ -713,7 +745,7 @@ public class Player extends AbstractWidget implements EventTarget {
 			// 计算下一步的方向
 			int dir = calculateStepDirection(this.nextStep);
 			if (dir != -1) {
-				switch(this.direction) {
+				/*switch(this.direction) {
 					case Sprite.DIR_DOWN_RIGHT:
 						if(dir == Sprite.DIR_RIGHT || dir == Sprite.DIR_DOWN) {
 							return;
@@ -754,7 +786,7 @@ public class Player extends AbstractWidget implements EventTarget {
 							return;
 						}
 						break;
-				}
+				}*/
 				setDirection(dir);
 			}
 		}

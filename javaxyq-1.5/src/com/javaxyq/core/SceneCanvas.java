@@ -47,6 +47,7 @@ import com.soulnew.AStar;
 
 /**
  * @author dewitt
+ * @history 2013-12-25 wpaul modify 
  * 
  */
 public class SceneCanvas extends Canvas {
@@ -59,7 +60,7 @@ public class SceneCanvas extends Canvas {
 	 */
 	private Image mapMask;
 
-	private Searcher searcher;
+	private AStar searcher;
 
 	private PlayerListener scenePlayerHandler = new ScenePlayerHandler();
 
@@ -81,10 +82,21 @@ public class SceneCanvas extends Canvas {
 	private int sceneHeight;
 
 	private List<Point> path;
+	private List<Point> playerpath;
 
 	private String musicfile;
 
 	private ScriptEngine scriptEngine;
+	
+	/**
+	 * 地图遮掩层及参数
+	 */
+	//private Image mapMask;
+	//private int tempviewX;
+	//private int tempviewY;
+	public boolean isloop = true;
+	public boolean maskupdateinit;
+	
 	/**
 	 * 创建场景画布实例
 	 */
@@ -95,8 +107,10 @@ public class SceneCanvas extends Canvas {
 		// searcher = new OptimizeAStar();
 		// searcher = new Dijkstra();
 		// searcher = new BreadthFirstSearcher();
-		Thread th = new MovementThread();
-		th.start();
+		Thread th1 = new MovementThread();
+		Thread th2 = new UpdateTileImageDesThread();
+		th1.start();
+		th2.start();
 	}
 
 	private void drawMap(Graphics g) {
@@ -108,13 +122,37 @@ public class SceneCanvas extends Canvas {
 		}
 	}
 
-	private void drawMask(Graphics g) {
-		if (mapMask != null) {
-			int viewX = getViewportX();
-			int viewY = getViewportY();
-			int sx2 = viewX + getWidth();
-			int sy2 = viewY + getHeight();
-			g.drawImage(mapMask, 0, 0, getWidth(), getHeight(), viewX, viewY, sx2, sy2, null);
+	
+	private void drawMask(Graphics g,long elapsedTime) {
+		if (map != null ) {
+			
+			//获得Player的坐标
+			Player player = getPlayer();
+			if (player != null) {
+				// long s1 = System.currentTimeMillis();
+				player.update(elapsedTime);
+				Point p = player.getLocation();
+				p = localToView(p);
+				
+				int viewX = getViewportX();
+				int viewY = getViewportY();
+				int sx2 = viewX + getWidth();
+				int sy2 = viewY + getHeight();
+				/*System.out.println("x,y is:"+p.x+","+p.y);
+				System.out.println("cx,cy is:"+player.person.getCenterX()+","
+				+player.person.getCenterY());
+				System.out.println("cwidth,cheight is:"+player.person.getWidth()+","
+						+player.person.getHeight());*/
+				map.setPlayerArg(player, p.x+viewX,p.y+viewY);
+				/*if(viewX!=sx2 || viewY!=sy2){
+					map.setArgtoMask(viewX, viewY);
+					sx2=viewX;
+					sy2=viewY;
+				}*/
+				map.drawMask(g, viewX, viewY, sx2, sy2);
+				
+			}
+	
 		}
 	}
 
@@ -261,8 +299,11 @@ public class SceneCanvas extends Canvas {
 		}
 		
 		// test! get barrier image
-		this.mapMask = new ImageIcon(cfg.getPath().replace(".map", "_bar.png")).getImage();
-		maskdata = loadMask(cfg.getPath().replace(".map", ".msk"));
+		//this.mapMask = new ImageIcon(cfg.getPath().replace(".map", "_bar.png")).getImage();
+		//maskdata = loadMask(cfg.getPath().replace(".map", ".msk"));
+		
+		maskdata = loadMask();
+		
 		searcher.init(sceneWidth, sceneHeight, maskdata);
 		//play music
 		String musicfile = cfg.getPath().replaceAll("\\.map", ".mp3").replaceAll("scene","music");
@@ -284,11 +325,17 @@ public class SceneCanvas extends Canvas {
 	 * @param filename
 	 * @return
 	 */
-	private byte[] loadMask(String filename) {
-		System.out.println("map : " + map.getWidth() + "*" + map.getHeight() + ", scene: " + sceneWidth + "*"
-				+ sceneHeight + ", msk: " + filename);
+	private byte[] loadMask() {
+	
 		byte[] maskdata = new byte[sceneWidth * sceneHeight];
-		try {
+		for(int ch=0;ch<sceneHeight;ch++){
+			for(int cw=0;cw<sceneWidth;cw++){
+				maskdata[ch*sceneWidth+cw] =map.totalcell[ch][cw];
+				//System.out.print(maskdata[ch*sceneWidth+cw]);
+			}
+			//System.out.println("");
+		}
+		/*try {
 			InputStream in = Toolkit.getInputStream(filename);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String str;
@@ -302,7 +349,7 @@ public class SceneCanvas extends Canvas {
 		} catch (Exception e) {
 			System.out.println("加载地图掩码失败！filename=" + filename);
 			e.printStackTrace();
-		}
+		}*/
 		return maskdata;
 	}
 
@@ -409,7 +456,7 @@ public class SceneCanvas extends Canvas {
 			}else if(p.y > 330) {
 				fy = 1;
 			}
-			System.out.printf("player on view: (%s, %s) => m(%s, %s) \n", p.x, p.y, fx, fy);
+			//System.out.printf("player on view: (%s, %s) => m(%s, %s) \n", p.x, p.y, fx, fy);
 			
 			// 设置视窗(viewport)的位置
 			if(fx!=0 || fy!=0) {
@@ -420,7 +467,7 @@ public class SceneCanvas extends Canvas {
 				viewportVy = fy*120;
 				viewportAx = fx*-40;
 				viewportAy = fy*-30;
-				System.out.printf("adjustView: vx=%s, vy=%s, ax=%s, ay=%s\n",viewportVx,viewportVy,viewportAx,viewportAy);
+				//System.out.printf("adjustView: vx=%s, vy=%s, ax=%s, ay=%s\n",viewportVx,viewportVy,viewportAx,viewportAy);
 			}
 		}
 	}
@@ -440,12 +487,47 @@ public class SceneCanvas extends Canvas {
 		Point p = this.getPlayerSceneLocation();
 		System.out.printf("walk to:(%s,%s) -> (%s,%s)\n", p.x, p.y, x, y);
 		this.path = this.findPath(x, y);
+		System.out.print("allpath is:");
+		for (Point ap : path) {
+		 System.out.printf("(%s,%s)\n", ap.x, ap.y);
+		 }
+		
+		playerpath = new ArrayList<Point>();
+		int start =0;
+		playerpath.add((Point)path.get(start));
+		for(int i=1;i<path.size();i++){
+			List<Point> linepath = path.subList(start, i);
+			int distance = searcher.distance(linepath);
+			Point source = linepath.get(0);
+			Point target = linepath.get(linepath.size()-1);
+			//List<Point> fpath = SearchUtils.getLinePath(source.x,source.y,target.x,target.y);
+			//int fdistance = searcher.linedistance(fpath);
+			int temp = (target.x-source.x)*(target.x-source.x)+(target.y-source.y)*(target.y-source.y);
+			int  fdistance = (int)Math.sqrt(temp*100);
+			//System.out.println("distance is:"+distance);
+			//System.out.println("fdistance is:"+fdistance);
+			if(  fdistance<distance){
+			    start =i-1;
+			    playerpath.add((Point)path.get(start));
+			}
+		}
+		playerpath.add((Point)path.get(path.size()-1));
+		/*System.out.print("path is:");
+		for (Point ap : playerpath) {
+			 System.out.printf("(%s,%s)\n", ap.x, ap.y);
+		}*/
+
+		
 		if (path != null) {
-			getPlayer().setPath(path);
+			getPlayer().setPath(playerpath);
 			getPlayer().move();
 		} else {
 			window.getHelper().prompt("不能到达那里", 1000);
 		}
+		
+		
+		
+		
 	}
 
 	public void walkToView(int x, int y) {
@@ -493,6 +575,49 @@ public class SceneCanvas extends Canvas {
 		py = p.y - Application.STEP_DISTANCE/2;
 		w=h=Application.STEP_DISTANCE;
 		g.drawRect(px, py, w, h);
+	}
+	
+	
+	private void drawfPath(Graphics g) {
+		Player player = getPlayer();
+		if (player != null && playerpath != null) {// XXX DEBUG
+			// List<Point> path = player.getPath();
+			Point p0 = null;
+			for (Point p : playerpath) {
+				this.drawfTrack(g, p0, p);
+				p0 = p;
+			}
+			drawfTrack(g, p0,null);
+		}
+	}
+
+	private void drawfTrack(Graphics g, Point p0, Point p) {
+		g.setColor(Color.blue);
+		if (p0 == null) {//画起点
+			Point vp = this.sceneToView(p);
+			//g.fillOval(vp.x - 4, vp.y - 4, 14, 14);
+			drawCell(g, vp);
+		} else if(p==null){//画终点
+			Point vp = this.sceneToView(p0);
+			drawCell(g, vp);
+//			g.fillOval(vp.x - 4, vp.y - 4, 12, 12);
+//			g.drawOval(vp.x -6, vp.y -6, 16, 16);
+//			g.drawOval(vp.x -7, vp.y -7, 18, 18);
+		} else {
+			p0 = sceneToView(p0);
+			p = sceneToView(p);
+			drawfCell(g, p0);
+//			g.drawLine(p0.x, p0.y, p.x, p.y);
+//			g.drawLine(p0.x + 1, p0.y + 1, p.x + 1, p.y + 1);
+		}
+	}
+	
+	private void drawfCell(Graphics g, Point p) {
+		int px,py,w,h;
+		px = p.x - Application.STEP_DISTANCE/2;
+		py = p.y - Application.STEP_DISTANCE/2;
+		w=h=Application.STEP_DISTANCE;
+		g.fillOval(px, py, w, h);
 	}
 
 	/**
@@ -621,6 +746,143 @@ public class SceneCanvas extends Canvas {
 		
 		//TODO stop , adjusting viewport
 	}
+	
+	/**
+	 * 更新mask遮掩图
+	 */
+	private final class UpdateTileImageDesThread extends Thread {
+		private long lastTime;
+		{
+			this.setName("UpdateTileImageDesThread");
+		}
+		 //isloop = true;
+	    //通过参数读取MASKDATA数据到TILEMASKIMAGDES
+		public void UpdateTileImageDes(int unitnum){
+			int []masklist = map.mask.get(unitnum);
+			 for(int i=0;i<masklist.length;i++){
+				 int []maskinfo = map.maskkey.get(masklist[i]);
+				 int []maskdata = map.mask_data.get(masklist[i]);
+				 map.setTileMaskImg(masklist[i], maskinfo[0], maskinfo[1], 
+						 maskinfo[2], maskinfo[3], maskdata);
+			 }
+			 try {
+					Thread.sleep(40);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+			}
+
+		}
+		
+		public void run() {
+			
+			 int firstTilesX= 0;
+		     int firstTilesY= 0;
+		     int lastTilesX = 0;
+		     int lastTilesY = 0; 
+			 maskupdateinit = true;
+			 boolean []bolunitnum =null;
+		
+			
+		   while (true) {
+			   //System.out.println("this Thread is:"+this.getId()+this.getName());
+			   if(isloop){
+			   //System.out.println("isloop is:"+isloop);
+			   synchronized (Canvas.TILEMASKIMAGE_LOCK) {
+				   
+				   if(map!=null && getPlayer()!=null){
+						
+		    			//System.out.println("tempviewx,y is:"+tempviewX+","+tempviewY);
+		    			if(maskupdateinit){
+		    			//*****************************修正地图位置	
+		    			setPlayerSceneLocation(getPlayer().getSceneLocation());		
+		    			int viewX = getViewportX();
+						int viewY = getViewportY();
+			             map.setArgtoMask(viewX, viewY);
+		            	firstTilesX = map.pixelsToTilesw(viewX);
+		    		    firstTilesY = map.pixelsToTilesh(viewY);
+		    		     
+		    		    lastTilesX = map.pixelsToTilesw(viewX + map.MAP_BLOCK_WIDTH*2);
+		    		    lastTilesY = map.pixelsToTilesh(viewY + map.MAP_BLOCK_HEIGHT*2);
+                        lastTilesX = Math.min(lastTilesX, (int)(map.getXBlockCount()-1));
+                        lastTilesY = Math.min(lastTilesY, (int)(map.getYBlockCount()-1));
+                         
+		    		
+		    			 maskupdateinit=false;
+		    			 bolunitnum =new boolean[map.getXBlockCount()*map.getYBlockCount()];
+		    			 for(int y=firstTilesY;y<=lastTilesY;y++){
+		    				 for(int x=firstTilesX;x<=lastTilesX;x++){
+		    					 int num= y*map.getXBlockCount()+x;
+		    					 bolunitnum[num]=true;
+		    					 /*System.out.println("length is:"+bolunitnum.length);
+		    					 System.out.println("unitnum0 is:"+num);*/
+		    				 }
+		    			 }
+		    			// System.out.println("unitnum1,2 is:"+unitnum1+","+unitnum2);
+		    			 //System.out.println("VIEWX,Y is:"+viewX+","+viewY);
+		    			}
+		    			//System.out.println(this.getId()+" "+this.getName());
+		    	if(!maskupdateinit){
+		    	    firstTilesX = Math.max(0, firstTilesX-1);
+			        lastTilesX  = Math.min(map.getXBlockCount()-1, lastTilesX+1);
+			        firstTilesY = Math.max(0, firstTilesY-1);
+			        lastTilesY  = Math.min(map.getYBlockCount()-1, lastTilesY+1);
+		    	
+			        for(int x=firstTilesX; x<=lastTilesX; x++){
+			        	
+			        	int unitnum1 = firstTilesY*map.getXBlockCount()+x;
+			        	if(bolunitnum[unitnum1]==false && isloop==true){
+			        		//System.out.println("unintum1 is:"+unitnum1);
+			        		this.UpdateTileImageDes(unitnum1);
+			        		bolunitnum[unitnum1]=true;
+			        	}
+			        	int unitnum2 = lastTilesY*map.getXBlockCount()+x;
+			        	if(bolunitnum[unitnum2]==false && isloop==true){
+			        		//System.out.println("unitnum2 is:"+unitnum2);
+		        		    this.UpdateTileImageDes(unitnum2);
+		        		    bolunitnum[unitnum2]=true;
+			        	}
+			        }
+		
+		            for(int y=firstTilesY+1; y<lastTilesY; y++){
+		        	    int unitnum1 = y*map.getXBlockCount()+firstTilesX;
+		        	    if(bolunitnum[unitnum1]==false && isloop==true){
+		        	    	 //System.out.println("unintum3 is:"+unitnum1);
+		        	    	 this.UpdateTileImageDes(unitnum1);
+		        	    	 bolunitnum[unitnum1]=true;
+		        	    }
+		        	    int unitnum2 = y*map.getXBlockCount()+lastTilesX;
+		        	    if(bolunitnum[unitnum2]==false && isloop==true){
+		        	    	//System.out.println("unitnum4 is:"+unitnum2);
+		        		    this.UpdateTileImageDes(unitnum2);
+		        		    bolunitnum[unitnum2]=true;
+		        	    }
+		            }
+		        }	 
+				 if(firstTilesX==0 && lastTilesX==map.getXBlockCount()-1){
+					// System.out.println(this.getId()+" "+this.getName());
+					 if(firstTilesY==0 && lastTilesY==map.getYBlockCount()-1){
+						
+						 isloop = false;
+						 //System.out.println("isloop is:"+isloop);
+					 }	 
+				 }
+				 }
+				 
+			   }
+		      }else{
+		    	  try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+				}
+		      }
+			   
+		    }
+            
+		}
+		
+	}
+	
 
 	/**
 	 * @param elapsedTime
@@ -665,29 +927,49 @@ public class SceneCanvas extends Canvas {
 		if (g == null) {
 			return;
 		}
+		long t0,t1,t2,t3,t4,t5,t6,t7,tx;
+		t0 = System.currentTimeMillis();
 		try {
 			g.setColor(Color.BLACK);
 			// 场景地图
 			drawMap(g);
+//			t1 = System.currentTimeMillis();
+//			System.out.printf("drawMap cost: %s\n", (t1-t0));
+			
 			// 人物行走路线
 			if (ApplicationHelper.getApplication().isDebug()) {
 				this.drawPath(g);
+				this.drawfPath(g);
 			}
 			// 场景跳转
 			drawTrigger(g, elapsedTime);
+//			t2 = System.currentTimeMillis();
+//			System.out.printf("drawTrigger cost: %s\n", (t2-t1));
 
 			// npcs
 			drawNPC(g, elapsedTime);
+//			t3 = System.currentTimeMillis();
+//			System.out.printf("drawNPC cost: %s\n", (t3-t2));
+			
 			// 人物
 			drawPlayer(g, elapsedTime);
+//			t4 = System.currentTimeMillis();
+//			System.out.printf("drawPlayer cost: %s\n", (t4-t3));
 
 			// 地图掩码(mask)
-			drawMask(g);
+			drawMask(g,elapsedTime);
+//			t5 = System.currentTimeMillis();
+//			System.out.printf("drawMask cost: %s\n", (t5-t4));
+			
 			// 鼠标点击效果
 			this.drawClick(g, elapsedTime);
+//			t6 = System.currentTimeMillis();
+//			System.out.printf("drawClick cost: %s\n", (t6-t5));
 
 			// 游戏UI控件
 			drawComponents(g, elapsedTime);
+//			t7 = System.currentTimeMillis();
+//			System.out.printf("drawComponents cost: %s\n", (t7-t6));
 
 			// 过渡效果：谈出淡入
 			if (alpha > 0) {
@@ -697,6 +979,10 @@ public class SceneCanvas extends Canvas {
 			// 内存使用量
 			drawDebug(g);
 			drawDownloading(g);
+			
+			tx = System.currentTimeMillis();
+			System.out.printf("SceneCanvas draw cost: %s\n", (tx-t0));
+			
 		} catch (Exception e) {
 			System.out.printf("更新Canvas时失败！\n");
 			e.printStackTrace();
@@ -768,16 +1054,20 @@ public class SceneCanvas extends Canvas {
 	private void fadeToMap(String sceneId, Point p) {
 		// 渐隐
 		this.fadeOut(400);
+		this.isloop = false;
 		// prepare map
 		TileMap newmap = this.getMap(sceneId);
 		Point vp = reviseViewport(newmap, p,this.getWidth(),this.getHeight());
 		newmap.prepare(vp.x, vp.y, this.getWidth(), this.getHeight());
+		newmap.setArgtoMask(vp.x, vp.y);
 		// 等待动画结束
 		synchronized (Canvas.FADE_LOCK) {
 			// 更换地图
 			synchronized (Canvas.UPDATE_LOCK) {
 				this.setMap(newmap);
 				this.setPlayerSceneLocation(p);
+				this.isloop = true;
+				this.maskupdateinit = true;
 			}
 		}
 		// 渐现

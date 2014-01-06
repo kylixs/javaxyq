@@ -51,7 +51,7 @@ public abstract class BaseApplication implements Application {
 	private int state = STATE_NORMAL;
 	private ScriptEngine scriptEngine;
 
-	private boolean debug = true;//DEBUG
+	private boolean debug = false;//DEBUG
 
 	protected SceneCanvas sceneCanvas;
 	private GameWindow window;

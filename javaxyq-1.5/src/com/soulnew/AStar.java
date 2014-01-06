@@ -14,6 +14,7 @@ package com.soulnew;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -163,10 +164,10 @@ public class AStar implements Searcher{
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				//坐标系转换
-				if(maskdata[x+y*width]>0) {
+				if(maskdata[x+y*width]==0) {
 					nodes[x+(height-y-1)*width] = new AStarNode(x, height-y-1);
 					//判断8方向的点是否到达
-					
+
 				}
 			}
 		}
@@ -174,6 +175,7 @@ public class AStar implements Searcher{
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				AStarNode node = getNode(x, y);
+
 				if(node!=null ) {
 					//左   ←
 					AStarNode n = getNode(x-1, y);
@@ -220,7 +222,10 @@ public class AStar implements Searcher{
 		}
 	}
 	
+
+	
 	private AStarNode[] nodes;
+
 	/**
 	 * 获取某个通行点
 	 * @param x
@@ -234,6 +239,8 @@ public class AStar implements Searcher{
 		}
 		return null;
 	}
+	
+
 	
 	/**
 	 * 获得距离该点最近的可通行点
@@ -274,5 +281,35 @@ public class AStar implements Searcher{
 		}
 		return path;
 		
+	}
+	
+
+	
+	public int distance(List<Point> path){
+		int distance = 0;
+		for(int i=0;i<path.size();i++){
+			Point p1 = (Point)path.get(i);
+			AStarNode source = getNode(p1.x,p1.y);
+			if(i<path.size()-1){
+				Point p2 = (Point)path.get(i+1);
+				AStarNode destination = getNode(p2.x,p2.y);
+				distance +=source.getDistance(destination);
+			}
+		}	
+		return distance;	
+	}
+	
+	public int linedistance(List<Point> path){
+		int distance = 0;
+		for(int i=0;i<path.size();i++){
+			Point p1 = (Point)path.get(i);
+			AStarNode source = new AStarNode(p1.x,p1.y);
+			if(i<path.size()-1){
+				Point p2 = (Point)path.get(i+1);
+				AStarNode destination = new AStarNode(p2.x,p2.y);
+				distance +=source.getDistance(destination);
+			}
+		}	
+		return distance;	
 	}
 }

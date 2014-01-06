@@ -31,7 +31,7 @@ public class OptimizeAStar implements Searcher {
 	}
 
 	public boolean pass(int x, int y) {
-		return maskdata[x + y * width] > 0;
+		return maskdata[x + y * width] == 0;
 	}
 
 	/**

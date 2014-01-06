@@ -15,19 +15,21 @@ import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import com.javaxyq.config.MapConfig;
-import com.javaxyq.core.DataManager;
-import com.javaxyq.core.DataStore;
+import com.javaxyq.core.ResourceStore;
 import com.javaxyq.data.Scene;
 import com.javaxyq.io.CacheManager;
+import com.javaxyq.core.DataManager;
 import com.javaxyq.widget.TileMap;
 
 /**
  * @author 龚德伟
  * @history 2008-5-29 龚德伟 新建
+ *          2013-12-26 wpaul modify
  */
 public class DefaultTileMapProvider implements MapProvider {
 
@@ -141,10 +143,38 @@ public class DefaultTileMapProvider implements MapProvider {
 
     /** 地图Y方向块数 */
     private int yBlockCount;
+   
+    /** mask数量 */
+    public int offsetlsize;
+    
+    /** mask偏移量 */
+    public int []m_MaskList;
+    
+    /** 单元mask数量 */
+    public int m_MaskNum;
+	
+    /** 单元mask序号 */
+	public int masklist[];
+	
+	 /** 单元cell序号 */
+	public byte m_cell[];
+
+	//mask 各类参数；
+	public 	byte m_mask[];
+	public	int o_pos,m_pos,i_pos;
+		int t;
+	public	byte[] pMaskDataDec;
+	public	int [] maskData;
+	public	int dec_mask_size;
+		
+	public	int  maskkeyx;
+	public	int  maskkeyy;
+	public	int  maskwidth ;
+	public	int  maskheight;
+
 
     private ImageLoadThread imageLoader;
-
-	private DataManager dataManager;
+    private DataManager dataManager;
 
     public DefaultTileMapProvider(DataManager dataManager) {
         imageLoader = new ImageLoadThread();
@@ -174,7 +204,7 @@ public class DefaultTileMapProvider implements MapProvider {
      * @param y Y轴索引
      * @return
      */
-    public byte[] getJpegData(int x, int y) {
+    public synchronized byte[] getJpegData(int x, int y) {
         byte jpegBuf[] = null;
         try {
             // read jpeg data
@@ -291,14 +321,279 @@ public class DefaultTileMapProvider implements MapProvider {
             for (int y = 0; y < yBlockCount; y++) {
                 for (int x = 0; x < xBlockCount; x++) {
                     blockOffsetTable[x][y] = mapFile.readInt2();
+                    //System.out.println("blockoffsettable is:"+blockOffsetTable[x][y]);
                 }
             }
+            ReadHead();
+            //读取ReadUnit
+            /*for (int y = 0; y < yBlockCount; y++) {
+                for (int x = 0; x < xBlockCount; x++) {
+                	ReadUnit(x,y);
+                }
+            } */  
+            //读取ReadMask
+            /*for(int x=0;x<offsetlsize;x++){
+            	ReadMask(x);
+            }*/
+            
             // int headerSize = sis.readInt2();// where need it?
         } catch (Exception e) {
             throw new IllegalArgumentException("地图解码失败:" + e.getMessage());
             // e.printStackTrace();
         }
+       
     }
+    
+  //读取地图的head数据
+    /**
+     * 从流加载mask偏移量
+     * 
+     * @param is
+     * @throws IOException 
+     */
+  	public boolean ReadHead() throws IOException {
+  		
+  		 /*if (!isValidMapFile()) {
+             throw new IllegalArgumentException("非梦幻地图格式文件!");
+         }*/
+  		 
+  		  byte hdsize[]=new byte[4];
+  		
+          mapFile.read(hdsize,0,4);
+          int m_masize=constructInt(hdsize,0);   
+        // System.out.println("m_masize is:"+m_masize);
+          int headsize=blockOffsetTable[0][0]-m_masize;
+          
+          byte olsdata[] = new byte[4];
+          mapFile.read(olsdata, 0, 4);
+          //读取mask数量；
+          offsetlsize=constructInt(olsdata,0);
+          
+         //System.out.println("headsize is:"+offsetlsize);
+          byte hddata[]=new byte[4*offsetlsize];
+          m_MaskList=new int[offsetlsize];
+          mapFile.read(hddata, 0, 4*offsetlsize);
+          
+          int tmpdata = 0;
+          int masksize = 0;
+          for(int i=0;i<offsetlsize;i++){
+          	m_MaskList[i]=constructInt(hddata,i*4);
+          	
+          	masksize = m_MaskList[i]-tmpdata;
+          	tmpdata=m_MaskList[i];
+          //System.out.println("m_MaskList is:"+i+" data is:"+m_MaskList[i]+"  Masksize is:"+masksize);
+
+          } 
+          return true;
+  	}
+  	
+  //读取地图的单元数据
+  	/**
+     * 从流加载单元图mask标示
+     * 
+     * @param is
+     * @throws IOException 
+     */
+  	public boolean ReadUnit(int x,int y){
+  		
+  		
+  		try {
+  			long seek;
+  			boolean Result;
+  			boolean loop=true;
+  			seek=blockOffsetTable[x][y];
+  			
+  			
+  			mapFile.seek(seek);
+  			//System.out.println("seek is:"+seek);
+  			
+  			byte masknum[]=new byte[4];
+  			mapFile.read(masknum, 0, 4);
+  			m_MaskNum=constructInt(masknum,0); //读取mask数量
+  			
+  			
+  			//System.out.println("masknum is:"+m_MaskNum);
+  			if(m_MaskNum>0){
+  			byte MaskList[]=new byte[4*m_MaskNum];
+  			masklist= new int[m_MaskNum];
+  			mapFile.read(MaskList, 0, 4*m_MaskNum);
+  			    for(int i=0;i<m_MaskNum;i++){
+  				    masklist[i]=constructInt(MaskList,4*i);
+  			        //System.out.println("masklist "+i+" is:"+masklist[i]+" is:"+m_MaskList[masklist[i]]);
+  			    }
+  			}
+  			
+  			while(loop){
+  				byte unithead[]=new byte[4*2];
+  				mapFile.read(unithead,0,4*2);
+  				int m_unithead=constructInt(unithead,0); //读取单元的头数据
+  				int m_headSize=constructInt(unithead,4);
+  				
+  				//System.out.println(0x494D4147+","+0x4A504547+","+0x4D41534B+","+
+  						//0x424C4F4B+","+0x43454C4C+","+0x42524947);
+  				
+  				//System.out.println("head.flag is:"+m_unithead+"  head.size is:"+
+  					//	m_headSize);
+  				
+  				switch (m_unithead){
+  				case 0x494D4147: System.out.println("imag"); break;//GAMI
+  				case 0x4A504547: //System.out.println("jpeg");
+  				byte []m_jpeg=new byte[m_headSize];
+  				
+  				
+  				
+  				//System.out.println("$%$^$%#%$#%#%#%"+size);
+  				/*try {
+  					
+  					mapFile.read(m_jpeg,0,m_headSize);
+  					
+  					
+  				} catch (IOException e) {
+  					// TODO Auto-generated catch block
+  					e.printStackTrace();
+  				}*/
+  				mapFile.skipBytes(m_headSize);
+  				
+  				break;//GEPJ
+  				
+  				case 0x4D41534B: System.out.println("mask");break;//KSAM
+  				case 0x424C4F4B: System.out.println("blok");break;//KOLB
+  				case 0x43454C4C: //System.out.println("cell");
+  				m_cell = new byte[m_headSize];
+  				try {
+  					mapFile.read(m_cell,0,m_headSize);
+  					
+  				} catch (IOException e) {
+  					// TODO Auto-generated catch block
+  					e.printStackTrace();
+  				}
+  				break;//LLEC
+  				case 0x42524947: //System.out.println("brig");
+  				byte m_brig[]=new byte[m_headSize];
+  				
+  				try {
+  					mapFile.read(m_brig,0,m_headSize);
+  				
+  				} catch (IOException e) {
+  					// TODO Auto-generated catch block
+  					e.printStackTrace();
+  				}
+  				loop=false;
+  				break;//GIRB
+  				}
+  			}
+
+
+  		} catch (IOException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  		}
+  		
+  		return true;
+  		
+  	}
+  	
+  //读取地图的单元数据
+  	/**
+     * 从流加载mask数据
+     * 
+     * @param is
+     * @throws IOException 
+     */
+  	public boolean ReadMask(int UnitNum){
+		
+		try {
+	
+			long seek;
+			//System.out.println("UnitNum is:"+UnitNum+",maskoffestlist is:"+m_MaskList[UnitNum]);
+			seek = m_MaskList[UnitNum];
+			mapFile.seek(seek);
+			byte maskhead[] = new byte[20];
+			mapFile.read(maskhead, 0, 20);
+			maskkeyx = constructInt(maskhead,0);
+			maskkeyy = constructInt(maskhead,4);
+			maskwidth = constructInt(maskhead,8);
+			maskheight= constructInt(maskhead,12);
+			
+			int masksize = constructInt(maskhead,16);
+			
+			//读mask数据
+			//System.out.println("mask x,y,width,height is:"+maskkeyx+","+maskkeyy+","+maskwidth+","+maskheight);
+			//System.out.println("masksize is:"+masksize);
+			m_mask = new byte[masksize];
+			mapFile.read(m_mask,0,masksize);
+			
+			/*for(int i=0;i<masksize;i++){
+				System.out.println(constructMask(m_mask,i));
+			}*/
+			
+			// 解密mask数据
+			int bol;
+			if(maskwidth%4==0){
+				bol=0;
+			}else{
+				bol=1;
+			}
+			int align_width = (maskwidth / 4 + bol) * 4;	// 以4对齐的宽度
+			pMaskDataDec = new byte[align_width * maskheight / 4];		// 1个字节4个像素，故要除以4
+			dec_mask_size = DecompressMask(m_mask, pMaskDataDec);
+			//System.out.println("alignwidth is:"+align_width);
+			//System.out.println("pmaskdatasize is:"+pMaskDataDec.length);
+			
+			//System.out.println("dec_mask_size is:"+dec_mask_size);
+			
+			/*for(int i=0;i<dec_mask_size;i++){
+				System.out.println(constructMask(pMaskDataDec,i));
+			}*/
+			
+			//mask数据还原
+			maskData = new int[maskwidth*maskheight];
+			int ow=align_width-maskwidth;
+			int md=0;
+			//System.out.println("align width is:"+align_width);
+			//System.out.println("ow is:"+ow);
+			
+			
+			for(int i=0;i<dec_mask_size;i++){
+				
+				//System.out.println("i is:"+i+",dec_mask is:"+(int)constructMask(pMaskDataDec,i));
+				if(((i+1)*4)%align_width==0 ){
+					
+					for(int j=0;j<4-ow;j++){
+						maskData[md++]=constructMaskData(pMaskDataDec[i],j);
+						//System.out.println("num is:"+(md-1)+","+maskData[md-1]);
+					}
+	
+			    }else if(maskwidth<4){
+			    	for(int j=0;j<maskwidth;j++){
+						maskData[md++]=constructMaskData(pMaskDataDec[i],j);
+						//System.out.println("num is:"+(md-1)+","+maskData[md-1]);
+					}
+			    }
+				else{
+					 for(int j=0;j<4;j++){
+						maskData[md++]=constructMaskData(pMaskDataDec[i],j);
+						//System.out.println("num is:"+(md-1)+","+maskData[md-1]);
+					 }
+			    }
+	
+				//masktemp=constructMask(pMaskDataDec,i);
+			   // System.out.println(masktemp);	
+			}
+			/*for(int i=0;i<maskwidth*maskheight;i++){
+				System.out.println(maskData[i]);
+			}*/
+		
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
 
     private TileMap loadMap(String sceneId) {
         if (mapFile != null) {
@@ -309,7 +604,7 @@ public class DefaultTileMapProvider implements MapProvider {
             }
             this.blockOffsetTable = null;
         }
-
+        
         Scene scene = dataManager.findScene(Integer.valueOf(sceneId));
         if(scene!=null) {
             try {
@@ -325,19 +620,19 @@ public class DefaultTileMapProvider implements MapProvider {
                 e.printStackTrace();
             }
         }
-        
-//        MapConfig cfg = (MapConfig) ResourceStore.getInstance().findConfig(id);
-//        if (cfg != null) {
-//            try {
-//                File file = CacheManager.getInstance().getFile(cfg.getPath());
-//                mapFile = new MyRandomAccessFile(file, "r");
-//                loadHeader();
-//                return new TileMap(this, cfg);
-//            } catch (Exception e) {
-//                System.err.println("create map decoder failed!");
-//                e.printStackTrace();
-//            }
-//        }
+
+        /*MapConfig cfg = (MapConfig) ResourceStore.getInstance().findConfig(id);
+        if (cfg != null) {
+            try {
+                File file = new File(cfg.getPath());
+                mapFile = new MyRandomAccessFile(file, "r");
+                loadHeader();
+                return new TileMap(this, cfg);
+            } catch (Exception e) {
+                System.err.println("create map decoder failed!");
+                e.printStackTrace();
+            }
+        }*/
         return null;
     }
 
@@ -350,4 +645,505 @@ public class DefaultTileMapProvider implements MapProvider {
         blockOffsetTable = null;
         imageLoader.stop();
     }
+    
+    /**
+     * 从流加载mask数据并解码
+     * 
+     * @param is
+     * @throws IOException 
+     */    
+    public int DecompressMask(byte[] m_mask,byte [] pMaskDataDec){
+		
+		o_pos=0;
+		m_pos=0;
+		i_pos=0 ;
+		byte [] op = pMaskDataDec;
+		
+		byte [] ip= m_mask;
+		 
+		
+		boolean first_literal_run;
+		
+		int masktemp;
+  	
+		
+		cont:
+		while(true){
+			
+			first_literal_run=true;
+			
+			if(i_pos==0){
+				if(constructMask(ip,i_pos)>17){
+					t = constructMask(ip,i_pos++)-17;
+					if(t<4){
+						do{
+							op[o_pos++]=ip[i_pos++];
+						}while(--t>0);
+					t=constructMask(ip,i_pos++);
+					if(match(op,ip)==1){   //goto match
+						break; 
+					}else{
+						//System.out.println("i_pos is:"+i_pos);
+						continue cont;
+					}
+					
+					}else{
+						do{
+							op[o_pos++]=ip[i_pos++];
+						}while(--t>0);
+						first_literal_run=false;
+					}
+				}
+			}
+
+			if(first_literal_run){
+				//System.out.println("ip is:"+ip[i_pos]+",i_pos is:"+i_pos);
+			t=constructMask(ip,i_pos++);
+			
+			//System.out.println("t is:"+t);
+			
+			if(t>=16) {
+				if(match(op,ip)==1){
+					break;
+				}else{
+					//System.out.println("i_pos is:"+i_pos);
+					continue cont;
+				}
+			}
+			if(t==0){
+				while(constructMask(ip,i_pos)==0){
+					t+=255;
+					i_pos++;
+				}
+				t+=15+constructMask(ip,i_pos++);
+			}
+			
+			//op[o_pos]=ip[i_pos];
+            for(int i=0;i<4;i++){
+            	op[o_pos++]=ip[i_pos++];    // 获取sizeof(unsigned)个新字符
+            	//System.out.println("op is:"+op[o_pos-1]);
+            	
+            }
+            
+            //System.out.println("t is:"+t);
+			if(--t>0){
+				
+				if(t>=4){
+					do{
+						for(int i=0;i<4;i++){
+			            	op[o_pos++]=ip[i_pos++];   // 获取sizeof(unsigned)个新字符
+			            	
+			            	//System.out.println("--t op is:"+op[o_pos-1]);
+			            }
+						t-=4;
+					}while(t>=4);
+					if(t>0){
+						do{
+					       op[o_pos++]=ip[i_pos++];	
+					    }while(--t>0);
+					}
+				}else {
+					do{
+						op[o_pos++]=ip[i_pos++];
+						//System.out.println("op is:"+op[o_pos-1]);
+					}while(--t>0);
+				}
+			}
+			}
+			
+			
+			//first_literal_run
+			
+				t=constructMask(ip,i_pos++);
+				
+				//System.out.println("t is:"+t+",ipos is:"+i_pos);
+			if(t>=16){                             // 是重复字符编码
+				if(match(op,ip)==1){
+					break;
+				}else{
+					//System.out.println("i_pos is:"+i_pos);
+					continue cont;
+				}
+				
+			}else{
+				System.out.println("0x0801");
+				m_pos = o_pos - 0x0801;
+				m_pos -= t>>2;
+	            m_pos -= constructMask(ip,i_pos++)<<2;
+	            
+	            op[o_pos++] = ip[m_pos++];
+	            op[o_pos++] = ip[m_pos++];
+	            op[o_pos++] = ip[m_pos++];
+	            
+	            //goto match_done
+	            t=(ip[i_pos]>>6)&3;
+				if(t==0){
+					
+				}else{
+					do{
+						op[o_pos++]=ip[i_pos++];
+					}while(--t>0);
+				t=constructMask(ip,i_pos++);
+				if(match(op,ip)==1){
+					break;
+				}else{
+					//System.out.println("i_pos is:"+i_pos);
+					continue cont;
+				}
+				}
+			}
+			
+
+			
+		}
+		return o_pos;
+	}
+
+/**
+ * mask解码
+ * 
+ * @param is
+ * @throws IOException 
+ */    
+	
+	public int match(byte[]op,byte[]ip){
+		
+		while(true){
+			
+			
+			boolean copy_match=false;
+			boolean match_done=true;
+			byte []ms=new byte[o_pos];
+			int num=0;
+			
+			//System.out.println("t is:"+t);
+			if(t>=64){
+
+				for(int i=0;i<o_pos;i++){
+					ms[i]=op[i];
+				}
+				
+				
+				
+				num=1;
+				
+				int po = (t>>2)&7;
+				num+=po;				
+				
+				po = constructMask(ip,i_pos++)<<3;
+				num+=po;
+				
+				
+			       
+			        int mtemp=0;
+			      
+			        
+					/*for(int i=o_pos-1;i>=num;i--){
+				      ms[i]=ms[i-num];
+
+					}*/
+					
+					for(int j=o_pos-num;j<=o_pos-1;j++){
+						ms[mtemp++]=op[j];
+					}
+				
+				 /*for(int i=0;i<o_pos;i++){
+				   System.out.println("op is:"+op[i]);
+			    }*/
+				
+				t = (t>>5)-1;
+				
+				copy_match=true;
+			}else if(t>=32){
+
+				t&=31;
+			
+				if(t==0){
+					while(ip[i_pos]==0){
+						t+=255;
+						i_pos++;
+						
+					}
+					
+					t+=31+constructMask(ip,i_pos++);
+					
+				}
+				
+				//m_pos = o_pos -1;
+				//ms=op;
+				
+				for(int i=0;i<o_pos;i++){
+					ms[i]=op[i];
+				}
+
+				num=1;
+
+				int po = constructWord(ip,i_pos)>>2;
+				num+=po;
+				
+				int mtemp=0;
+				for(int j=o_pos-num;j<=o_pos-1;j++){
+					ms[mtemp++]=op[j];
+				}
+
+				/*for(int i=0;i<o_pos;i++){
+				System.out.println("op2 is:"+op[i]);
+			    }
+				*/
+				i_pos +=2;
+				
+			}else if(t>=16){
+				
+				byte temp;
+				
+				//m_pos = o_pos;
+				for(int i=0;i<o_pos;i++){
+					ms[i]=op[i];
+				}
+				
+				//m_pos -= (t&8)<<11;
+				int po = (t&8)<<11;
+				num=po;
+
+				t&=7;
+				if(t==0){
+					while(ip[i_pos]==0){
+						t+=255;
+						i_pos++;
+					}
+					
+					t+=7+constructMask(ip,i_pos++);
+				}
+				
+				//m_pos -= constructMask(ip,i_pos)>>2;
+				po = constructWord(ip,i_pos)>>2;
+				num+=po;
+				
+				
+				i_pos +=2;
+				if(ip.length == i_pos){
+					//System.out.println("o_pos is:"+o_pos);
+					return 1;
+				}else{
+					//m_pos -= 0x4000;
+					po = 0x4000;
+					//System.out.println("0x4000 is:"+po);
+				num+=po;
+				//System.out.println("num is:"+num);
+				int mtemp=0;
+				for(int j=o_pos-num;j<=o_pos-1;j++){
+					ms[mtemp++]=op[j];
+				}
+					
+					
+					
+				}
+				
+			}else{
+				
+				System.out.println("t0-15 is:"+t);
+				
+				byte temp;
+				//m_pos = o_pos-1;
+				for(int i=0;i<o_pos;i++){
+					ms[i]=op[i];
+				}
+				
+				temp=ms[o_pos-1];
+				num=1;
+
+				for(int i=o_pos-1;i>=1;i--){
+			      ms[i]=ms[i-1];
+			      
+			      
+				}
+				ms[0]=temp;
+				
+				
+				
+				//m_pos -= t>>2;
+				int po = (t>>2);
+				num+=po;
+				for(int j=0;j<po;j++){
+					temp=ms[o_pos-1];
+					
+					for(int i=o_pos-1;i>=1;i--){
+				      ms[i]=ms[i-1];
+
+					}
+					ms[0]=temp;
+				}
+				
+				
+				
+				//m_pos -= constructMask(ip,i_pos++)<<2;
+				po = constructWord(ip,i_pos++)<<2;
+				num+=po;
+				for(int j=0;j<po;j++){
+					temp=ms[o_pos-1];
+					
+					for(int i=o_pos-1;i>=1;i--){
+				      ms[i]=ms[i-1];
+
+					}
+					ms[0]=temp;
+				}
+				
+				
+				op[o_pos++] = ms[0];
+				op[o_pos++] = ms[1];
+				match_done=false;
+			}
+			
+			if(match_done){
+
+			if((t>=6 && num>=4)&&copy_match==false){
+				//op[o_pos] = ip[i_pos];
+				m_pos=0;
+				for(int i=0;i<4;i++){
+	            	op[o_pos++]=ms[m_pos++];    // 获取sizeof(unsigned)个新字符
+	            }
+				t-=2;
+				do{
+					
+						for(int i=0;i<4;i++){
+							if(m_pos<num){
+								op[o_pos++]=ms[m_pos++];    // 获取sizeof(unsigned)个新字符
+							}else{
+								m_pos=0;
+								op[o_pos++]=ms[m_pos++];    // 获取sizeof(unsigned)个新字符
+							}
+			            	
+			            }
+					
+					
+					t-=4;
+				}while (t>=4);
+				if(t>0){
+					do{
+						if(m_pos<num){
+							op[o_pos++]=ms[m_pos++];
+						}else{
+							m_pos=0;
+							op[o_pos++]=ms[m_pos++];
+						}
+						
+					}while(--t>0);
+				}
+			}else{
+//copy_match: 
+				m_pos=0;
+	
+				    for(int i=0;i<2;i++){
+				    	if(m_pos<num){
+				    		op[o_pos++]=ms[m_pos++];
+							//System.out.println("ms is:"+ms[m_pos-1]);
+				    	}else{
+				    		m_pos=0;
+				    		op[o_pos++]=ms[m_pos++];
+					        //System.out.println("ms is:"+ms[m_pos-1]);
+				    	}
+				    	
+				    }
+
+			        do{
+			        	if(m_pos<num){
+			        	op[o_pos++]=ms[m_pos++];
+			        	//System.out.println("ms is:"+ms[m_pos-1]+" m_pos is:"+m_pos);
+			        	}else{
+			        		m_pos=0;
+			        	op[o_pos++]=ms[m_pos++];
+			        	//System.out.println("ms is:"+ms[m_pos-1]+" m_pos is:"+m_pos);
+			        	}
+			        	
+			        }while(--t>0);
+			}
+			}
+	
+				t=(ip[i_pos-2])&3;
+
+			if(t==0){
+				return 0;
+			}
+			
+			//match_next:
+				do{
+					op[o_pos++]=ip[i_pos++];
+					//System.out.println("op is:"+op[o_pos]);
+				}while(--t>0);
+			t=constructMask(ip,i_pos++);
+			
+		}
+	}
+    
+    /**
+     * 将BYTE格式转化
+     * 
+     * @param is
+     */
+    public static int constructInt(byte[] in, int offset) {
+
+        int ret = ((int) in[offset + 3] & 0xff);
+
+        ret = (ret << 8) | ((int) in[offset + 2] & 0xff);
+
+        ret = (ret << 8) | ((int) in[offset + 1] & 0xff);
+
+        ret = (ret << 8) | ((int) in[offset + 0] & 0xff);
+
+        return ret;
+
+    }
+    /**
+     * 将BYTE格式转化
+     * 
+     * @param is
+     */
+     public static int constructWord(byte[] mask,int offset){
+	    int ret = ((int) mask[offset + 1] & 0xff);
+	    ret = (ret << 8) | ((int) mask[offset + 0] & 0xff);
+	    return ret;
+     }
+ 
+     /**
+      * 将BYTE格式转化
+      * 
+      * @param is
+      */
+     public static int constructMaskData(byte mask,int offset){
+	    int ret=0;
+	    switch(offset){
+	    case 0:ret = (int)mask & 0x03;break;
+	    case 1:ret = ((int)mask & 0x0c)>>2;break;
+	    case 2:ret = ((int)mask & 0x30)>>4;break;
+	    case 3:ret = ((int)mask & 0xc0)>>6;break;
+	    }
+	    return ret;
+     }
+
+     /**
+      * 将BYTE格式转化
+      * 
+      * @param is
+      */
+     public static int constructMask(byte[] mask,int offset){
+	    int ret = (int)mask[offset] & 0xff;
+	    return ret;
+     }
+     /**
+      * 将BYTE格式转化
+      * 
+      * @param is
+      */
+     public static short constructShort(byte[] in, int offset) {
+
+        short ret =0x00;
+
+        ret = (short) ((ret << 8) | (short) ((short) in[offset] & 0xff));
+
+        return (ret);
+
+     }
+    
+    
 }
