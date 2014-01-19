@@ -472,8 +472,8 @@ public class Player extends AbstractWidget implements EventTarget {
 					PlayerEvent evt = new PlayerEvent(this, PlayerEvent.MOVE);
 					evt.setAttribute(PlayerEvent.MOVE_INCREMENT, d);
 					fireEvent(evt);
-					 System.out.printf("pos:(%s,%s)\tmove->:(%s,%s)\n", x, y,
-					 d.x, d.y);
+//					 System.out.printf("pos:(%s,%s)\tmove->:(%s,%s)\n", x, y,
+//					 d.x, d.y);
 				}
 			}
 		}

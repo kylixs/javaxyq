@@ -15,15 +15,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import com.javaxyq.config.MapConfig;
-import com.javaxyq.core.ResourceStore;
+import com.javaxyq.core.DataManager;
 import com.javaxyq.data.Scene;
 import com.javaxyq.io.CacheManager;
-import com.javaxyq.core.DataManager;
 import com.javaxyq.widget.TileMap;
 
 /**
@@ -145,33 +143,16 @@ public class DefaultTileMapProvider implements MapProvider {
     private int yBlockCount;
    
     /** mask数量 */
-    public int offsetlsize;
+    private int maskCount;
     
     /** mask偏移量 */
-    public int []m_MaskList;
+    private int []maskOffsets;
     
-    /** 单元mask数量 */
-    public int m_MaskNum;
-	
-    /** 单元mask序号 */
-	public int masklist[];
-	
-	 /** 单元cell序号 */
-	public byte m_cell[];
-
 	//mask 各类参数；
-	public 	byte m_mask[];
-	public	int o_pos,m_pos,i_pos;
-		int t;
-	public	byte[] pMaskDataDec;
-	public	int [] maskData;
-	public	int dec_mask_size;
+    private 	byte m_mask[];
+    private	int o_pos,m_pos,i_pos;
+    private int t; // what?
 		
-	public	int  maskkeyx;
-	public	int  maskkeyy;
-	public	int  maskwidth ;
-	public	int  maskheight;
-
 
     private ImageLoadThread imageLoader;
     private DataManager dataManager;
@@ -214,6 +195,10 @@ public class DefaultTileMapProvider implements MapProvider {
                 len = mapFile.readInt2();
                 jpegBuf = new byte[len];
                 mapFile.readFully(jpegBuf);
+            }else {
+//            	jpegBuf = new byte[0];
+//            	return jpegBuf;
+            	throw new RuntimeException("read jpeg data failed");
             }
 
             // modify jpeg data
@@ -278,8 +263,8 @@ public class DefaultTileMapProvider implements MapProvider {
     private boolean isJPEGData() {
         byte[] buf = new byte[4];
         try {
-            int len = mapFile.read();
-            mapFile.skipBytes(3 + len * 4);
+            int len = mapFile.readInt2();
+            mapFile.skipBytes(len * 4); //mask index?
             mapFile.read(buf);// 47 45 50 4A; GEPJ
             String str = new String(buf);
             return str.equals("GEPJ");
@@ -357,30 +342,18 @@ public class DefaultTileMapProvider implements MapProvider {
              throw new IllegalArgumentException("非梦幻地图格式文件!");
          }*/
   		 
-  		  byte hdsize[]=new byte[4];
-  		
-          mapFile.read(hdsize,0,4);
-          int m_masize=constructInt(hdsize,0);   
-        // System.out.println("m_masize is:"+m_masize);
-          int headsize=blockOffsetTable[0][0]-m_masize;
+          int headsize = mapFile.readInt2();
           
-          byte olsdata[] = new byte[4];
-          mapFile.read(olsdata, 0, 4);
           //读取mask数量；
-          offsetlsize=constructInt(olsdata,0);
+          maskCount=mapFile.readInt2();
           
          //System.out.println("headsize is:"+offsetlsize);
-          byte hddata[]=new byte[4*offsetlsize];
-          m_MaskList=new int[offsetlsize];
-          mapFile.read(hddata, 0, 4*offsetlsize);
-          
+          maskOffsets=new int[maskCount];
           int tmpdata = 0;
-          int masksize = 0;
-          for(int i=0;i<offsetlsize;i++){
-          	m_MaskList[i]=constructInt(hddata,i*4);
-          	
-          	masksize = m_MaskList[i]-tmpdata;
-          	tmpdata=m_MaskList[i];
+          for(int i=0;i<maskCount;i++){
+          	maskOffsets[i]=mapFile.readInt2();
+          	int masksize = maskOffsets[i]-tmpdata;
+          	tmpdata=maskOffsets[i];
           //System.out.println("m_MaskList is:"+i+" data is:"+m_MaskList[i]+"  Masksize is:"+masksize);
 
           } 
@@ -394,10 +367,11 @@ public class DefaultTileMapProvider implements MapProvider {
      * @param is
      * @throws IOException 
      */
-  	public boolean ReadUnit(int x,int y){
-  		
+  	public MapUnit ReadUnit(int x,int y){
   		
   		try {
+  			int[] masklist = new int[0];
+  			byte[] m_cell = new byte[0];
   			long seek;
   			boolean Result;
   			boolean loop=true;
@@ -409,13 +383,13 @@ public class DefaultTileMapProvider implements MapProvider {
   			
   			byte masknum[]=new byte[4];
   			mapFile.read(masknum, 0, 4);
-  			m_MaskNum=constructInt(masknum,0); //读取mask数量
+  			int m_MaskNum = constructInt(masknum,0); //读取mask数量
   			
   			
   			//System.out.println("masknum is:"+m_MaskNum);
   			if(m_MaskNum>0){
   			byte MaskList[]=new byte[4*m_MaskNum];
-  			masklist= new int[m_MaskNum];
+  			masklist = new int[m_MaskNum];
   			mapFile.read(MaskList, 0, 4*m_MaskNum);
   			    for(int i=0;i<m_MaskNum;i++){
   				    masklist[i]=constructInt(MaskList,4*i);
@@ -483,13 +457,13 @@ public class DefaultTileMapProvider implements MapProvider {
   				}
   			}
 
-
+  			return new MapUnit(masklist, m_cell);
   		} catch (IOException e) {
   			// TODO Auto-generated catch block
   			e.printStackTrace();
   		}
   		
-  		return true;
+  		return null;
   		
   	}
   	
@@ -500,20 +474,20 @@ public class DefaultTileMapProvider implements MapProvider {
      * @param is
      * @throws IOException 
      */
-  	public boolean ReadMask(int UnitNum){
+  	public MaskUnit ReadMask(int UnitNum){
 		
 		try {
 	
 			long seek;
 			//System.out.println("UnitNum is:"+UnitNum+",maskoffestlist is:"+m_MaskList[UnitNum]);
-			seek = m_MaskList[UnitNum];
+			seek = maskOffsets[UnitNum];
 			mapFile.seek(seek);
 			byte maskhead[] = new byte[20];
 			mapFile.read(maskhead, 0, 20);
-			maskkeyx = constructInt(maskhead,0);
-			maskkeyy = constructInt(maskhead,4);
-			maskwidth = constructInt(maskhead,8);
-			maskheight= constructInt(maskhead,12);
+			int maskX = constructInt(maskhead,0);
+			int maskY = constructInt(maskhead,4);
+			int maskWidth = constructInt(maskhead,8);
+			int maskHeight = constructInt(maskhead,12);
 			
 			int masksize = constructInt(maskhead,16);
 			
@@ -529,14 +503,14 @@ public class DefaultTileMapProvider implements MapProvider {
 			
 			// 解密mask数据
 			int bol;
-			if(maskwidth%4==0){
+			if(maskWidth%4==0){
 				bol=0;
 			}else{
 				bol=1;
 			}
-			int align_width = (maskwidth / 4 + bol) * 4;	// 以4对齐的宽度
-			pMaskDataDec = new byte[align_width * maskheight / 4];		// 1个字节4个像素，故要除以4
-			dec_mask_size = DecompressMask(m_mask, pMaskDataDec);
+			int align_width = (maskWidth / 4 + bol) * 4;	// 以4对齐的宽度
+			byte[] pMaskDataDec = new byte[align_width * maskHeight / 4];		// 1个字节4个像素，故要除以4
+			int dec_mask_size = DecompressMask(m_mask, pMaskDataDec);
 			//System.out.println("alignwidth is:"+align_width);
 			//System.out.println("pmaskdatasize is:"+pMaskDataDec.length);
 			
@@ -547,8 +521,8 @@ public class DefaultTileMapProvider implements MapProvider {
 			}*/
 			
 			//mask数据还原
-			maskData = new int[maskwidth*maskheight];
-			int ow=align_width-maskwidth;
+			int[] maskData = new int[maskWidth*maskHeight];
+			int ow=align_width-maskWidth;
 			int md=0;
 			//System.out.println("align width is:"+align_width);
 			//System.out.println("ow is:"+ow);
@@ -564,8 +538,8 @@ public class DefaultTileMapProvider implements MapProvider {
 						//System.out.println("num is:"+(md-1)+","+maskData[md-1]);
 					}
 	
-			    }else if(maskwidth<4){
-			    	for(int j=0;j<maskwidth;j++){
+			    }else if(maskWidth<4){
+			    	for(int j=0;j<maskWidth;j++){
 						maskData[md++]=constructMaskData(pMaskDataDec[i],j);
 						//System.out.println("num is:"+(md-1)+","+maskData[md-1]);
 					}
@@ -584,7 +558,7 @@ public class DefaultTileMapProvider implements MapProvider {
 				System.out.println(maskData[i]);
 			}*/
 		
-			
+			return new MaskUnit(maskX, maskY, maskWidth, maskHeight, maskData);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -592,10 +566,14 @@ public class DefaultTileMapProvider implements MapProvider {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return true;
+		return null;
 	}
 
-    private TileMap loadMap(String sceneId) {
+    public int getMaskCount() {
+		return maskCount;
+	}
+
+	private TileMap loadMap(String sceneId) {
         if (mapFile != null) {
             try {
                 mapFile.close();

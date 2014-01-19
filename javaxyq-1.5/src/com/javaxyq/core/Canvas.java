@@ -250,7 +250,6 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 		if (lastTime == 0)
 			lastTime = currTime;
 		long elapsedTime = currTime - lastTime;
-//		lastTime = currTime;
 		if (g != null && offscreenGraphics!=null) {
 			this.draw(offscreenGraphics, elapsedTime);
 			// draw to real graphics
@@ -258,7 +257,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 			g.dispose();
 		}
 		lastTime = System.currentTimeMillis();
-		System.out.println("drawCanvas cost: "+(System.currentTimeMillis()-currTime));
+//		System.out.println("drawCanvas cost: "+(System.currentTimeMillis()-currTime));
 	}
 
 	protected void drawComponents(Graphics g, long elapsedTime) {

@@ -271,8 +271,8 @@ public class AStar implements Searcher{
 	public List<Point> findPath(int x1,int y1,int x2,int y2){
 		AStarNode startNode = getNode(x1,y1);
 		AStarNode goalNode = getNode(x2,y2);
-		if(goalNode ==null) {
-			return null;
+		if(startNode==null || goalNode ==null) {
+			return new ArrayList<Point>();
 		}
 		List<AStarNode> nodepath = this.findPath(startNode, goalNode);
 		List<Point> path = new ArrayList<Point>(nodepath.size());
