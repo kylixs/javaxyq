@@ -47,6 +47,8 @@ public class SceneNpcDAOImpl implements SceneNpcDAO {
 		String sql = "select * from SCENE_NPC where SCENE_ID=? ";
 		QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
 		List<SceneNpc> results = runner.query(sql, resultHandler, sceneId);
+		//System.out.println("sceneID********* IS:"+sceneId);
+		//System.out.println("result is:"+results);
 		return results;
 	}
 

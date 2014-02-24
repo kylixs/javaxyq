@@ -9,6 +9,13 @@ package com.javaxyq.data;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
 import com.javaxyq.model.Item;
 
 /**
@@ -16,12 +23,15 @@ import com.javaxyq.model.Item;
  * @author gongdewei
  * @date 2010-4-17 create
  */
+
+
 public class ItemInstance implements Serializable{
 	
 	private static final long serialVersionUID = -4833399832791836608L;
 	transient private Item item;
 	private int amount;
 	private long itemId = -1;
+	
 	/**
 	 * @param itemVO
 	 * @param i

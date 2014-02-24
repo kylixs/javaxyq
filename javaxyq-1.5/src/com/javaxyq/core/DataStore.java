@@ -22,6 +22,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import com.javaxyq.config.PlayerConfig;
+import com.javaxyq.data.Items;
+import com.javaxyq.data.ItemsDAO;
 import com.javaxyq.data.ItemInstance;
 import com.javaxyq.data.MedicineItem;
 import com.javaxyq.data.MedicineItemDAO;
@@ -40,6 +42,7 @@ import com.javaxyq.data.impl.MedicineItemDAOImpl;
 import com.javaxyq.data.impl.SceneDAOImpl;
 import com.javaxyq.data.impl.SceneNpcDAOImpl;
 import com.javaxyq.data.impl.SceneTeleporterDAOImpl;
+import com.javaxyq.data.impl.WeaponItemDAOImpl;
 import com.javaxyq.io.CacheManager;
 import com.javaxyq.model.Item;
 import com.javaxyq.model.ItemTypes;
@@ -126,13 +129,15 @@ public class DataStore implements DataManager {
 	
 	private Map<Player,ItemInstance[]> itemsMap = new HashMap<Player, ItemInstance[]>();
 	
+	private List<ItemsDAO> items = new ArrayList<ItemsDAO>();
 	private String lastchat = "";
-	private MedicineItemDAO medicineDAO;
+	private MedicineItemDAOImpl medicineDAO;
 	private Random rand = new Random();
 	private SceneDAO sceneDAO;
 	private SceneNpcDAO sceneNpcDAO;
 	private SceneTeleporterDAO sceneTeleporterDAO;
 	private String[] 魔族 = {"0005","0006","0007","0008"};
+	private WeaponItemDAOImpl weaponDAO;
 
 	/**
 	 * 	 (一)各种族初始资料
@@ -302,8 +307,16 @@ public class DataStore implements DataManager {
 //			e.printStackTrace();
 //		}
 		try {
-			MedicineItem itemVO = medicineDAO.findMedicineItemByName(name);
-			return new ItemInstance(itemVO,1);
+			for(ItemsDAO item: items){
+				if(item.findItemByName(name) != null){
+					 Items itemVO =  item.findItemByName(name);
+					   System.out.println("itemVO IS:"+itemVO);
+					   return new ItemInstance(itemVO,1);
+				}
+			      
+			}  
+		
+			
 		} catch (MedicineItemException e) {
 			e.printStackTrace();
 		}
@@ -520,7 +533,8 @@ public class DataStore implements DataManager {
 	/**
 	 * 读取游戏人物道具列表
 	 */
-	public ItemInstance[] getItems(Player player) {
+	public ItemInstance[] getItems(Player player) {	
+		
 		ItemInstance[] items = itemsMap.get(player);
 		if(items == null) {
 			items = new ItemInstance[20];
@@ -591,10 +605,24 @@ public class DataStore implements DataManager {
 		//sceneDAO = new SceneJpaController();
 		//sceneNpcDAO = new SceneNpcJpaController();
 		//sceneTeleporterDAO = new SceneTeleporterJpaController();
+		weaponDAO = new WeaponItemDAOImpl();
 		medicineDAO = new MedicineItemDAOImpl();
 		sceneDAO = new SceneDAOImpl();
 		sceneNpcDAO = new SceneNpcDAOImpl();
 		sceneTeleporterDAO = new SceneTeleporterDAOImpl();
+		
+		items.add(weaponDAO);
+		items.add(medicineDAO);
+
+	
+			//ItemInstance [] items = {createItem("四叶花"),createItem("鬼切草"),createItem("九香虫")};
+			
+			
+			/*for(ItemInstance item: items){
+				System.out.println("itemsDAO IS:"+item.getName());
+			}*/
+			
+		
 		System.out.println("initialized datastore: "+new java.util.Date());
 //		Runnable action = new Runnable() {
 //			public void run() {
@@ -639,6 +667,7 @@ public class DataStore implements DataManager {
 		addItemToPlayer(p,item);
 		item = createItem("血色茶花");
 		item.setAmount(30);
+		item = createItem("九香虫");
 		addItemToPlayer(p,item);
 		int money = 50000;
 		addMoney(p, money);		
@@ -755,7 +784,7 @@ public class DataStore implements DataManager {
 				items[i] = _inst;
 				//read item 
 				if(_inst!=null) {
-					_inst.setItem(medicineDAO.findMedicineItem(_inst.getItemId()));
+					_inst.setItem((MedicineItem)medicineDAO.findItem(_inst.getItemId()));
 				}
 			}
 			//任务数据
@@ -962,7 +991,7 @@ public class DataStore implements DataManager {
 		items[index] = item;
 		try {
 			if(item != null && item.getItem() == null) {
-				item.setItem(medicineDAO.findMedicineItem(item.getItemId()));
+				item.setItem((MedicineItem)medicineDAO.findItem(item.getItemId()));
 			}
 		} catch (MedicineItemException e) {
 			e.printStackTrace();
@@ -981,7 +1010,7 @@ public class DataStore implements DataManager {
 				_items[i] = _inst;
 				try {
 					if(_inst!=null && _inst.getItem() == null) {
-						_inst.setItem(medicineDAO.findMedicineItem(_inst.getItemId()));
+						_inst.setItem((MedicineItem)medicineDAO.findItem(_inst.getItemId()));
 					}
 				} catch (MedicineItemException e) {
 					e.printStackTrace();

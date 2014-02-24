@@ -21,6 +21,7 @@ import com.javaxyq.action.BaseAction;
 import com.javaxyq.battle.BattleCanvas;
 import com.javaxyq.config.ConfigManager;
 import com.javaxyq.config.impl.ConfigManagerImpl;
+import com.javaxyq.data.ItemInstance;
 import com.javaxyq.event.ActionEvent;
 import com.javaxyq.model.Option;
 import com.javaxyq.model.PlayerVO;
@@ -382,6 +383,15 @@ public abstract class BaseApplication implements Application {
 		context.setPlayer(player);
 		context.setScene(profile.getSceneId());
 		dataManager.setItems(player, profile.getItems());
+		DataStore datastore = (DataStore)dataManager;
+		
+		ItemInstance [] items = {datastore.createItem("Àƒ“∂ª®"),datastore.createItem("ŒÂª¢∂œªÍ"),datastore.createItem("æ≈œ„≥Ê")};		
+		for(ItemInstance item: items){
+			System.out.println("itemsDAO IS:"+item.getName());
+			datastore.addItemToPlayer(player, item);
+		}
+		
+		
 		Task[] tasks = profile.getTasks();
 		if(tasks!=null) {
 			for (int i = 0; i < tasks.length; i++) {

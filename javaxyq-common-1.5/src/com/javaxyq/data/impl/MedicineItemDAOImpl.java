@@ -11,11 +11,14 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
+import com.javaxyq.data.Items;
+import com.javaxyq.data.ItemsDAO;
 import com.javaxyq.data.MedicineItem;
 import com.javaxyq.data.MedicineItemDAO;
 import com.javaxyq.data.MedicineItemException;
 import com.javaxyq.data.NonexistentEntityException;
 import com.javaxyq.data.PreexistingEntityException;
+import com.javaxyq.data.WeaponItem;
 import com.javaxyq.util.DBToolkit;
 import com.javaxyq.util.SmartBeanProcessor;
 
@@ -24,7 +27,7 @@ import com.javaxyq.util.SmartBeanProcessor;
  * @author gongdewei
  * @date 2011-4-30 create
  */
-public class MedicineItemDAOImpl implements MedicineItemDAO {
+public class MedicineItemDAOImpl implements ItemsDAO{
 
 	private BeanListHandler<MedicineItem> resultHandler;
 
@@ -34,7 +37,7 @@ public class MedicineItemDAOImpl implements MedicineItemDAO {
 	}
 	
 	@Override
-	public void create(MedicineItem medicineItem) throws PreexistingEntityException, MedicineItemException {
+	public void create(Items medicineItem) throws PreexistingEntityException, MedicineItemException {
 		// TODO Auto-generated method stub
 
 	}
@@ -46,13 +49,13 @@ public class MedicineItemDAOImpl implements MedicineItemDAO {
 	}
 
 	@Override
-	public void edit(MedicineItem medicineItem) throws NonexistentEntityException, MedicineItemException {
+	public void edit(Items medicineItem) throws NonexistentEntityException, MedicineItemException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public MedicineItem findMedicineItem(Long id) throws MedicineItemException {
+	public Items findItem(Long id) throws MedicineItemException {
 		String sql = "select * from ITEM_MEDICINE where id=? ";
 		List<MedicineItem> results;
 		try {
@@ -70,7 +73,7 @@ public class MedicineItemDAOImpl implements MedicineItemDAO {
 	}
 
 	@Override
-	public MedicineItem findMedicineItemByName(String name) throws MedicineItemException {
+	public Items findItemByName(String name) throws MedicineItemException {
 		String sql = "select * from ITEM_MEDICINE where name=? ";
 		List<MedicineItem> results;
 		try {
@@ -87,7 +90,7 @@ public class MedicineItemDAOImpl implements MedicineItemDAO {
 		return null;
 	}
 
-	@Override
+
 	public List<MedicineItem> findMedicineItemEntities() throws MedicineItemException {
 		String sql = "select * from ITEM_MEDICINE ";
 		try {
@@ -99,7 +102,7 @@ public class MedicineItemDAOImpl implements MedicineItemDAO {
 		}
 	}
 
-	@Override
+
 	public List<MedicineItem> findMedicineItemEntities(int maxResults, int firstResult) throws MedicineItemException {
 		if(firstResult < 1) {
 			firstResult = 1;
@@ -117,7 +120,7 @@ public class MedicineItemDAOImpl implements MedicineItemDAO {
 		}
 	}
 
-	@Override
+
 	public List<MedicineItem> findMedicineItemsByType(int type) throws MedicineItemException {
 		String sql = "select * from ITEM_MEDICINE where type=? ";
 		try {
@@ -130,7 +133,7 @@ public class MedicineItemDAOImpl implements MedicineItemDAO {
 	}
 
 	@Override
-	public int getMedicineItemCount() throws MedicineItemException {
+	public int getItemCount() throws MedicineItemException {
 		String sql = "select count(1) from ITEM_MEDICINE ";
 		try {
 			QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
@@ -144,5 +147,27 @@ public class MedicineItemDAOImpl implements MedicineItemDAO {
 			throw new MedicineItemException(e);
 		}
 	}
+	
+	@Override
+	public String findTypeByName(String name) throws MedicineItemException {
+		String sql = "select * from ITEM_MEDICINE where name=? ";
+		List<MedicineItem> results;
+		try {
+			QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
+			results = runner.query(sql, resultHandler, name);
+		} catch (Exception ex) {
+			throw new MedicineItemException(ex);
+		}
+		if(results.size() == 1) {
+			MedicineItem item = results.get(0);
+			return item.getType();
+		}else if(results.size() >= 1) {
+			throw new MedicineItemException("¼ÇÂ¼²»Î¨Ò»");
+		}
+		return null;
+	}
+    /*********************/
+
+
 
 }

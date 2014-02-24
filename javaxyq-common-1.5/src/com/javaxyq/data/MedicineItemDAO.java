@@ -24,4 +24,5 @@ public interface MedicineItemDAO {
 
 	public abstract List<MedicineItem> findMedicineItemsByType(int type) throws MedicineItemException;
 
+	public abstract String findTypeByName(String name)throws MedicineItemException;
 }

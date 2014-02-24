@@ -49,6 +49,7 @@ public class DBToolkit {
 		if (create) {
 			_datasource.setCreateDatabase("create");
 		}
+		System.out.println("datasource is:"+_datasource);
 		return _datasource;
 	}
 
@@ -64,6 +65,7 @@ public class DBToolkit {
 			// e.printStackTrace();
 			initDataBase();
 		}
+		
 		System.out.println("[db]started DB at: " + new java.util.Date());
 	}
 

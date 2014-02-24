@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="lib/appFramework-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jide_demo.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/javaxyq-common-1.5"/>
+	<classpathentry exported="true" kind="con" path="GROOVY_DSL_SUPPORT"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -31,7 +31,7 @@ import com.javaxyq.util.SuffixFilenameFilter;
  */
 public class ProfileManagerImpl implements ProfileManager {
 
-	private MedicineItemDAO medicineDAO;
+	private MedicineItemDAOImpl medicineDAO;
 	
 	public ProfileManagerImpl() {
 		medicineDAO = new MedicineItemDAOImpl();

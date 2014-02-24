@@ -152,6 +152,12 @@ public class MedicineItemJpaController implements MedicineItemDAO {
     	} finally {
     		em.close();
     	}
-    }    
+    }
+
+	@Override
+	public String findTypeByName(String name) throws MedicineItemException {
+		// TODO Auto-generated method stub
+		return null;
+	}    
 
 }

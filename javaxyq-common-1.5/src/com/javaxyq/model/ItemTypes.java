@@ -24,8 +24,24 @@ public class ItemTypes {
 	public static final int TYPE_MEDICINE_DETOXIFY  = 0x1040;//解毒
 	public static final int TYPE_MEDICINE_BREAKSEAL  = 0x1080;//解除封印
 	public static final int TYPE_WEAPON = 0x2000;
+	public static final int TYPE_WEAPON_WAND = 0x2001;//魔棒
+	public static final int TYPE_WEAPON_WHIP = 0x2002;//鞭
+	public static final int TYPE_WEAPON_HAMMER = 0x2003;//锤
+	public static final int TYPE_WEAPON_MACHETES = 0x2004;//刀
+	public static final int TYPE_WEAPON_LARGEAXE = 0x2005;//斧钺
+	public static final int TYPE_WEAPON_HOOP = 0x2006;//环圈
+	public static final int TYPE_WEAPON_SWORD = 0x2007;//剑
+	public static final int TYPE_WEAPON_RIBBON = 0x2008;//飘带
+	public static final int TYPE_WEAPON_SPEAR = 0x2009;//枪矛
+	public static final int TYPE_WEAPON_FAN = 0x2010;//扇
+	public static final int TYPE_WEAPON_DOUBLEDAGGER = 0x2011;//双短剑
+	public static final int TYPE_WEAPON_CLAWTHORN = 0x2012;//爪刺
 	public static final int TYPE_EQUIPMENT = 0x4000;
-	
+	public static final int TYPE_EQUIPMENT_HELMET = 0x4001;//头盔
+	public static final int TYPE_EQUIPMENT_JEWELRY = 0x4002;//饰物
+	public static final int TYPE_EQUIPMENT_ARMOR = 0x4003;//护甲
+	public static final int TYPE_EQUIPMENT_BELT = 0x4004;//腰带
+	public static final int TYPE_EQUIPMENT_BOOTS = 0x4005;//鞋
 	/**
 	 * 获取物品的类型
 	 * @param item

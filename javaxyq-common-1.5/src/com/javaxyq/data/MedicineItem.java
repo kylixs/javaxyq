@@ -37,7 +37,7 @@ import com.javaxyq.model.Item;
     @NamedQuery(name = "MedicineItem.findByType", query = "SELECT m FROM MedicineItem m WHERE m.type = :type"),
     @NamedQuery(name = "MedicineItem.findByEfficacy", query = "SELECT m FROM MedicineItem m WHERE m.efficacy = :efficacy"),
     @NamedQuery(name = "MedicineItem.findByLevel", query = "SELECT m FROM MedicineItem m WHERE m.level = :level")})
-public class MedicineItem implements Item, Serializable {
+public class MedicineItem extends Items implements Item ,Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
