@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -328,10 +329,15 @@ public class SceneEditor extends JPanel implements MouseListener {
 	 * @param sceneId2
 	 */
 	private void reloadSceneNpcs(String sceneId) {
-		List<SceneNpc> npcs = getDataFacade().findNpcsBySceneId(Integer.valueOf(sceneId));
-		for (SceneNpc _npc : npcs) {
-			replaceNpc(_npc);
-		}	
+		List<SceneNpc> npcs;
+		try {
+			npcs = getDataFacade().findNpcsBySceneId(Integer.valueOf(sceneId));
+			for (SceneNpc _npc : npcs) {
+				replaceNpc(_npc);
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

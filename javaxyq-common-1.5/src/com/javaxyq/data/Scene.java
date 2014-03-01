@@ -6,35 +6,15 @@
 package com.javaxyq.data;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 /**
  *
  * @author Administrator
  */
-@Entity
-@Table(name = "SCENE", catalog = "", schema = "APP")
-@NamedQueries({
-    @NamedQuery(name = "Scene.findAll", query = "SELECT s FROM Scene s"),
-    @NamedQuery(name = "Scene.findById", query = "SELECT s FROM Scene s WHERE s.id = :id"),
-    @NamedQuery(name = "Scene.findByName", query = "SELECT s FROM Scene s WHERE s.name = :name"),
-    @NamedQuery(name = "Scene.findByDescription", query = "SELECT s FROM Scene s WHERE s.description = :description")})
 public class Scene implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "ID", nullable = false)
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "NAME", nullable = false, length = 30)
     private String name;
-    @Column(name = "DESCRIPTION", length = 200)
     private String description;
 
     public Scene() {

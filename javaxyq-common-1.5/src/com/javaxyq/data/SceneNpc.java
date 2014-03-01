@@ -6,55 +6,20 @@
 package com.javaxyq.data;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 /**
  *
  * @author Administrator
  */
-@Entity
-@Table(name = "SCENE_NPC", catalog = "", schema = "APP")
-@NamedQueries({
-    @NamedQuery(name = "SceneNpc.findAll", query = "SELECT s FROM SceneNpc s"),
-    @NamedQuery(name = "SceneNpc.findById", query = "SELECT s FROM SceneNpc s WHERE s.id = :id"),
-    @NamedQuery(name = "SceneNpc.findBySceneId", query = "SELECT s FROM SceneNpc s WHERE s.sceneId = :sceneId"),
-    @NamedQuery(name = "SceneNpc.findByCharacterId", query = "SELECT s FROM SceneNpc s WHERE s.characterId = :characterId"),
-    @NamedQuery(name = "SceneNpc.findByName", query = "SELECT s FROM SceneNpc s WHERE s.name = :name"),
-    @NamedQuery(name = "SceneNpc.findBySceneX", query = "SELECT s FROM SceneNpc s WHERE s.sceneX = :sceneX"),
-    @NamedQuery(name = "SceneNpc.findBySceneY", query = "SELECT s FROM SceneNpc s WHERE s.sceneY = :sceneY"),
-    @NamedQuery(name = "SceneNpc.findByConfig", query = "SELECT s FROM SceneNpc s WHERE s.config = :config"),
-    @NamedQuery(name = "SceneNpc.findByDescription", query = "SELECT s FROM SceneNpc s WHERE s.description = :description")})
 public class SceneNpc implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "ID", nullable = false)
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "SCENE_ID", nullable = false)
     private int sceneId;
-    @Basic(optional = false)
-    @Column(name = "CHARACTER_ID", nullable = false, length = 20)
     private String characterId;
-    @Basic(optional = false)
-    @Column(name = "NAME", nullable = false, length = 30)
     private String name;
-    @Basic(optional = false)
-    @Column(name = "SCENE_X", nullable = false)
     private int sceneX;
-    @Basic(optional = false)
-    @Column(name = "SCENE_Y", nullable = false)
     private int sceneY;
-    @Basic(optional = false)
-    @Column(name = "CONFIG", nullable = false, length = 2000)
     private String config;
-    @Column(name = "DESCRIPTION", length = 400)
     private String description;
 
     public SceneNpc() {

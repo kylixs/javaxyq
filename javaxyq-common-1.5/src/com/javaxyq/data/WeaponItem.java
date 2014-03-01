@@ -2,7 +2,9 @@ package com.javaxyq.data;
 
 import java.io.Serializable;
 
-public class WeaponItem extends Items implements Serializable{
+import com.javaxyq.model.Item;
+
+public class WeaponItem implements Item, Serializable{
 	private static final long serialVersionUID = 7254665375041414867L;
 
 	private Long id;

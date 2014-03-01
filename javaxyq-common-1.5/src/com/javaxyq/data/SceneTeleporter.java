@@ -6,47 +6,18 @@
 package com.javaxyq.data;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 /**
  *
  * @author Administrator
  */
-@Entity
-@Table(name = "SCENE_TELEPORTER", catalog = "", schema = "APP")
-@NamedQueries({
-    @NamedQuery(name = "SceneTeleporter.findAll", query = "SELECT s FROM SceneTeleporter s"),
-    @NamedQuery(name = "SceneTeleporter.findById", query = "SELECT s FROM SceneTeleporter s WHERE s.id = :id"),
-    @NamedQuery(name = "SceneTeleporter.findByStartId", query = "SELECT s FROM SceneTeleporter s WHERE s.startId = :startId"),
-    @NamedQuery(name = "SceneTeleporter.findByEndId", query = "SELECT s FROM SceneTeleporter s WHERE s.endId = :endId"),
-    @NamedQuery(name = "SceneTeleporter.findByStartPoint", query = "SELECT s FROM SceneTeleporter s WHERE s.startPoint = :startPoint"),
-    @NamedQuery(name = "SceneTeleporter.findByEndPoint", query = "SELECT s FROM SceneTeleporter s WHERE s.endPoint = :endPoint"),
-    @NamedQuery(name = "SceneTeleporter.findByDescription", query = "SELECT s FROM SceneTeleporter s WHERE s.description = :description")})
 public class SceneTeleporter implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "ID", nullable = false)
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "START_ID", nullable = false)
     private int startId;
-    @Basic(optional = false)
-    @Column(name = "END_ID", nullable = false)
     private int endId;
-    @Basic(optional = false)
-    @Column(name = "START_POINT", nullable = false, length = 8)
     private String startPoint;
-    @Basic(optional = false)
-    @Column(name = "END_POINT", nullable = false, length = 8)
     private String endPoint;
-    @Column(name = "DESCRIPTION", length = 200)
     private String description;
 
     public SceneTeleporter() {

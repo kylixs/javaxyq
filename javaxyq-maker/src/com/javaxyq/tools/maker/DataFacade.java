@@ -9,12 +9,14 @@ package com.javaxyq.tools.maker;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.javaxyq.data.NonexistentEntityException;
 import com.javaxyq.data.PreexistingEntityException;
 import com.javaxyq.data.SceneNpc;
-import com.javaxyq.data.SceneNpcJpaController;
+import com.javaxyq.data.SceneNpcDAO;
+import com.javaxyq.data.impl.SceneNpcDAOImpl;
 
 /**
  * 数据访问门面类
@@ -26,7 +28,7 @@ public class DataFacade {
 
 	private String basePath;
 
-	private SceneNpcJpaController npcController = new SceneNpcJpaController();
+	private SceneNpcDAO npcDao = new SceneNpcDAOImpl();
 
 	public DataFacade(String basePath) {
 		super();
@@ -66,29 +68,29 @@ public class DataFacade {
 	 * @throws PreexistingEntityException
 	 */
 	public int createSceneNpc(SceneNpc npcVO) throws PreexistingEntityException, Exception {
-		int nextId = npcController.getNextSceneNpcId();
+		int nextId = npcDao.getNextSceneNpcId();
 		npcVO.setId(nextId);
-		npcController.create(npcVO);
+		npcDao.create(npcVO);
 		System.out.println("createSceneNpc: "+npcVO);
 		return nextId;
 	}
 
 	public void deleteSceneNpc(Integer id) throws NonexistentEntityException {
 		System.out.println("deleteSceneNpc: "+id);
-		npcController.destroy(id);
+		npcDao.destroy(id);
 	}
 
 	public void updateSceneNpc(SceneNpc sceneNpc) throws NonexistentEntityException, Exception {
 		System.out.println("updateSceneNpc: "+sceneNpc);
-		npcController.edit(sceneNpc);
+		npcDao.edit(sceneNpc);
 	}
 
-	public SceneNpc findSceneNpc(Integer id) {
-		return npcController.findSceneNpc(id);
+	public SceneNpc findSceneNpc(Integer id) throws SQLException {
+		return npcDao.findSceneNpc(id);
 	}
 
-	public List<SceneNpc> findNpcsBySceneId(int sceneId) {
-		return npcController.findNpcsBySceneId(sceneId);
+	public List<SceneNpc> findNpcsBySceneId(int sceneId) throws SQLException {
+		return npcDao.findNpcsBySceneId(sceneId);
 	}
 
 }

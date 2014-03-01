@@ -11,6 +11,6 @@
 	<classpathentry kind="lib" path="/javaxyq-common-1.5/lib/commons-dbutils-1.3.jar" sourcepath="E:/open-source/commons-dbutils-1.3-src.zip"/>
 	<classpathentry kind="lib" path="/javaxyq-common-1.5/lib/commons-jexl-2.0.1.jar"/>
 	<classpathentry kind="lib" path="/javaxyq-common-1.5/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/javaxyq-common-1.5/lib/derby.jar"/>
+	<classpathentry kind="lib" path="lib/derby.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
