@@ -129,7 +129,7 @@ public class DataStore implements DataManager {
 	
 	private Map<Player,ItemInstance[]> itemsMap = new HashMap<Player, ItemInstance[]>();
 	
-	private List<ItemsDAO> items = new ArrayList<ItemsDAO>();
+	private List<ItemsDAO> itemDAOs = new ArrayList<ItemsDAO>();
 	private String lastchat = "";
 	private MedicineItemDAOImpl medicineDAO;
 	private Random rand = new Random();
@@ -307,7 +307,7 @@ public class DataStore implements DataManager {
 //			e.printStackTrace();
 //		}
 		try {
-			for(ItemsDAO item: items){
+			for(ItemsDAO item: itemDAOs){
 				if(item.findItemByName(name) != null){
 					 Items itemVO =  item.findItemByName(name);
 					   System.out.println("itemVO IS:"+itemVO);
@@ -315,11 +315,11 @@ public class DataStore implements DataManager {
 				}
 			      
 			}  
-		
-			
 		} catch (MedicineItemException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("createItem failed: "+name);
 		return null;
 	}
 	
@@ -599,8 +599,9 @@ public class DataStore implements DataManager {
 	 * 初始化数据中心
 	 */
 	private void init() {
-		System.out.println("initializing datastore: "+new java.util.Date());
-		System.setProperty("derby.system.home",CacheManager.getInstance().getCacheBase());
+		String cacheBase = CacheManager.getInstance().getCacheBase();
+		System.setProperty("derby.system.home", cacheBase);
+		System.out.println("initializing datastore: "+new java.util.Date()+", dbDir: "+cacheBase);
 		//medicineDAO = new MedicineItemJpaController();
 		//sceneDAO = new SceneJpaController();
 		//sceneNpcDAO = new SceneNpcJpaController();
@@ -611,8 +612,8 @@ public class DataStore implements DataManager {
 		sceneNpcDAO = new SceneNpcDAOImpl();
 		sceneTeleporterDAO = new SceneTeleporterDAOImpl();
 		
-		items.add(weaponDAO);
-		items.add(medicineDAO);
+		itemDAOs.add(weaponDAO);
+		itemDAOs.add(medicineDAO);
 
 	
 			//ItemInstance [] items = {createItem("四叶花"),createItem("鬼切草"),createItem("九香虫")};

@@ -168,6 +168,16 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 	    this.setFont(UIUtils.TEXT_NAME_FONT);
 		hideCursor();
 		setGameCursor(Cursor.DEFAULT_CURSOR);
+		
+		try {
+			System.getProperties().store(System.out, "======= System Properties =====");
+			System.out.println();
+		} catch (Exception e) {
+			System.err.println("列出系统属性时发生异常："+e.getMessage());
+			//e.printStackTrace();
+		}
+		initApplet(null);
+				
 	}
 	
     public void hideCursor() {
@@ -414,15 +424,6 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 	
 	@Override
 	public void startup() {
-		try {
-			System.getProperties().store(System.out, "======= System Properties =====");
-			System.out.println();
-		} catch (Exception e) {
-			System.err.println("列出系统属性时发生异常："+e.getMessage());
-			//e.printStackTrace();
-		}
-		initApplet(null);
-		
 		Image img = SpriteFactory.loadImage("/resources/loading/cover.jpg");
 		LoadingCanvas loadingCanvas = new LoadingCanvas(img, window.getContentWidth(), window.getContentHeight());
 		window.setCanvas(loadingCanvas);

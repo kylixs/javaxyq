@@ -36,7 +36,6 @@ public class CacheManager {
 	private URL documentBase;
 
 	private CacheManager() {// single-ton
-		cacheBase = System.getProperty("user.home") + "/javaxyq";
 	}
 
 	public static CacheManager getInstance() {
@@ -44,6 +43,13 @@ public class CacheManager {
 	}
 
 	public String getCacheBase() {
+		if(cacheBase == null) {
+			if(documentBase == null) {
+				cacheBase = new File(".").getAbsolutePath();
+			}else {
+				cacheBase = System.getProperty("user.home") + "/javaxyq";
+			}
+		}
 		return cacheBase;
 	}
 
