@@ -8,3 +8,5 @@ temp
 log
 build
 deploy
+*.lck
+
