@@ -467,8 +467,7 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 			ItemLabel label = (ItemLabel) dialog.findCompByName("item" + (i + 1));
 			label.setItem(items[i]);
 			//±ÜÃâÖØ¸´Ìí¼Ó¼àÌıÆ÷
-			label.removeMouseListener(itemMouseHandler);
-			label.removeMouseMotionListener(itemMouseHandler);
+			UIHelper.removeAllMouseListeners(label);
 			label.addMouseListener(itemMouseHandler);
 			label.addMouseMotionListener(itemMouseHandler);
 		}

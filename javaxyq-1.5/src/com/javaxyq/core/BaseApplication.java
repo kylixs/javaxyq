@@ -6,10 +6,8 @@ package com.javaxyq.core;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.Action;
@@ -414,6 +412,9 @@ public abstract class BaseApplication implements Application {
 	public void saveProfile() throws ProfileException {
 		try {
 			Player player = context.getPlayer();
+			if(player == null) {
+				return;
+			}
 			PlayerVO data = player.getData();
 			profile.setPlayerData(data);
 			profile.setCreateDate(new java.util.Date());
@@ -451,4 +452,15 @@ public abstract class BaseApplication implements Application {
 		return null;
 	}
 
+	@Override
+	public void endGame() {
+		try {
+			saveProfile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//返回到欢迎界面
+		
+	}
 }

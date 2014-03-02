@@ -749,4 +749,9 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void endGame() {
+		// TODO Auto-generated method stub
+		
+	}
 }

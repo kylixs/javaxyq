@@ -33,6 +33,7 @@ import com.javaxyq.ui.ItemDetailLabel;
 import com.javaxyq.ui.ItemLabel;
 import com.javaxyq.ui.Label;
 import com.javaxyq.ui.Panel;
+import com.javaxyq.ui.UIHelper;
 import com.javaxyq.util.StringUtils;
 import com.javaxyq.widget.Player;
 
@@ -62,6 +63,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 	
 	public void initial(PanelEvent evt) {
 		super.initial(evt);
+		UIHelper.removeAllMouseListeners(panel);
 		this.panel.addMouseListener(this);
 		this.panel.addMouseMotionListener(this);
 		
@@ -102,6 +104,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 						try {
 							label = new ItemLabel(item);
 							label.setLocation(x0 + c*cellWidth , y0+r*cellHeight+1);
+							UIHelper.removeAllMouseListeners(label);
 							label.addMouseListener(this);
 							label.addMouseMotionListener(this);
 							panel.add(label);

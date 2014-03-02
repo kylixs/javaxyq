@@ -112,24 +112,42 @@ public class DesktopWindow extends JFrame implements GameWindow {
 				if (canvas instanceof SceneCanvas) {
 					SceneCanvas sceneCanvas = (SceneCanvas) canvas;					
 					if ("MouseListener".equals(strType)) {
-						sceneCanvas.removeMouseListener((MouseListener) instance);
+						MouseListener[] mouseListeners = sceneCanvas.getMouseListeners();
+						for (MouseListener mouseListener : mouseListeners) {
+							sceneCanvas.removeMouseListener(mouseListener);
+						}
 						sceneCanvas.addMouseListener((MouseListener) instance);
 					} else if ("MouseMotionListener".equals(strType)) {
-						sceneCanvas.removeMouseMotionListener((MouseMotionListener) instance);
+						MouseMotionListener[] mouseMotionListeners = sceneCanvas.getMouseMotionListeners();
+						for (MouseMotionListener mouseMotionListener : mouseMotionListeners) {
+							sceneCanvas.removeMouseMotionListener(mouseMotionListener);
+						}
 						sceneCanvas.addMouseMotionListener((MouseMotionListener) instance);
 					} else if ("KeyListener".equals(strType)) {
-						sceneCanvas.removeKeyListener((KeyListener) instance);
+						KeyListener[] keyListeners = sceneCanvas.getKeyListeners();
+						for (KeyListener keyListener : keyListeners) {
+							sceneCanvas.removeKeyListener(keyListener);
+						}
 						sceneCanvas.addKeyListener((KeyListener) instance);
 					} else if ("MouseWheelListener".equals(strType)) {
-						sceneCanvas.removeMouseWheelListener((MouseWheelListener) instance);
+						MouseWheelListener[] mouseWheelListeners = sceneCanvas.getMouseWheelListeners();
+						for (MouseWheelListener mouseWheelListener : mouseWheelListeners) {
+							sceneCanvas.removeMouseWheelListener(mouseWheelListener);
+						}
 						sceneCanvas.addMouseWheelListener((MouseWheelListener) instance);
 					} 
 				}
 				if ("WindowListener".equals(strType)) {
-					this.removeWindowListener((WindowListener) instance);
+					WindowListener[] windowListeners = this.getWindowListeners();
+					for (WindowListener windowListener : windowListeners) {
+						this.removeWindowListener(windowListener);
+					}
 					this.addWindowListener((WindowListener) instance);
 				} else if ("WindowStateListener".equals(strType)) {
-					this.removeWindowStateListener((WindowStateListener) instance);
+					WindowStateListener[] windowStateListeners = this.getWindowStateListeners();
+					for (WindowStateListener windowStateListener : windowStateListeners) {
+						this.removeWindowStateListener(windowStateListener);
+					}
 					this.addWindowStateListener((WindowStateListener) instance);
 				}
 			} catch (Exception e) {

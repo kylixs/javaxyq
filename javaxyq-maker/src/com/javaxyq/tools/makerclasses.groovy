@@ -100,14 +100,16 @@ class PaintTask extends TimerTask {
 //custom resizable 
 class MyResizable extends Resizable {
 	private UIMaker maker;
+	private JComponent component;
 	public MyResizable(JComponent component,UIMaker maker) {
 		super(component);
 		this.maker = maker;
+		this.component = component;
 	}
 
 	public void resizing(int resizeCorner, int newX, int newY, int newW, int newH) {
-        Dimension minimumSize = _component.getMinimumSize();
-        Dimension maximumSize = _component.getMaximumSize();
+        Dimension minimumSize = component.getMinimumSize();
+        Dimension maximumSize = component.getMaximumSize();
         if (newW < minimumSize.width) {
             newW = minimumSize.width;
         }
@@ -120,7 +122,7 @@ class MyResizable extends Resizable {
         if (newH > maximumSize.height) {
             newH = maximumSize.height;
         }
-        _component.setPreferredSize(new Dimension(newW, newH));
-		maker.resizeComp(_component,new Dimension(newW, newH))
+        component.setPreferredSize(new Dimension(newW, newH));
+		maker.resizeComp(component,new Dimension(newW, newH))
 	};
 }

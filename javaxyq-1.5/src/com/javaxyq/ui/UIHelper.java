@@ -8,6 +8,9 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -314,6 +317,21 @@ public class UIHelper {
 			cursors.put(cursorId, cursor);
 		}
 		return cursor;
+	}
+	
+	public static void removeAllMouseListeners(Component comp) {
+		MouseListener[] mouseListeners = comp.getMouseListeners();
+		for (MouseListener mouseListener : mouseListeners) {
+			comp.removeMouseListener(mouseListener);
+		}
+		MouseMotionListener[] motionListeners = comp.getMouseMotionListeners();
+		for (MouseMotionListener motionListener : motionListeners) {
+			comp.removeMouseMotionListener(motionListener);
+		}
+		MouseWheelListener[] wheelListeners = comp.getMouseWheelListeners();
+		for (MouseWheelListener wheelListener : wheelListeners) {
+			comp.removeMouseWheelListener(wheelListener);
+		}
 	}
 
 	/** global action map */
