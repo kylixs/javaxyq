@@ -27,6 +27,7 @@ import org.apache.commons.jexl2.UnifiedJEXL.Expression;
 
 import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.data.ItemInstance;
+import com.javaxyq.event.ActionEvent;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
 import com.javaxyq.ui.ItemDetailLabel;
@@ -84,6 +85,21 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 	public void update(PanelEvent evt) {
 		this.updateLabels(this.panel);
 	}
+	
+	/**
+	 * 销毁物品
+	 * @param evt
+	 */
+	public void destory_item(ActionEvent evt){
+		if(selItemLabel==null) {//未选择物品
+			context.getWindow().getHelper().prompt("请先选择要销毁的物品，然后再点击【销毁】按钮。", 3000);
+			return;
+		}
+		dataManager.removePlayerItem(context.getPlayer(), selectedIndex);
+		stopMoving();
+		updateItems();
+	}
+	
 	/**
 	 * 更新物品栏
 	 */

@@ -62,7 +62,7 @@ public class UIHelper {
 		UIManager.put("GameButtonUI", "com.javaxyq.ui.GameButtonUI");
 	}	
 	
-	public List<PromptLabel> prompts = new ArrayList<PromptLabel>();
+	private List<PromptLabel> prompts = new ArrayList<PromptLabel>();
 	private static Map<String, Cursor>cursors = new HashMap<String, Cursor>();
 	
 	private boolean debug = false;
