@@ -251,24 +251,14 @@ public class SceneEditor extends JPanel implements MouseListener {
 	 * 放置npc、触发器等
 	 */
 	@Action
-	public void placeNpc() {
+	public void createNewNpc() {
 		try {
 			Point cell = eventLayer.getSelectedCell();
 			if(cell == null) {
 				cell = new Point(10, 10);
 			}
-			int npcId = createNpc(characterId,sceneId, cell.x,cell.y);
-			System.out.println("placeNpc "+characterId+" at (" + cell.x + "," + cell.y + ")");
-			String filename = "shape/char/"+characterId+"/stand.tcp";
-			Animation anim = SpriteFactory.loadAnimation(filename);
-			Label label = new Label(anim);
-			label.setBorder(spriteBorder);
-			label.setName(String.valueOf(npcId));
-			Point pos = sceneToLocal(cell.x,cell.y);
-			pos.translate(-anim.getRefPixelX(), -anim.getRefPixelY());
-			label.setLocation(pos);
-			draggable(label);
-			eventLayer.add(label);
+			SceneNpc npc = createNpc(characterId,sceneId, cell.x,cell.y, "NPC");
+			replaceNpc(npc);
 		} catch (Exception e) {
 			e.printStackTrace();
 			UIUtils.showError("创建NPC失败！",e);
@@ -343,16 +333,17 @@ public class SceneEditor extends JPanel implements MouseListener {
 	/**
 	 * @param characterId
 	 * @param sceneId
+	 * @param name TODO
 	 * @param x
 	 * @param y
 	 * @return 
 	 * @throws Exception 
 	 * @throws PreexistingEntityException 
 	 */
-	private int createNpc(String characterId, String sceneId, int sceneX, int sceneY) throws PreexistingEntityException, Exception {
-		SceneNpc npcVO = new SceneNpc(0, Integer.parseInt(sceneId), characterId, "name", sceneX, sceneY, "state=stand;");
+	private SceneNpc createNpc(String characterId, String sceneId, int sceneX, int sceneY, String name) throws PreexistingEntityException, Exception {
+		SceneNpc npcVO = new SceneNpc(0, Integer.parseInt(sceneId), characterId, name, sceneX, sceneY, "state=stand;");
 		int npcId = getDataFacade().createSceneNpc(npcVO);
-		return npcId;
+		return npcVO;
 	}
 	
 	private void moveNpc(int npcId,int x,int y) {
@@ -619,7 +610,7 @@ public class SceneEditor extends JPanel implements MouseListener {
 	// --------------------- Listeners -----------------------------//
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton()==MouseEvent.BUTTON1 && e.getClickCount()==2) {
-			placeNpc();
+			createNewNpc();
 			
 		}
 	}

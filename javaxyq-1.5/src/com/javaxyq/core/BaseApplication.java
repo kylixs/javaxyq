@@ -300,8 +300,8 @@ public abstract class BaseApplication implements Application {
 		GameWindow window = context.getWindow();
 		SceneCanvas canvas = (SceneCanvas) window.getCanvas();
 		sceneCanvas = canvas;
-		Dimension size = window.getSize();
 		//background
+		Dimension size = canvas.getSize();
 		BufferedImage bg = new BufferedImage(size.width, size.height, BufferedImage.TYPE_USHORT_565_RGB);
 		TileMap map = canvas.getMap();
 		Point viewPosition = canvas.getViewPosition();
@@ -381,13 +381,12 @@ public abstract class BaseApplication implements Application {
 		context.setPlayer(player);
 		context.setScene(profile.getSceneId());
 		dataManager.setItems(player, profile.getItems());
-		DataStore datastore = (DataStore)dataManager;
-		
-		ItemInstance [] items = {datastore.createItem("Àƒ“∂ª®"),datastore.createItem("ŒÂª¢∂œªÍ"),datastore.createItem("æ≈œ„≥Ê")};		
-		for(ItemInstance item: items){
-			System.out.println("itemsDAO IS:"+item.getName());
-			datastore.addItemToPlayer(player, item);
-		}
+//		DataStore datastore = (DataStore)dataManager;
+//		ItemInstance [] items = {datastore.createItem("Àƒ“∂ª®"),datastore.createItem("ŒÂª¢∂œªÍ"),datastore.createItem("æ≈œ„≥Ê")};		
+//		for(ItemInstance item: items){
+//			System.out.println("itemsDAO IS:"+item.getName());
+//			datastore.addItemToPlayer(player, item);
+//		}
 		
 		
 		Task[] tasks = profile.getTasks();

@@ -113,7 +113,7 @@ public class player_status extends PanelHandler{
 	public void add_point(ActionEvent evt) {
 		System.out.println("add point: "+evt);
 		//取参数 , like 'add_point 体质'
-		String attr = evt.getCommand().split(" ")[1];
+		String attr = evt.getArgumentAsString(0);
 		Label label = (Label) panel.findCompByName(attr);
 		PlayerVO vo = context.getPlayer().getData();
 		if(vo.potentiality>0) {
@@ -133,7 +133,7 @@ public class player_status extends PanelHandler{
 	public void subtract_point(ActionEvent evt) {
 		System.out.println("subtract point: " + evt);
 		//取参数 , like 'add_point 体质'
-		String attr = evt.getCommand().split(" ")[1];
+		String attr = evt.getArgumentAsString(1);
 		Label label = (Label) panel.findCompByName(attr);
 		PlayerVO vo = context.getPlayer().getData();
 		if(vo.assignPoints.get(attr)>0) {

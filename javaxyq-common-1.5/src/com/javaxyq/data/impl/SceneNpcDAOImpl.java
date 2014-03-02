@@ -26,20 +26,33 @@ public class SceneNpcDAOImpl implements SceneNpcDAO {
 	
 	@Override
 	public void create(SceneNpc sceneNpc) throws PreexistingEntityException, Exception {
-		// TODO Auto-generated method stub
-
+		String sql = "insert into SCENE_NPC (" +
+				"ID, SCENE_ID, CHARACTER_ID, NAME, SCENE_X, SCENE_Y, CONFIG, DESCRIPTION" +
+				") values(?,?,?,?,?,?,?,?)";
+		QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
+		Object[] params = new Object[] {sceneNpc.getId(), sceneNpc.getSceneId(), sceneNpc.getCharacterId(), 
+				sceneNpc.getName(), sceneNpc.getSceneX(), sceneNpc.getSceneY(), sceneNpc.getConfig(), 
+				sceneNpc.getDescription()};
+		runner.update(sql, params);
 	}
 
 	@Override
-	public void destroy(Integer id) throws NonexistentEntityException {
-		// TODO Auto-generated method stub
-
+	public void destroy(Integer id) throws NonexistentEntityException, SQLException {
+		String sql = "delete from SCENE_NPC where ID=?";
+		QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
+		runner.update(sql, id);
 	}
 
 	@Override
 	public void edit(SceneNpc sceneNpc) throws NonexistentEntityException, Exception {
-		// TODO Auto-generated method stub
-
+		String sql = "update SCENE_NPC set " +
+				" SCENE_ID=?, CHARACTER_ID=?, NAME=?, SCENE_X=?, SCENE_Y=?, CONFIG=?, DESCRIPTION=?" +
+				" where ID=?";
+		QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
+		Object[] params = new Object[] {sceneNpc.getSceneId(), sceneNpc.getCharacterId(), 
+				sceneNpc.getName(), sceneNpc.getSceneX(), sceneNpc.getSceneY(), sceneNpc.getConfig(), 
+				sceneNpc.getDescription(), sceneNpc.getId()};
+		runner.update(sql, params);
 	}
 
 	@Override
@@ -47,8 +60,6 @@ public class SceneNpcDAOImpl implements SceneNpcDAO {
 		String sql = "select * from SCENE_NPC where SCENE_ID=? ";
 		QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
 		List<SceneNpc> results = runner.query(sql, resultHandler, sceneId);
-		//System.out.println("sceneID********* IS:"+sceneId);
-		//System.out.println("result is:"+results);
 		return results;
 	}
 
@@ -94,7 +105,7 @@ public class SceneNpcDAOImpl implements SceneNpcDAO {
 		Object result = runner.query(sql, new ScalarHandler());
 		int maxId = 0;
 		if (result != null) {
-			maxId = ((Integer) result).intValue();
+			maxId = ((Number) result).intValue();
 		}
 		return maxId+1;
 	}
@@ -106,7 +117,7 @@ public class SceneNpcDAOImpl implements SceneNpcDAO {
 		Object result = runner.query(sql, new ScalarHandler());
 		int count = 0;
 		if (result != null) {
-			count = ((Integer) result).intValue();
+			count = ((Number) result).intValue();
 		}
 		return count;
 	}

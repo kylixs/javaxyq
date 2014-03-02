@@ -21,7 +21,7 @@ public class SpriteFactory {
 	/**
 	 * 动画播放每帧的间隔(ms)
 	 */
-	public static final int ANIMATION_INTERVAL = 130;
+	public static final int ANIMATION_INTERVAL = 100;
 	/** <sprite id, sprite instance> */
 	// private static Map<String, Sprite> sprites = new WeakHashMap<String,
 	// Sprite>();

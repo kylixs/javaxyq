@@ -91,7 +91,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 
 	private int drawCount = 0;
 
-	protected long updateInterval = 10;
+	protected long updateInterval = 15;
 	
 	private final class DrawThread extends Thread {
 		{
@@ -250,14 +250,17 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 		if (lastTime == 0)
 			lastTime = currTime;
 		long elapsedTime = currTime - lastTime;
+//		lastTime = System.currentTimeMillis();
 		if (g != null && offscreenGraphics!=null) {
 			this.draw(offscreenGraphics, elapsedTime);
 			// draw to real graphics
 			g.drawImage(offscreenImage, 0, 0, null);
-			g.dispose();
+//			g.dispose();
 		}
 		lastTime = System.currentTimeMillis();
-//		System.out.println("drawCanvas cost: "+(System.currentTimeMillis()-currTime));
+		if(System.currentTimeMillis()-currTime > 20) {
+			System.out.println("drawCanvas cost: "+(System.currentTimeMillis()-currTime));
+		}
 	}
 
 	protected void drawComponents(Graphics g, long elapsedTime) {

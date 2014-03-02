@@ -10,7 +10,7 @@ public interface SceneNpcDAO {
 
 	public abstract void edit(SceneNpc sceneNpc) throws NonexistentEntityException, Exception;
 
-	public abstract void destroy(Integer id) throws NonexistentEntityException;
+	public abstract void destroy(Integer id) throws NonexistentEntityException, SQLException;
 
 	public abstract List<SceneNpc> findSceneNpcEntities() throws SQLException;
 

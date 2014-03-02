@@ -96,9 +96,18 @@ public class Sprite extends AbstractWidget {
         try {
             BufferedImage bi = (BufferedImage) this.currAnimation.getImage();
             if(this.animations.size()>1) {
+            	if(x+refPixelX<0 || y+refPixelY <0 || x+refPixelX>this.currAnimation.getWidth() 
+            			||y+refPixelY>this.currAnimation.getHeight()) {
+            		return false;
+            	}
             	return bi.getRGB(x + refPixelX, y + refPixelY) != 0;
+            }else {
+            	if(x<0 || y <0 || x>this.currAnimation.getWidth() 
+            			||y>this.currAnimation.getHeight()) {
+            		return false;
+            	}
+            	return bi.getRGB(x, y)!= 0;
             }
-            return bi.getRGB(x, y)!= 0;
         } catch (Exception e) {
         }
         return false;

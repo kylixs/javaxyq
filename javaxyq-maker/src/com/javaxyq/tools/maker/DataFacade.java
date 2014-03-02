@@ -77,7 +77,11 @@ public class DataFacade {
 
 	public void deleteSceneNpc(Integer id) throws NonexistentEntityException {
 		System.out.println("deleteSceneNpc: "+id);
-		npcDao.destroy(id);
+		try {
+			npcDao.destroy(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void updateSceneNpc(SceneNpc sceneNpc) throws NonexistentEntityException, Exception {
