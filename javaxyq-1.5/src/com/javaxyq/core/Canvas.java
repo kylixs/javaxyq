@@ -186,7 +186,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 	}
 
 	
-	public synchronized void addNPC(Player npc) {
+	public void addNPC(Player npc) {
 		npcs.add(npc);
 	}
 
@@ -216,7 +216,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 	 * @param g
 	 * @param elapsedTime
 	 */
-	public synchronized void draw(Graphics g, long elapsedTime) {
+	public void draw(Graphics g, long elapsedTime) {
 		if (g == null) {
 			return;
 		}
@@ -243,21 +243,21 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 		}
 	}
 
-	private synchronized void drawCanvas() {
+	private void drawCanvas() {
 		//System.out.println("start drawCanvas: "+new java.util.Date());
 		Graphics g = this.getGraphics();
 		long currTime = System.currentTimeMillis();
 		if (lastTime == 0)
 			lastTime = currTime;
 		long elapsedTime = currTime - lastTime;
-//		lastTime = System.currentTimeMillis();
+		lastTime = System.currentTimeMillis();
 		if (g != null && offscreenGraphics!=null) {
 			this.draw(offscreenGraphics, elapsedTime);
 			// draw to real graphics
 			g.drawImage(offscreenImage, 0, 0, null);
 //			g.dispose();
 		}
-		lastTime = System.currentTimeMillis();
+//		lastTime = System.currentTimeMillis();
 		if(System.currentTimeMillis()-currTime > 20) {
 			System.out.println("drawCanvas cost: "+(System.currentTimeMillis()-currTime));
 		}
@@ -298,7 +298,9 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 	}
 
 	protected void drawNPC(Graphics g, long elapsedTime) {
-		for (Player npc : npcs) {
+		//System.out.println(System.currentTimeMillis()+" update NPC: "+elapsedTime);
+		for (int i = 0; i < npcs.size(); i++) {
+			Player npc = npcs.get(i);
 			npc.setHover(isHover(npc));
 			npc.update(elapsedTime);
 			Point p = npc.getLocation();
@@ -309,6 +311,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 	}
 
 	protected void drawPlayer(Graphics g, long elapsedTime) {
+		//System.out.println(System.currentTimeMillis()+" update player: "+elapsedTime);
 		Player player = getPlayer();
 		if (player != null) {
 			player.setHover(isHover(player));
@@ -386,9 +389,10 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener{
 	 * @return
 	 */
 	public Player findNpcByName(String name) {
-		for (Player p : this.npcs) {
-			if (p.getName().equals(name)) {
-				return p;
+		for (int i = 0; i < npcs.size(); i++) {
+			Player npc = npcs.get(i);
+			if (npc.getName().equals(name)) {
+				return npc;
 			}
 		}
 		return null;

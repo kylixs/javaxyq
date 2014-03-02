@@ -257,7 +257,7 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 		firePropertyChange("loadingText", null, msg);
 	}
 
-    public synchronized void setFullScreen() {
+    public void setFullScreen() {
         setVisible(false);
         setState(JFrame.ICONIFIED);
         fullScreenWindow = new JFrame(GameMain.getApplicationName());
@@ -275,7 +275,7 @@ public class AppletApplication extends JApplet implements Application,GameWindow
         }
     }
 
-    public synchronized void restoreScreen() {
+    public void restoreScreen() {
         device.setFullScreenWindow(null);
         if (fullScreenWindow != null) {
             fullScreenWindow.dispose();

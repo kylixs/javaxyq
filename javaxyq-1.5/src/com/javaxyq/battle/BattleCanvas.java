@@ -505,7 +505,7 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 	}
 
 	@Override
-	public synchronized void draw(Graphics g, long elapsedTime) {
+	public void draw(Graphics g, long elapsedTime) {
 		if (g == null) {
 			return;
 		}

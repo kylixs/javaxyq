@@ -432,7 +432,7 @@ public class Player extends AbstractWidget implements EventTarget {
 		// System.out.println("stop action!");
 	}
 
-	public /*synchronized*/ void update(long elapsedTime) {
+	public void update(long elapsedTime) {
 		shadow.update(elapsedTime);
 		person.update(elapsedTime);
 		if (weapon != null) {

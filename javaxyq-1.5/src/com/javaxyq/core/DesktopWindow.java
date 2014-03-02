@@ -175,7 +175,7 @@ public class DesktopWindow extends JFrame implements GameWindow {
     	}
     }
 
-    public synchronized void setFullScreen() {
+    public void setFullScreen() {
         setVisible(false);
         setState(JFrame.ICONIFIED);
         fullScreenWindow = new JFrame(GameMain.getApplicationName());
@@ -193,7 +193,7 @@ public class DesktopWindow extends JFrame implements GameWindow {
         }
     }
 
-    public synchronized void restoreScreen() {
+    public void restoreScreen() {
         device.setFullScreenWindow(null);
         if (fullScreenWindow != null) {
             fullScreenWindow.dispose();
