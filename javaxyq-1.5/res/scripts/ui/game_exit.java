@@ -9,9 +9,7 @@
 package ui;
 
 import java.awt.Desktop;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import com.javaxyq.core.GameMain;
 import com.javaxyq.event.ActionEvent;
@@ -27,8 +25,6 @@ import com.javaxyq.ui.Button;
  */
 public class game_exit extends PanelHandler {
 	
-	private static final String blogURL = "http://blog.csdn.net/Kylixs";
-	
 	public void initial(PanelEvent evt) {
 		super.initial(evt);
 	}	
@@ -38,25 +34,13 @@ public class game_exit extends PanelHandler {
 	}
 	
 	public void exit_game(ActionEvent evt) {
-		application.shutdown();
+		//application.shutdown();
+		application.endGame();
 	}
 	public void visit_homepage(ActionEvent evt) {
 		try {
 			Desktop.getDesktop().browse(new URI(GameMain.getHomeURL()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-	}
-	public void visit_blog(ActionEvent evt) {
-		try {
-			Desktop.getDesktop().browse(new URI(blogURL));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -19,6 +19,7 @@ import com.javaxyq.profile.ProfileException;
 import com.javaxyq.ui.Label;
 import com.javaxyq.ui.Panel;
 import com.javaxyq.ui.TextField;
+import com.javaxyq.ui.UIHelper;
 import com.javaxyq.widget.Animation;
 
 /**
@@ -45,6 +46,7 @@ public class select_role extends PanelHandler implements MouseListener {
 		for(int i=1;i<=6;i++) {
 			Label label = (Label) panel.findCompByName(prefix+i);
 			label.setAnim(null);
+			UIHelper.removeAllMouseListeners(label);
 			label.addMouseListener(this);
 			profileLabels.add(label);
 		}

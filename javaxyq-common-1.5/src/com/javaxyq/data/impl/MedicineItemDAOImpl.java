@@ -11,14 +11,11 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
-import com.javaxyq.data.Items;
-import com.javaxyq.data.ItemsDAO;
+import com.javaxyq.data.BaseItemDAO;
 import com.javaxyq.data.MedicineItem;
-import com.javaxyq.data.MedicineItemDAO;
-import com.javaxyq.data.MedicineItemException;
 import com.javaxyq.data.NonexistentEntityException;
 import com.javaxyq.data.PreexistingEntityException;
-import com.javaxyq.data.WeaponItem;
+import com.javaxyq.model.Item;
 import com.javaxyq.util.DBToolkit;
 import com.javaxyq.util.SmartBeanProcessor;
 
@@ -27,7 +24,7 @@ import com.javaxyq.util.SmartBeanProcessor;
  * @author gongdewei
  * @date 2011-4-30 create
  */
-public class MedicineItemDAOImpl implements ItemsDAO{
+public class MedicineItemDAOImpl implements BaseItemDAO{
 
 	private BeanListHandler<MedicineItem> resultHandler;
 
@@ -37,73 +34,73 @@ public class MedicineItemDAOImpl implements ItemsDAO{
 	}
 	
 	@Override
-	public void create(Items medicineItem) throws PreexistingEntityException, MedicineItemException {
+	public void create(Item medicineItem) throws PreexistingEntityException, SQLException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void destroy(Long id) throws NonexistentEntityException,MedicineItemException {
+	public void destroy(Long id) throws NonexistentEntityException,SQLException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void edit(Items medicineItem) throws NonexistentEntityException, MedicineItemException {
+	public void edit(Item medicineItem) throws NonexistentEntityException, SQLException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Items findItem(Long id) throws MedicineItemException {
+	public Item findItem(Long id) throws SQLException {
 		String sql = "select * from ITEM_MEDICINE where id=? ";
 		List<MedicineItem> results;
 		try {
 			QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
 			results = runner.query(sql, resultHandler, id);
 		} catch (Exception ex) {
-			throw new MedicineItemException(ex);
+			throw new SQLException(ex);
 		}
 		if(results.size() == 1) {
 			return results.get(0);
 		}else if(results.size() >= 1) {
-			throw new MedicineItemException("记录不唯一");
+			throw new SQLException("记录不唯一");
 		}
 		return null;
 	}
 
 	@Override
-	public Items findItemByName(String name) throws MedicineItemException {
+	public Item findItemByName(String name) throws SQLException {
 		String sql = "select * from ITEM_MEDICINE where name=? ";
 		List<MedicineItem> results;
 		try {
 			QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
 			results = runner.query(sql, resultHandler, name);
 		} catch (Exception ex) {
-			throw new MedicineItemException(ex);
+			throw new SQLException(ex);
 		}
 		if(results.size() == 1) {
 			return results.get(0);
 		}else if(results.size() >= 1) {
-			throw new MedicineItemException("记录不唯一");
+			throw new SQLException("记录不唯一");
 		}
 		return null;
 	}
 
 
-	public List<MedicineItem> findMedicineItemEntities() throws MedicineItemException {
+	public List<MedicineItem> findMedicineItemEntities() throws SQLException {
 		String sql = "select * from ITEM_MEDICINE ";
 		try {
 			QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
 			List<MedicineItem> results = runner.query(sql, resultHandler);
 			return results;
 		} catch (Exception e) {
-			throw new MedicineItemException(e);
+			throw new SQLException(e);
 		}
 	}
 
 
-	public List<MedicineItem> findMedicineItemEntities(int maxResults, int firstResult) throws MedicineItemException {
+	public List<MedicineItem> findMedicineItemEntities(int maxResults, int firstResult) throws SQLException {
 		if(firstResult < 1) {
 			firstResult = 1;
 		}
@@ -116,53 +113,53 @@ public class MedicineItemDAOImpl implements ItemsDAO{
 			List<MedicineItem> results = runner.query(sql, resultHandler, firstResult, maxResults);
 			return results;
 		} catch (SQLException e) {
-			throw new MedicineItemException(e);
+			throw new SQLException(e);
 		}
 	}
 
 
-	public List<MedicineItem> findMedicineItemsByType(int type) throws MedicineItemException {
+	public List<MedicineItem> findMedicineItemsByType(int type) throws SQLException {
 		String sql = "select * from ITEM_MEDICINE where type=? ";
 		try {
 			QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
 			List<MedicineItem> results = runner.query(sql, resultHandler, Integer.toHexString(type));
 			return results;
 		} catch (Exception e) {
-			throw new MedicineItemException(e);
+			throw new SQLException(e);
 		}
 	}
 
 	@Override
-	public int getItemCount() throws MedicineItemException {
+	public int getItemCount() throws SQLException {
 		String sql = "select count(1) from ITEM_MEDICINE ";
 		try {
 			QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
 			Object result = runner.query(sql, new ScalarHandler());
 			int count = 0;
 			if (result != null) {
-				count = ((Integer) result).intValue();
+				count = ((Number) result).intValue();
 			}
 			return count;
 		} catch (Exception e) {
-			throw new MedicineItemException(e);
+			throw new SQLException(e);
 		}
 	}
 	
 	@Override
-	public String findTypeByName(String name) throws MedicineItemException {
+	public String findTypeByName(String name) throws SQLException {
 		String sql = "select * from ITEM_MEDICINE where name=? ";
 		List<MedicineItem> results;
 		try {
 			QueryRunner runner = new QueryRunner(DBToolkit.getDataSource());
 			results = runner.query(sql, resultHandler, name);
 		} catch (Exception ex) {
-			throw new MedicineItemException(ex);
+			throw new SQLException(ex);
 		}
 		if(results.size() == 1) {
 			MedicineItem item = results.get(0);
 			return item.getType();
 		}else if(results.size() >= 1) {
-			throw new MedicineItemException("记录不唯一");
+			throw new SQLException("记录不唯一");
 		}
 		return null;
 	}

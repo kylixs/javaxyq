@@ -9,14 +9,8 @@ package com.javaxyq.data;
 
 import java.io.Serializable;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
 import com.javaxyq.model.Item;
+import com.javaxyq.util.StringUtils;
 
 /**
  * 物品实例对象
@@ -31,6 +25,8 @@ public class ItemInstance implements Serializable{
 	transient private Item item;
 	private int amount;
 	private long itemId = -1;
+	private String name;
+	private String type;
 	
 	/**
 	 * @param itemVO
@@ -46,6 +42,8 @@ public class ItemInstance implements Serializable{
 	public void setItem(Item item) {
 		this.item = item;
 		this.itemId = item.getId();
+		this.name = item.getName();
+		this.type = item.getType();
 	}
 	public int getAmount() {
 		return amount;
@@ -75,30 +73,30 @@ public class ItemInstance implements Serializable{
 		}
 		if (obj instanceof ItemInstance) {
 			ItemInstance it = (ItemInstance) obj;
-			return getItemId() == it.getItemId();
+			return getItemId() == it.getItemId() && StringUtils.equals(it.getName(), getName());
 		}
 		return false;
 	}
 	
 	//---------- delegated methods ---------------//
 	
+	public Long getId() {
+		return itemId;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getType() {
+		return type;
+	}
 	public String getDescription() {
 		return item.getDescription();
-	}
-	public Long getId() {
-		return item.getId();
 	}
 	public short getLevel() {
 		return item.getLevel();
 	}
-	public String getName() {
-		return item.getName();
-	}
 	public long getPrice() {
 		return item.getPrice();
-	}
-	public String getType() {
-		return item.getType();
 	}
 	
 	

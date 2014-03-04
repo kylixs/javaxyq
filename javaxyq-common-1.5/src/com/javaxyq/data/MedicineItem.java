@@ -5,17 +5,7 @@
 
 package com.javaxyq.data;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 import com.javaxyq.model.Item;
 
@@ -23,50 +13,17 @@ import com.javaxyq.model.Item;
  *
  * @author Administrator
  */
-@Entity
-@Table(name = "ITEM_MEDICINE", catalog = "", schema = "APP")
-@NamedQueries({
-    @NamedQuery(name = "MedicineItem.findAll", query = "SELECT m FROM MedicineItem m"),
-    @NamedQuery(name = "MedicineItem.findById", query = "SELECT m FROM MedicineItem m WHERE m.id = :id"),
-    @NamedQuery(name = "MedicineItem.findByName", query = "SELECT m FROM MedicineItem m WHERE m.name = :name"),
-    @NamedQuery(name = "MedicineItem.findByDescription", query = "SELECT m FROM MedicineItem m WHERE m.description = :description"),
-    @NamedQuery(name = "MedicineItem.findByPrice", query = "SELECT m FROM MedicineItem m WHERE m.price = :price"),
-    @NamedQuery(name = "MedicineItem.findByHp", query = "SELECT m FROM MedicineItem m WHERE m.hp = :hp"),
-    @NamedQuery(name = "MedicineItem.findByMp", query = "SELECT m FROM MedicineItem m WHERE m.mp = :mp"),
-    @NamedQuery(name = "MedicineItem.findByInjury", query = "SELECT m FROM MedicineItem m WHERE m.injury = :injury"),
-    @NamedQuery(name = "MedicineItem.findByType", query = "SELECT m FROM MedicineItem m WHERE m.type = :type"),
-    @NamedQuery(name = "MedicineItem.findByEfficacy", query = "SELECT m FROM MedicineItem m WHERE m.efficacy = :efficacy"),
-    @NamedQuery(name = "MedicineItem.findByLevel", query = "SELECT m FROM MedicineItem m WHERE m.level = :level")})
-public class MedicineItem extends Items implements Item ,Serializable {
+public class MedicineItem implements Item ,Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "ID", nullable = false)
     private Long id;
-    @Basic(optional = false)
-    @Column(name = "NAME", nullable = false, length = 20)
     private String name;
-    @Column(name = "DESCRIPTION", length = 400)
     private String description;
-    @Basic(optional = false)
-    @Column(name = "PRICE", nullable = false)
     private long price;
-    @Basic(optional = false)
-    @Column(name = "HP", nullable = false)
     private int hp;
-    @Basic(optional = false)
-    @Column(name = "MP", nullable = false)
     private int mp;
-    @Basic(optional = false)
-    @Column(name = "INJURY", nullable = false)
     private int injury;
-    @Basic(optional = false)
-    @Column(name = "TYPE", nullable = false, length = 10)
     private String type;
-    @Column(name = "EFFICACY", length = 400)
     private String efficacy;
-    @Basic(optional = false)
-    @Column(name = "LEVEL", nullable = false)
     private short level;
 
     public MedicineItem() {

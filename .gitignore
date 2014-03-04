@@ -5,3 +5,8 @@ tmp
 temp
 .svn
 *.log
+log
+build
+deploy
+*.lck
+

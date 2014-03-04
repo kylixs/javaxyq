@@ -14,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +60,7 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 	private EventListenerList listenerList = new EventListenerList();
 	private List<Player> ownsideTeam;
 	private List<Player> adversaryTeam;
-	private Animation battleMask;
-	private Image battleBackground;
+	private BufferedImage battleBackground;
 	private Label lblMsg;
 	private Player target;
 	private Random random = new Random();
@@ -154,7 +154,6 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 	}
 
 	public void init() {
-		battleMask = SpriteFactory.loadAnimation("/addon/battlebg.tcp");
 		getHelper().showDialog(BATTLE_ROLE_CMD);
 		getHelper().showDialog(BATTLE_MSG);
 		lblMsg = (Label) super.findCompByName("lbl_battle_msg");
@@ -467,8 +466,7 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 			ItemLabel label = (ItemLabel) dialog.findCompByName("item" + (i + 1));
 			label.setItem(items[i]);
 			//避免重复添加监听器
-			label.removeMouseListener(itemMouseHandler);
-			label.removeMouseMotionListener(itemMouseHandler);
+			UIHelper.removeAllMouseListeners(label);
 			label.addMouseListener(itemMouseHandler);
 			label.addMouseMotionListener(itemMouseHandler);
 		}
@@ -507,21 +505,18 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 	}
 
 	@Override
-	public synchronized void draw(Graphics g, long elapsedTime) {
+	public void draw(Graphics g, long elapsedTime) {
 		if (g == null) {
 			return;
 		}
 		try {
-			g.setColor(Color.WHITE);
-			g.clearRect(0, 0, getWidth(), getHeight());
+//			g.setColor(Color.WHITE);
+//			g.clearRect(0, 0, getWidth(), getHeight());
 			if (battleBackground != null) {
 				g.drawImage(battleBackground, 0, 0, null);
 			}else {
 				g.setColor(getBackground());
 				g.fillRect(0, 0, getWidth(), getHeight());
-			}
-			if (battleMask != null) {
-				battleMask.draw(g, 0, 0);
 			}
 			// npcs
 			drawNPC(g, elapsedTime);
@@ -531,8 +526,10 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 			// update comps on the canvas
 			drawComponents(g, elapsedTime);
 			// draw fade
-			g.setColor(new Color(0, 0, 0, alpha));
-			g.fillRect(0, 0, getWidth(), getHeight());
+			if(alpha > 0) {
+				g.setColor(new Color(0, 0, 0, alpha));
+				g.fillRect(0, 0, getWidth(), getHeight());
+			}
 			
 			drawDebug(g);
 			drawDownloading(g);
@@ -828,8 +825,16 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 	}
 
 
-	public void setBattleBackground(Image battleBackground) {
-		this.battleBackground = battleBackground;
+	public void setBattleBackground(Image image) {
+		if (image instanceof BufferedImage) {
+			this.battleBackground = (BufferedImage) image;
+		}else {
+			Dimension size = this.getSize();
+			this.battleBackground = new BufferedImage(size.width, size.height, BufferedImage.TYPE_USHORT_565_RGB);
+			this.battleBackground.getGraphics().drawImage(image, 0, 0, this);
+		}
+		Animation battleMask = SpriteFactory.loadAnimation("/addon/battlebg.tcp");
+		battleMask.draw(this.battleBackground.getGraphics(), 0, 0);
 	}
 	/**
 	 * 最近一次施放的法术

@@ -124,4 +124,9 @@ public interface Application {
 	 * @return
 	 */
 	String getProfileName();
+
+	/**
+	 * ½áÊøÓÎÏ·
+	 */
+	void endGame();
 }

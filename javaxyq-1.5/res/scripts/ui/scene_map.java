@@ -20,6 +20,7 @@ import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
 import com.javaxyq.ui.Label;
+import com.javaxyq.ui.UIHelper;
 import com.javaxyq.widget.Animation;
 import com.javaxyq.widget.Player;
 import com.javaxyq.widget.Sprite;
@@ -67,7 +68,7 @@ public class scene_map extends PanelHandler implements MouseListener{
 		rateX = 1.0*navWidth /canvas.getSceneWidth();
 		rateY = 1.0*navHeight /canvas.getSceneHeight();
 		
-		panel.removeMouseListener(this);
+		UIHelper.removeAllMouseListeners(panel);
 		panel.addMouseListener(this);
 		setAutoUpdate(true);
 	}

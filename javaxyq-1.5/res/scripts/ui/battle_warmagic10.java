@@ -16,6 +16,7 @@ import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
 import com.javaxyq.ui.Label;
+import com.javaxyq.ui.UIHelper;
 import com.javaxyq.widget.Animation;
 
 /**
@@ -52,6 +53,7 @@ public class battle_warmagic10 extends PanelHandler {
 			label.setAnim(anim);
 			label.setText(magicIds[i]);
 			label.setToolTipText(magicNames[i]);
+			UIHelper.removeAllMouseListeners(label);
 			label.addMouseListener(mouseHandler);
 		}
 	}

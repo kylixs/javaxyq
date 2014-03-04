@@ -325,7 +325,7 @@ public class GameMakerView extends FrameView {
 	 */
 	protected void addNpcToScene(String characterId) {
 		sceneEditor.setCharacterId(characterId);
-		sceneEditor.placeNpc();
+		sceneEditor.createNewNpc();
 	}
 
 	/**

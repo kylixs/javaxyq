@@ -24,7 +24,7 @@
     <Sprite name="当前对象" x="-1" y="22" width="312" height="177" path="/wzife/dialog/itemm1.tcp" actionId=""/>
     <Button id="" name="道具" text="" x="29" y="411" width="43" height="22" actionId="" was="/wzife/button/itm.tcp" tooltip="" toggle="true"/>
     <Button id="" name="行囊" text="" x="86" y="411" width="" height="" actionId="" was="/wzife/button/bag.tcp" tooltip="" toggle="true"/>
-    <Button id="" name="销毁" text="销毁" x="174" y="410" width="" height="" actionId="" was="/wzife/button/smallbtn.tcp" tooltip="" toggle="false"/>
+    <Button id="" name="btn_destory_item" text="销毁" x="174" y="410" width="" height="" actionId="destory_item" was="/wzife/button/smallbtn.tcp" tooltip="" toggle="false"/>
     <Button id="" name="整理" text="整理" x="225" y="411" width="" height="" actionId="" was="/wzife/button/smallbtn.tcp" tooltip="" toggle="false"/>
   </Dialog>
 </Dialogs>

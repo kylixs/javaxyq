@@ -6,10 +6,8 @@ package com.javaxyq.core;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.Action;
@@ -302,8 +300,8 @@ public abstract class BaseApplication implements Application {
 		GameWindow window = context.getWindow();
 		SceneCanvas canvas = (SceneCanvas) window.getCanvas();
 		sceneCanvas = canvas;
-		Dimension size = window.getSize();
 		//background
+		Dimension size = canvas.getSize();
 		BufferedImage bg = new BufferedImage(size.width, size.height, BufferedImage.TYPE_USHORT_565_RGB);
 		TileMap map = canvas.getMap();
 		Point viewPosition = canvas.getViewPosition();
@@ -383,13 +381,14 @@ public abstract class BaseApplication implements Application {
 		context.setPlayer(player);
 		context.setScene(profile.getSceneId());
 		dataManager.setItems(player, profile.getItems());
-		/*DataStore datastore = (DataStore)dataManager;
-		
-		ItemInstance [] items = {datastore.createItem("Àƒ“∂ª®"),datastore.createItem("ŒÂª¢∂œªÍ"),datastore.createItem("æ≈œ„≥Ê")};		
-		for(ItemInstance item: items){
-			System.out.println("itemsDAO IS:"+item.getName());
-			datastore.addItemToPlayer(player, item);
-		}*/
+
+
+//		DataStore datastore = (DataStore)dataManager;
+//		ItemInstance [] items = {datastore.createItem("Àƒ“∂ª®"),datastore.createItem("ŒÂª¢∂œªÍ"),datastore.createItem("æ≈œ„≥Ê")};		
+//		for(ItemInstance item: items){
+//			System.out.println("itemsDAO IS:"+item.getName());
+//			datastore.addItemToPlayer(player, item);
+//		}
 		
 		
 		Task[] tasks = profile.getTasks();
@@ -414,6 +413,9 @@ public abstract class BaseApplication implements Application {
 	public void saveProfile() throws ProfileException {
 		try {
 			Player player = context.getPlayer();
+			if(player == null) {
+				return;
+			}
 			PlayerVO data = player.getData();
 			profile.setPlayerData(data);
 			profile.setCreateDate(new java.util.Date());
@@ -451,4 +453,15 @@ public abstract class BaseApplication implements Application {
 		return null;
 	}
 
+	@Override
+	public void endGame() {
+		try {
+			saveProfile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//∑µªÿµΩª∂”≠ΩÁ√Ê
+		
+	}
 }

@@ -277,7 +277,7 @@ public class Player extends AbstractWidget implements EventTarget {
 		return name;
 	}
 
-	synchronized public void say(String chatText) {
+	/*synchronized*/ public void say(String chatText) {
 		if(Cheat.process(chatText)) {
 			return ;
 		}
@@ -441,7 +441,7 @@ public class Player extends AbstractWidget implements EventTarget {
 		// System.out.println("stop action!");
 	}
 
-	public synchronized void update(long elapsedTime) {
+	public void update(long elapsedTime) {
 		shadow.update(elapsedTime);
 		person.update(elapsedTime);
 		if (weapon != null) {
@@ -461,7 +461,7 @@ public class Player extends AbstractWidget implements EventTarget {
 		}
 	}
 
-	public synchronized void updateMovement(long elapsedTime) {
+	public /*synchronized*/ void updateMovement(long elapsedTime) {
 		// 根据状态改变player的sprite（character可能改变）
 		this.setState(this.isMoving() ? STATE_WALK: this.state);
 		if (this.isMoving()) {
@@ -646,7 +646,7 @@ public class Player extends AbstractWidget implements EventTarget {
 		}
 	}
 
-	public synchronized void draw(Graphics g, int x, int y) {
+	public /*synchronized*/ void draw(Graphics g, int x, int y) {
 		shadow.draw(g, x, y);
 		person.draw(g, x, y);
 		if (weapon != null)

@@ -27,7 +27,11 @@ import com.jidesoft.utils.Lm;
 public class UIUtils {
 
 	static {
-		Lm.verifyLicense("Onseven Software AB", "DbVisualizer", ":yLk79NF.NhixitY0obolwn9q:lDRTX1");
+		try {
+			Lm.verifyLicense("Onseven Software AB", "DbVisualizer", ":yLk79NF.NhixitY0obolwn9q:lDRTX1");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * 提示错误信息

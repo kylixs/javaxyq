@@ -2,7 +2,7 @@
 <!-- You may freely edit this file. See commented blocks below for -->
 <!-- some examples of how to customize the build. -->
 <!-- (If you delete it and reopen the project it will be recreated.) -->
-<project name="javaxyq-1.5" default="default" basedir="." >
+<project name="javaxyq-1.5" default="build" basedir="." >
 	<description>Builds, tests, and runs the project JavaXYQ.</description>
 	<buildnumber file="build.properties" />
 	<property name="project_name" value="JavaXYQ" />
@@ -49,6 +49,21 @@
 				<exclude name="com/javaxyq/tools/**"/>
 			</fileset>
 		</jar>
+		
+		<delete file="${build_dir}/lib/javaxyq-common.jar"></delete>
+		<jar destfile="${build_dir}/lib/javaxyq-common.jar" update="true">
+			<manifest>
+				<attribute name="Version" value="${version}_${builddate}_${build.number}" />
+				<attribute name="Created-By" value="${publisher}" />
+				<attribute name="Computer-Name" value="${computer}" />
+				<attribute name="Created-Time" value="${buildtime}" />
+			</manifest>
+
+			<fileset dir="${project}/../javaxyq-common-1.5/bin">
+				<include name="**/*.class" />
+				<exclude name="com/javaxyq/tools/**"/>
+			</fileset>
+		</jar>
 	</target>
 	
 	<target name="build" depends="init">
@@ -70,7 +85,6 @@
 		</copy>
 		<copy todir="${build_dir}/lib">
 			<fileset dir="${project}/lib">
-				<include name="javaxyq-common.jar" />
 				<include name="jl1.0.jar" />
 				<include name="groovy-all-1.6.5.jar" />
 				<include name="commons-dbutils-1.3.jar" />
@@ -116,8 +130,6 @@
 		<mail></mail>
 	</target>
 
-	<target name="default" depends="init,build" />
-	
 	<taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask" classpath="ant-googlecode-0.0.2.jar" name="gcupload"/> 
 
 	<target name="resource-manager" depends="init">

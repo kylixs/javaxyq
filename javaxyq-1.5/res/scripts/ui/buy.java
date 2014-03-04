@@ -25,6 +25,7 @@ import com.javaxyq.ui.ItemDetailLabel;
 import com.javaxyq.ui.ItemLabel;
 import com.javaxyq.ui.Label;
 import com.javaxyq.ui.TextField;
+import com.javaxyq.ui.UIHelper;
 /**
  * ¹ºÂò¶Ô»°¿ò½Å±¾
  * @author dewitt
@@ -58,6 +59,7 @@ public class buy extends PanelHandler implements MouseListener,MouseMotionListen
 				label.setSize(50,50);
 				label.setLocation(x0+x*51,y0+y*51);
 				panel.add(label);
+				UIHelper.removeAllMouseListeners(label);
 				label.addMouseListener(this);
 				label.addMouseMotionListener(this);
 			}

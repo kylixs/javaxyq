@@ -90,7 +90,7 @@ public class SceneTeleporterDAOImpl implements SceneTeleporterDAO {
 		Object result = runner.query(sql, new ScalarHandler());
 		int count = 0;
 		if (result != null) {
-			count = ((Integer) result).intValue();
+			count = ((Number) result).intValue();
 		}
 		return count;
 	}

@@ -103,23 +103,27 @@ public class DesktopApplication extends BaseApplication {
 	@Override
 	protected void finish() {
 		super.finish();
+		showMainMenuCanvas();
+		
+		//后台预加载场景
+		//preloadLastProfile();
+	}
+
+	public void showMainMenuCanvas() {
 		Image img = SpriteFactory.loadImage("/wzife/login/background.jpg");
 		MainMenuCanvas menuCanvas = new MainMenuCanvas(img, window.getContentWidth(), window.getContentHeight());
 		Panel mainmenu = getUIHelper().getDialog("mainmenu");
 		
-		LoadingCanvas loadingCanvas = (LoadingCanvas) window.getCanvas(); 
-		//loadingCanvas.stopMusic();
-		loadingCanvas.dispose();
-		CacheManager.getInstance().removeDownloadListener(loadingCanvas);
+		Canvas currentCanvas = (Canvas) window.getCanvas(); 
+		//currentCanvas.stopMusic();
+		currentCanvas.dispose();
+		CacheManager.getInstance().removeDownloadListener(currentCanvas);
 		
 		//切换到主菜单
 		window.setCanvas(menuCanvas);
 		getUIHelper().showDialog(mainmenu);
 		menuCanvas.playMusic();
 		CacheManager.getInstance().addDownloadListener(menuCanvas);
-		
-		//后台预加载场景
-		//preloadLastProfile();
 	}
 
 	private void preloadLastProfile() {
@@ -173,6 +177,13 @@ public class DesktopApplication extends BaseApplication {
 	public void stopMusic() {
 		window.getCanvas().stopMusic();
 	}	
+	@Override
+	public void endGame() {
+		super.endGame();
+		sceneCanvas.dispose();
+		sceneCanvas = null;
+		showMainMenuCanvas();
+	}
 	/**
 	 * @param args
 	 */

@@ -22,22 +22,15 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import com.javaxyq.config.PlayerConfig;
-import com.javaxyq.data.Items;
-import com.javaxyq.data.ItemsDAO;
+import com.javaxyq.data.BaseItemDAO;
 import com.javaxyq.data.ItemInstance;
 import com.javaxyq.data.MedicineItem;
-import com.javaxyq.data.MedicineItemDAO;
-import com.javaxyq.data.MedicineItemException;
-import com.javaxyq.data.MedicineItemJpaController;
 import com.javaxyq.data.Scene;
 import com.javaxyq.data.SceneDAO;
-import com.javaxyq.data.SceneJpaController;
 import com.javaxyq.data.SceneNpc;
 import com.javaxyq.data.SceneNpcDAO;
-import com.javaxyq.data.SceneNpcJpaController;
 import com.javaxyq.data.SceneTeleporter;
 import com.javaxyq.data.SceneTeleporterDAO;
-import com.javaxyq.data.SceneTeleporterJpaController;
 import com.javaxyq.data.impl.MedicineItemDAOImpl;
 import com.javaxyq.data.impl.SceneDAOImpl;
 import com.javaxyq.data.impl.SceneNpcDAOImpl;
@@ -129,7 +122,7 @@ public class DataStore implements DataManager {
 	
 	private Map<Player,ItemInstance[]> itemsMap = new HashMap<Player, ItemInstance[]>();
 	
-	private List<ItemsDAO> items = new ArrayList<ItemsDAO>();
+	private List<BaseItemDAO> itemDAOs = new ArrayList<BaseItemDAO>();
 	private String lastchat = "";
 	private MedicineItemDAOImpl medicineDAO;
 	private Random rand = new Random();
@@ -296,29 +289,26 @@ public class DataStore implements DataManager {
 	}
 
 	public ItemInstance createItem(String name) {
-		if(name == null) return null;
+		if(name == null || name.isEmpty()) return null;
 		name = name.trim();
-//		if(medicines == null) {
-//			loadMedicines();
-//		}
-//		try {
-//			return medicines.get(name).clone();
-//		} catch (CloneNotSupportedException e) {
-//			e.printStackTrace();
-//		}
-		try {
-			for(ItemsDAO item: items){
-				if(item.findItemByName(name) != null){
-					 Items itemVO =  item.findItemByName(name);
-					   System.out.println("itemVO IS:"+itemVO);
-					   return new ItemInstance(itemVO,1);
+		Item item = this.findItemByName(name);
+		if(item != null) {
+			return new ItemInstance(item, 1);
+		}
+		System.err.println("createItem failed: "+name);
+		return null;
+	}
+	
+	public Item findItemByName(String name) {
+		for(BaseItemDAO itemDao: itemDAOs){
+			try {
+				Item item = itemDao.findItemByName(name);
+				if(item != null){
+					return item;
 				}
-			      
-			}  
-		
-			
-		} catch (MedicineItemException e) {
-			e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -599,43 +589,19 @@ public class DataStore implements DataManager {
 	 * 初始化数据中心
 	 */
 	private void init() {
-		System.out.println("initializing datastore: "+new java.util.Date());
-		System.setProperty("derby.system.home",CacheManager.getInstance().getCacheBase());
-		//medicineDAO = new MedicineItemJpaController();
-		//sceneDAO = new SceneJpaController();
-		//sceneNpcDAO = new SceneNpcJpaController();
-		//sceneTeleporterDAO = new SceneTeleporterJpaController();
+		String cacheBase = CacheManager.getInstance().getCacheBase();
+		System.setProperty("derby.system.home", cacheBase);
+		System.out.println("initializing datastore: "+new java.util.Date()+", dbDir: "+cacheBase);
 		weaponDAO = new WeaponItemDAOImpl();
 		medicineDAO = new MedicineItemDAOImpl();
 		sceneDAO = new SceneDAOImpl();
 		sceneNpcDAO = new SceneNpcDAOImpl();
 		sceneTeleporterDAO = new SceneTeleporterDAOImpl();
 		
-		items.add(weaponDAO);
-		items.add(medicineDAO);
+		itemDAOs.add(weaponDAO);
+		itemDAOs.add(medicineDAO);
 
-	
-			//ItemInstance [] items = {createItem("四叶花"),createItem("鬼切草"),createItem("九香虫")};
-			
-			
-			/*for(ItemInstance item: items){
-				System.out.println("itemsDAO IS:"+item.getName());
-			}*/
-			
-		
 		System.out.println("initialized datastore: "+new java.util.Date());
-//		Runnable action = new Runnable() {
-//			public void run() {
-//				System.out.println("initializing DAO: "+new java.util.Date());
-//				try {
-//					medicineDAO.findMedicineItemByName("四叶花");
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//				System.out.println("initialized DAO: "+new java.util.Date());
-//			}
-//		};
-//		new Thread(action).start();
 	}
 	
 	/**
@@ -989,18 +955,24 @@ public class DataStore implements DataManager {
 	public void setItem(Player player,int index,ItemInstance item_inst) {
 		ItemInstance[] items_inst = getItems(player);
 		items_inst[index] = item_inst;
-		try {
-			if(item_inst != null && item_inst.getItem() == null) {
+	
+		if(item_inst != null && item_inst.getItem() == null) {
 				//item.setItem((MedicineItem)medicineDAO.findItem(item.getItemId()));
-				for(ItemsDAO item: items){
-					if(item.findItem(item_inst.getItemId()) != null){
-						 Items itemVO =  item.findItem(item_inst.getItemId());
-						   item_inst.setItem(itemVO);
-					}
-				}  
-			}
-		} catch (MedicineItemException e) {
-			e.printStackTrace();
+				/*for(BaseItemDAO itemDao: itemDAOs){
+					try {
+						Item item = itemDao.findItemByName(name);
+						if(item != null){
+				*/
+		  for(BaseItemDAO itemDao: itemDAOs){
+		      try {
+					 Item item = itemDao.findItem(item_inst.getId());
+						if(item != null){
+						   item_inst.setItem(item);
+					    }	   
+			   } catch (SQLException e) {
+			     e.printStackTrace();
+		       }
+	      }
 		}
 	}
 
@@ -1008,23 +980,51 @@ public class DataStore implements DataManager {
 		setItem(player,index,createItem(itemName));
 	}
 
+
 	public void setItems(Player player, ItemInstance[] items_inst) {
+		
+
+		//TODO 改进初始化物品的算法
 		if(items_inst != null) {
+
 			ItemInstance[] _items = getItems(player);
 			for (int i = 0; i < _items.length; i++) {
 				ItemInstance _inst = items_inst[i];
 				_items[i] = _inst;
 				try {
 					if(_inst!=null && _inst.getItem() == null) {
+
 						//_inst.setItem((MedicineItem)medicineDAO.findItem(_inst.getItemId()));
-						for(ItemsDAO item: items){
-							if(item.findItem(_inst.getItemId()) != null){
-								 Items itemVO =  item.findItem(_inst.getItemId());
-								   _inst.setItem(itemVO);
+						for(BaseItemDAO itemDao: itemDAOs){
+						      try {
+									 Item item = itemDao.findItem(_inst.getId());
+										if(item != null){
+										   _inst.setItem(item);
+									    }	   
+							   } catch (SQLException e) {
+							     e.printStackTrace();
+						       }
+					      }
+
+						if(_inst.getName() != null) {
+							Item item = this.findItemByName(_inst.getName());
+							if(item != null) {
+								_inst.setItem(item);
+							}else {
+								_items[i] = null;
 							}
-						} 
+						}else {
+							Item item = medicineDAO.findItem(_inst.getItemId());
+							if(item != null) {
+								_inst.setItem(item);
+							}else {
+								_items[i] = null;
+							}
+						}
+
 					}
-				} catch (MedicineItemException e) {
+				} catch (Exception e) {
+					_items[i] = null;
 					e.printStackTrace();
 				}
 			}

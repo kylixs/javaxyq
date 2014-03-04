@@ -108,7 +108,6 @@ public class SceneCanvas extends Canvas {
 			//获得Player的坐标
 			Player player = getPlayer();
 			if (player != null) {
-				player.update(elapsedTime);
 				Point p = player.getLocation();
 				p = localToView(p);
 				
@@ -322,7 +321,7 @@ public class SceneCanvas extends Canvas {
 	private int viewportVx = 10;
 	private int viewportVy = 10;
 
-	public synchronized void addNPC(Player npc) {
+	public void addNPC(Player npc) {
 		super.addNPC(npc);
 		npc.removeAllListeners();
 		npc.addPlayerListener(defaultTalkAction);
@@ -330,9 +329,10 @@ public class SceneCanvas extends Canvas {
 
 	@Override
 	protected void clearNPCs() {
-		List<Player> npclist = getNpcs();
-		for (Player player : npclist) {
-			player.removePlayerListener(defaultTalkAction);
+		List<Player> npcs = getNpcs();
+        for(int i=0;i<npcs.size();i++){
+        	Player npc = npcs.get(i);
+			npc.removePlayerListener(defaultTalkAction);
 		}
 		super.clearNPCs();
 	}
@@ -753,7 +753,7 @@ public class SceneCanvas extends Canvas {
 		}
 	}
 
-	public synchronized void draw(Graphics g, long elapsedTime) {
+	public void draw(Graphics g, long elapsedTime) {
 		if (g == null) {
 			return;
 		}
