@@ -69,7 +69,7 @@ public class Profile {
 
 	public ItemInstance[] getItems() {
 		if(items == null) {
-			items = new ItemInstance[20];
+			items = new ItemInstance[26];
 		}
 		return items;
 	}

@@ -9,6 +9,7 @@ public class WeaponItem extends Items implements Serializable{
 	private String name;
 	private String type;
 	private String description;
+	private String character;
 	
 	private long price;
 	private long add_attribute1;
@@ -55,6 +56,14 @@ public class WeaponItem extends Items implements Serializable{
 	
 	public void setDescription(String description){
 		this.description = description;
+	}
+	
+	public String getCharacter(){
+		return character;
+	}
+	
+	public void setCharacter(String description){
+		this.character = character;
 	}
 	
 	public long getPrice(){
@@ -132,8 +141,8 @@ public class WeaponItem extends Items implements Serializable{
 	public String toString() {
 		return String
 			.format(
-				"WeaponItem [id=%s, name=%s, description=%s, price=%s, add_attribute1=%s, add_attribute2=%s, accuracy=%s, damage=%s, dodge=%s, type=%s, add_skill=%s, efficacy=%s, level=%s]",
-				id, name, description, price, add_attribute1, add_attribute2, accuracy, damage, dodge, type, add_skill, efficacy, level);
+				"WeaponItem [id=%s, name=%s, description=%s, character=%s, price=%s, add_attribute1=%s, add_attribute2=%s, accuracy=%s, damage=%s, dodge=%s, type=%s, add_skill=%s, efficacy=%s, level=%s]",
+				id, name, description, character, price, add_attribute1, add_attribute2, accuracy, damage, dodge, type, add_skill, efficacy, level);
 	}
 	
 	@Override

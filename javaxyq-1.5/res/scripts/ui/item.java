@@ -29,6 +29,8 @@ import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.data.ItemInstance;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
+import com.javaxyq.model.Item;
+import com.javaxyq.model.ItemTypes;
 import com.javaxyq.ui.ItemDetailLabel;
 import com.javaxyq.ui.ItemLabel;
 import com.javaxyq.ui.Label;
@@ -45,6 +47,11 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 	int x0=28,y0 = 198;
 	int rows = 4,cols = 5;
 	int cellWidth = 51,cellHeight = 51;
+	
+	int x1 =197, y1 =26;
+	int erows = 3,ecols = 2;
+	int ecellWidth = 54,ecellHeight = 54;
+	
 	private ItemDetailLabel detailLabel;
 	private ItemLabel[] itemlabels ;
 	private int selectedIndex = -1;
@@ -55,7 +62,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 	
 	public item() {
 		this.detailLabel = new ItemDetailLabel();
-		itemlabels = new ItemLabel[rows*cols];
+		itemlabels = new ItemLabel[rows*cols+erows*ecols];
 		selectedBorder = new Label(SpriteFactory.loadAnimation("wzife/button/itemselected.tcp"));
 		selectingBorder = new Label(SpriteFactory.loadAnimation("wzife/button/itemselecting.tcp"));
 	}
@@ -82,15 +89,86 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 	public void update(PanelEvent evt) {
 		this.updateLabels(this.panel);
 	}
+	
 	/**
-	 * 更新物品栏
+	 * 更新装备栏
+	 */
+	synchronized private void updateEquipment(MouseEvent e){
+		 Point cell = getCell(e);
+		 Point cell1 = getCell1(e);
+		   
+			//ItemLabel label = il;
+			//Item item = label.item;
+		   if(cell != null) {
+			   selectedIndex = cell.y*cols +cell.x+6;
+			   Player player = context.getPlayer();
+			   int newIndex =2;			   
+			   dataManager.swapItem(player, selectedIndex, newIndex);
+			   selectedIndex =-1;			      
+		   }else if(cell1 != null) {
+			   selectedIndex = 2;
+			   Player player = context.getPlayer();
+			   for(int r=0;r<rows;r++) {
+				   for(int c=0;c<cols;c++) {
+					   //create label
+					   int newIndex = r*cols + c+6;
+					   ItemLabel label = itemlabels[newIndex];
+					   //println "labe is:$label"
+						   if(label == null) {//格子没有有物品
+							   dataManager.swapItem(player, selectedIndex, newIndex);
+							   break;
+						   }
+				   }
+			   }     
+		   }
+		
+	}
+	
+	/**
+	 * 更新道具栏
 	 */
 	synchronized private void updateItems() {
 		ItemInstance[] items = dataManager.getItems(context.getPlayer());
+		
+		for(int r=0;r<erows;r++) {
+			for(int c=0;c<ecols;c++) {
+				//create label
+				int index = r*ecols + c;
+				ItemInstance item = items[index];
+				ItemLabel label = itemlabels[index];
+				if(item!=null) {//数据列表有item
+					if(label!=null) {//格子有物品
+						if(label.getItem() != item) {//如果不是同一个物品
+							label.setItem(item);
+						}
+					}else {//格子空着
+						try {
+							label = new ItemLabel(item);
+							label.setLocation(x1 + c*ecellWidth , y1+r*ecellHeight+1);
+							label.addMouseListener(this);
+							label.addMouseMotionListener(this);
+							panel.add(label,0);
+							itemlabels[index] = label;
+						}catch(Exception e1) {
+							System.out.println("添加item失败！"+item);
+							e1.printStackTrace();
+						}
+					}
+				}else {//清除格子
+					if(label!=null) {
+						panel.remove(label);
+						label.removeMouseListener(this);
+						label.removeMouseMotionListener(this);
+						itemlabels[index] = null;
+					}
+				}
+			}
+		}
+		
 		for(int r=0;r<rows;r++) {
 			for(int c=0;c<cols;c++) {
 				//create label
-				int index = r*cols + c;
+				int index = r*cols + c + (erows*ecols);
 				ItemInstance item = items[index];
 				ItemLabel label = itemlabels[index];
 				if(item!=null) {//数据列表有item
@@ -215,6 +293,13 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
     	}
     			
 	}
+	
+	/**
+	 * 
+	 */
+	private void setItemLabel(int index){
+		
+	}
     
     /**
      * 停止移动物品（移动完成或者取消移动）
@@ -259,8 +344,16 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 		Component c = e.getComponent();
 		if (c instanceof ItemLabel) {
 			ItemLabel label = (ItemLabel) c;
+			Item item = label.getItem().getItem();
+			
+			if(ItemTypes.isType(item, ItemTypes.TYPE_WEAPON)){
+				updateEquipment(e);
+			}else if(ItemTypes.isType(item, ItemTypes.TYPE_MEDICINE)){	
+			}
+			
 			application.getItemManager().useItem(context.getPlayer(),label.getItem());
 			updateItems();
+			
 			return true;
 		}
 		return false;
@@ -269,9 +362,13 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
     public void mouseMoved(MouseEvent e){
     	Object src = e.getComponent();
     	Point cell = getCell(e);
+    	Point cell1 = getCell1(e);
     	if(cell!=null) {
 	    	selectingBorder.setLocation(x0+cell.x*cellWidth-1, y0+cell.y*cellHeight-1);
 	    	panel.add(selectingBorder,0);
+    	}else if(cell1!=null){
+		    selectingBorder.setLocation(x1+cell1.x*ecellWidth-1, y1+cell1.y*ecellHeight-1);
+		    panel.add(selectingBorder,0);
     	}else {
     		panel.remove(selectingBorder);
     	}
@@ -303,6 +400,20 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
     	}    	
     	return null;
     }
+    
+    private Point getCell1(MouseEvent e){
+		JComponent src = (JComponent) e.getComponent();
+		Point p = e.getPoint();
+		if(src != panel) {
+			p = SwingUtilities.convertPoint(src, p, panel);
+		}
+		if(p.x>x1 && p.x <x1+ecellWidth*ecols && p.y>y1 && p.y<y1+ecellHeight*erows) {
+			int r = (p.y-y1)/ecellHeight;
+			int c = (p.x-x1)/ecellWidth;
+			return new Point(c,r);
+		}
+		return null;
+	}
     
     public void mousePressed(MouseEvent e) {e.consume();}
     

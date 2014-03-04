@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.javaxyq.action.MedicineItemHandler;
+import com.javaxyq.action.WeaponItemHandler;
 import com.javaxyq.data.XmlDataLoader;
 import com.javaxyq.io.CacheManager;
 import com.javaxyq.menu.MainMenuCanvas;
@@ -95,6 +96,8 @@ public class DesktopApplication extends BaseApplication {
 		//task
 		getTaskManager().register("school", "com.javaxyq.task.SchoolTaskCoolie");
 		ApplicationHelper.getApplication().getItemManager().regItem(ItemTypes.TYPE_MEDICINE, new MedicineItemHandler());
+		ApplicationHelper.getApplication().getItemManager().regItem(ItemTypes.TYPE_WEAPON, new WeaponItemHandler());
+
 	}
 	
 	@Override

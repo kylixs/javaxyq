@@ -238,7 +238,7 @@ public class DataStore implements DataManager {
 		synchronized(player) {
 			ItemInstance[] items = getItems(player);
 			int index = 0;
-			for(index =0;index < items.length;index++) {
+			for(index =6;index < items.length;index++) {
 				if(items[index] == null) {
 					items[index] = item;
 					return true;
@@ -537,7 +537,7 @@ public class DataStore implements DataManager {
 		
 		ItemInstance[] items = itemsMap.get(player);
 		if(items == null) {
-			items = new ItemInstance[20];
+			items = new ItemInstance[26];
 			itemsMap.put(player, items);
 		}
 		return items;
@@ -986,12 +986,18 @@ public class DataStore implements DataManager {
 	 * 设置人物的道具
 	 * @param index 道具位置序号，自上而下，自左至右排列 in 5*4 = [0,20) 
 	 */
-	public void setItem(Player player,int index,ItemInstance item) {
-		ItemInstance[] items = getItems(player);
-		items[index] = item;
+	public void setItem(Player player,int index,ItemInstance item_inst) {
+		ItemInstance[] items_inst = getItems(player);
+		items_inst[index] = item_inst;
 		try {
-			if(item != null && item.getItem() == null) {
-				item.setItem((MedicineItem)medicineDAO.findItem(item.getItemId()));
+			if(item_inst != null && item_inst.getItem() == null) {
+				//item.setItem((MedicineItem)medicineDAO.findItem(item.getItemId()));
+				for(ItemsDAO item: items){
+					if(item.findItem(item_inst.getItemId()) != null){
+						 Items itemVO =  item.findItem(item_inst.getItemId());
+						   item_inst.setItem(itemVO);
+					}
+				}  
 			}
 		} catch (MedicineItemException e) {
 			e.printStackTrace();
@@ -1002,15 +1008,21 @@ public class DataStore implements DataManager {
 		setItem(player,index,createItem(itemName));
 	}
 
-	public void setItems(Player player, ItemInstance[] items) {
-		if(items != null) {
+	public void setItems(Player player, ItemInstance[] items_inst) {
+		if(items_inst != null) {
 			ItemInstance[] _items = getItems(player);
 			for (int i = 0; i < _items.length; i++) {
-				ItemInstance _inst = items[i];
+				ItemInstance _inst = items_inst[i];
 				_items[i] = _inst;
 				try {
 					if(_inst!=null && _inst.getItem() == null) {
-						_inst.setItem((MedicineItem)medicineDAO.findItem(_inst.getItemId()));
+						//_inst.setItem((MedicineItem)medicineDAO.findItem(_inst.getItemId()));
+						for(ItemsDAO item: items){
+							if(item.findItem(_inst.getItemId()) != null){
+								 Items itemVO =  item.findItem(_inst.getItemId());
+								   _inst.setItem(itemVO);
+							}
+						} 
 					}
 				} catch (MedicineItemException e) {
 					e.printStackTrace();

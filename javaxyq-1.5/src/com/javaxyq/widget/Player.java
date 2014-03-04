@@ -20,7 +20,9 @@ import javax.swing.event.EventListenerList;
 
 import com.javaxyq.core.Application;
 import com.javaxyq.core.ApplicationHelper;
+import com.javaxyq.core.DataStore;
 import com.javaxyq.core.SpriteFactory;
+import com.javaxyq.data.ItemInstance;
 import com.javaxyq.event.EventDispatcher;
 import com.javaxyq.event.EventException;
 import com.javaxyq.event.EventTarget;
@@ -59,7 +61,7 @@ public class Player extends AbstractWidget implements EventTarget {
 
 	public Sprite person;
 
-	private Sprite weapon;
+	public Sprite weapon;
 
 	private Sprite shadow;
 
@@ -405,8 +407,15 @@ public class Player extends AbstractWidget implements EventTarget {
 		return sprite;
 	}
 
-	private Sprite createWeapon(String state) {
+	public Sprite createWeapon(String state) {
 		// TODO Auto-generated method stub
+		//return null;
+		DataStore datastore = (DataStore)ApplicationHelper.getApplication().getDataManager();
+		ItemInstance[] iteminstance = datastore.getItems(this);
+		if(iteminstance[2] != null){
+			Sprite sprite = SpriteFactory.loadSprite("/shape/weapon/1135/0001/"+ state + ".tcp", null);
+	        return sprite;
+		}
 		return null;
 	}
 

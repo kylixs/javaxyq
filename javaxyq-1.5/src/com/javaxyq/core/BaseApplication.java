@@ -383,13 +383,13 @@ public abstract class BaseApplication implements Application {
 		context.setPlayer(player);
 		context.setScene(profile.getSceneId());
 		dataManager.setItems(player, profile.getItems());
-		DataStore datastore = (DataStore)dataManager;
+		/*DataStore datastore = (DataStore)dataManager;
 		
 		ItemInstance [] items = {datastore.createItem("Àƒ“∂ª®"),datastore.createItem("ŒÂª¢∂œªÍ"),datastore.createItem("æ≈œ„≥Ê")};		
 		for(ItemInstance item: items){
 			System.out.println("itemsDAO IS:"+item.getName());
 			datastore.addItemToPlayer(player, item);
-		}
+		}*/
 		
 		
 		Task[] tasks = profile.getTasks();
