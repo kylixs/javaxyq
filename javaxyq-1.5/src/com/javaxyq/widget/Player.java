@@ -23,6 +23,7 @@ import com.javaxyq.core.ApplicationHelper;
 import com.javaxyq.core.DataStore;
 import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.data.ItemInstance;
+import com.javaxyq.data.WeaponItem;
 import com.javaxyq.event.EventDispatcher;
 import com.javaxyq.event.EventException;
 import com.javaxyq.event.EventTarget;
@@ -59,9 +60,9 @@ public class Player extends AbstractWidget implements EventTarget {
 	/** 历史冒泡对话 */
 	private List<FloatPanel> chatPanels;
 
-	public Sprite person;
+	private Sprite person;
 
-	public Sprite weapon;
+	private Sprite weapon;
 
 	private Sprite shadow;
 
@@ -137,6 +138,8 @@ public class Player extends AbstractWidget implements EventTarget {
 	private Searcher searcher;
 
 	private int delay;
+
+	private WeaponItem weaponItem;
 
 	public Player(String id, String name, String character) {
 		this.id = id;
@@ -407,13 +410,9 @@ public class Player extends AbstractWidget implements EventTarget {
 		return sprite;
 	}
 
-	public Sprite createWeapon(String state) {
-		// TODO Auto-generated method stub
-		//return null;
-		DataStore datastore = (DataStore)ApplicationHelper.getApplication().getDataManager();
-		ItemInstance[] iteminstance = datastore.getItems(this);
-		if(iteminstance[2] != null){
-			Sprite sprite = SpriteFactory.loadSprite("/shape/weapon/1135/0001/"+ state + ".tcp", null);
+	private Sprite createWeapon(String state) {
+		if(weaponItem != null){
+			Sprite sprite = SpriteFactory.loadSprite("/shape/weapon/"+weaponItem.getId()+"/0001/"+ state + ".tcp", null);
 	        return sprite;
 		}
 		return null;
@@ -1077,4 +1076,38 @@ public class Player extends AbstractWidget implements EventTarget {
     private static double k1 = Math.tan(Math.PI / 8);
 
     private static double k2 = 3 * k1;
+
+	public int getRefPixelX() {
+		return person.getRefPixelX();
+	}
+	public int getRefPixelY() {
+		return person.getRefPixelY();
+	}
+
+	/**
+	 * 拿起武器
+	 * @param item
+	 */
+	public void takeupWeapon(WeaponItem item) {
+		if(item == null){
+			takeoffWeapon();
+			return;
+		}
+		this.weaponItem = item;
+		this.weapon = createWeapon(state);
+		if (this.weapon != null) {
+			this.weapon.setDirection(this.direction);
+			this.weapon.resetFrames();
+			this.person.resetFrames();
+		}
+
+	}
+	
+	/**
+	 * 放下武器
+	 */
+	public void takeoffWeapon() {
+		this.weaponItem = null;
+		this.weapon = null;
+	}
 }

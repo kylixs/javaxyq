@@ -37,13 +37,12 @@ public class WeaponItemHandler implements ItemListener{
 			//疗伤
 			//播放效果动画及声音		
 		}*/
-		System.out.println("weapon is:***********");
-		ItemInstance iteminst = evt.getItem();
-		WeaponItem item = (WeaponItem) iteminst.getItem();
-		Player player = evt.getPlayer();
-		String state = player.getState();
-		player.weapon = player.createWeapon(state);
-		player.setDirection(player.getDirection());
+		
+//		ItemInstance iteminst = evt.getItem();
+//		WeaponItem item = (WeaponItem) iteminst.getItem();
+//		Player player = evt.getPlayer();
+//		player.takeupWeapon(item);
+//		System.out.println("takeup weapon: "+item);
 	}
 	
 	@Override

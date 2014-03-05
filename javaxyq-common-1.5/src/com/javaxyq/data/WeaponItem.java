@@ -64,7 +64,7 @@ public class WeaponItem implements Item, Serializable{
 		return character;
 	}
 	
-	public void setCharacter(String description){
+	public void setCharacter(String character){
 		this.character = character;
 	}
 	

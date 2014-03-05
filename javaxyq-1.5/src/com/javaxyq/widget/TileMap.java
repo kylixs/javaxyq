@@ -380,12 +380,12 @@ public class TileMap extends AbstractWidget {
       
   
     	//读取player信息及参数；
-        int pkeyx   = player.person.getRefPixelX();
+        int pkeyx   = player.getRefPixelX(); //person RefPixelX
         int pOffsetX = pcoordx- pkeyx;
-        int pkeyy   = player.person.getRefPixelY();
+        int pkeyy   = player.getRefPixelY();//person RefPixelY
         int pOffsetY = pcoordy- pkeyy;
-        int pwidth  = player.person.getWidth();
-        int pheight = player.person.getHeight();
+        int pwidth  = player.getWidth();//person width
+        int pheight = player.getHeight(); //person height
     	
 
 		int offsetx = viewx;

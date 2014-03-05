@@ -27,6 +27,7 @@ import org.apache.commons.jexl2.UnifiedJEXL.Expression;
 
 import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.data.ItemInstance;
+import com.javaxyq.data.WeaponItem;
 import com.javaxyq.event.ActionEvent;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
@@ -94,38 +95,52 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 	}
 	
 	/**
-	 * 更新装备栏
+	 * 装上装备栏
 	 */
-	synchronized private void updateEquipment(MouseEvent e){
-		 Point cell = getCell(e);
-		 Point cell1 = getCell1(e);
-		   
-			//ItemLabel label = il;
-			//Item item = label.item;
-		   if(cell != null) {
-			   selectedIndex = cell.y*cols +cell.x+6;
-			   Player player = context.getPlayer();
-			   int newIndex =2;			   
-			   dataManager.swapItem(player, selectedIndex, newIndex);
-			   selectedIndex =-1;			      
-		   }else if(cell1 != null) {
-			   selectedIndex = 2;
-			   Player player = context.getPlayer();
-			   for(int r=0;r<rows;r++) {
-				   for(int c=0;c<cols;c++) {
-					   //create label
-					   int newIndex = r*cols + c+6;
-					   ItemLabel label = itemlabels[newIndex];
-					   //println "labe is:$label"
-						   if(label == null) {//格子没有有物品
-							   dataManager.swapItem(player, selectedIndex, newIndex);
-							   break;
-						   }
-				   }
-			   }     
-		   }
+	private void takeupEquipment(ItemInstance item){
+		//----|-----
+		// 0  | 1
+		//----|-----
+		// 2  | 3
+		//----|-----
+		// 4  | 5
+		Player player = context.getPlayer();
+		int targetIndex = 0;
+		if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_WEAPON)){
+			targetIndex = 2;
+			player.takeupWeapon((WeaponItem) item.getItem());
+			System.out.println("takeup weapon: "+item.getItem());
+		}else if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_EQUIPMENT)){
+			targetIndex = 3;
+			//takeup equipment
+		}
+		
+		ItemInstance oldItem = dataManager.getItemAt(player, targetIndex);
+		dataManager.removeItem(player, item);
+		dataManager.setItem(player, targetIndex, item);
+		if(oldItem != null) {
+			dataManager.addItemToPlayer(player, oldItem);
+		}
+		
 		
 	}
+	
+	/**
+	 * 从装备栏卸下
+	 * @param item
+	 */
+	private void takeoffEquipment(ItemInstance item){
+		Player player = context.getPlayer();
+		if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_WEAPON)){
+			player.takeoffWeapon();
+		}else if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_EQUIPMENT)){
+			//player.takeoffEquipment();
+		}
+
+		dataManager.removeItem(player, item);
+		dataManager.addItemToPlayer(player, item);
+	}
+	
 	 /* 销毁物品
 	 * @param evt
 	 */
@@ -146,6 +161,12 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 	synchronized private void updateItems() {
 		ItemInstance[] items = dataManager.getItems(context.getPlayer());
 		
+		//----|-----
+		// 0  | 1
+		//----|-----
+		// 2  | 3
+		//----|-----
+		// 4  | 5
 		for(int r=0;r<erows;r++) {
 			for(int c=0;c<ecols;c++) {
 				//create label
@@ -364,7 +385,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 			Item item = label.getItem().getItem();
 			
 			if(ItemTypes.isType(item, ItemTypes.TYPE_WEAPON)){
-				updateEquipment(e);
+				takeupEquipment(label.getItem());
 			}else if(ItemTypes.isType(item, ItemTypes.TYPE_MEDICINE)){	
 			}
 			

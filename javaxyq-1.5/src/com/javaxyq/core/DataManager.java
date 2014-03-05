@@ -164,4 +164,6 @@ public interface DataManager {
 	public Player createPlayer(PlayerVO playerData);
 
 	public void setItems(Player player, ItemInstance[] items);
+
+	public void removeItem(Player player, ItemInstance item);
 }

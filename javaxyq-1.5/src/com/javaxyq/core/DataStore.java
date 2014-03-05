@@ -957,22 +957,14 @@ public class DataStore implements DataManager {
 		items_inst[index] = item_inst;
 	
 		if(item_inst != null && item_inst.getItem() == null) {
-				//item.setItem((MedicineItem)medicineDAO.findItem(item.getItemId()));
-				/*for(BaseItemDAO itemDao: itemDAOs){
-					try {
-						Item item = itemDao.findItemByName(name);
-						if(item != null){
-				*/
-		  for(BaseItemDAO itemDao: itemDAOs){
-		      try {
-					 Item item = itemDao.findItem(item_inst.getId());
-						if(item != null){
-						   item_inst.setItem(item);
-					    }	   
-			   } catch (SQLException e) {
-			     e.printStackTrace();
-		       }
-	      }
+			if(item_inst.getName() != null) {
+				Item item = this.findItemByName(item_inst.getName());
+				if(item != null) {
+					item_inst.setItem(item);
+				}else {
+					items_inst[index] = null;
+				}
+			}
 		}
 	}
 
@@ -982,39 +974,16 @@ public class DataStore implements DataManager {
 
 
 	public void setItems(Player player, ItemInstance[] items_inst) {
-		
-
 		//TODO 改进初始化物品的算法
 		if(items_inst != null) {
-
 			ItemInstance[] _items = getItems(player);
 			for (int i = 0; i < _items.length; i++) {
 				ItemInstance _inst = items_inst[i];
 				_items[i] = _inst;
 				try {
 					if(_inst!=null && _inst.getItem() == null) {
-
-						//_inst.setItem((MedicineItem)medicineDAO.findItem(_inst.getItemId()));
-						for(BaseItemDAO itemDao: itemDAOs){
-						      try {
-									 Item item = itemDao.findItem(_inst.getId());
-										if(item != null){
-										   _inst.setItem(item);
-									    }	   
-							   } catch (SQLException e) {
-							     e.printStackTrace();
-						       }
-					      }
-
 						if(_inst.getName() != null) {
 							Item item = this.findItemByName(_inst.getName());
-							if(item != null) {
-								_inst.setItem(item);
-							}else {
-								_items[i] = null;
-							}
-						}else {
-							Item item = medicineDAO.findItem(_inst.getItemId());
 							if(item != null) {
 								_inst.setItem(item);
 							}else {
@@ -1027,6 +996,18 @@ public class DataStore implements DataManager {
 					_items[i] = null;
 					e.printStackTrace();
 				}
+			}
+		}
+	}
+	
+	@Override
+	public void removeItem(Player player, ItemInstance item) {
+		if(item == null) return;
+		ItemInstance[] items = getItems(player);
+		for (int i = 0; i < items.length; i++) {
+			if(items[i] == item){
+				items[i] = null;
+				break;
 			}
 		}
 	}
