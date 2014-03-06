@@ -57,7 +57,7 @@ public class ItemManagerImpl implements ItemManager {
 			if(handler != null) {
 				handler.itemUsed(new ItemEvent(player,item,""));
 				if(item.getAmount() <= 0) {//如果消耗完，则销毁物品
-					dataManager.removePlayerItem(player,item);
+					dataManager.removeItemFromPlayer(player,item);
 				}
 				return true;
 			}

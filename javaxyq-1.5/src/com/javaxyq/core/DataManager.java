@@ -18,10 +18,10 @@ public interface DataManager {
 	public void addHp(Player player, int hp);
 
 	/**
-	 * 给以人物某物品
+	 * 把物品放到人物背包中
 	 * @return 给予成功返回true
 	 */
-	public boolean addItemToPlayer(Player player, ItemInstance item);
+	public boolean addItemToPlayerBag(Player player, ItemInstance item);
 
 	public void addMoney(Player player, int money);
 
@@ -121,13 +121,9 @@ public interface DataManager {
 	 */
 	public void recalcProperties(PlayerVO vo);
 
-	public boolean removeItem(String name, int amount);
+	public boolean removeItemFromPlayer(Player player, int index);
 
-	public boolean removeItemFromPlayer();
-
-	public boolean removePlayerItem(Player player, int index);
-
-	public void removePlayerItem(Player player, ItemInstance item);
+	public void removeItemFromPlayer(Player player, ItemInstance item);
 
 	/**
 	 * 保存游戏数据到存档
@@ -165,5 +161,4 @@ public interface DataManager {
 
 	public void setItems(Player player, ItemInstance[] items);
 
-	public void removeItem(Player player, ItemInstance item);
 }

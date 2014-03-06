@@ -10,9 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.javaxyq.core.SpriteFactory;
+import com.javaxyq.data.ItemInstance;
+import com.javaxyq.data.WeaponItem;
 import com.javaxyq.event.ActionEvent;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
+import com.javaxyq.model.ItemTypes;
 import com.javaxyq.model.PlayerVO;
 import com.javaxyq.profile.Profile;
 import com.javaxyq.profile.ProfileException;
@@ -106,6 +109,16 @@ public class select_role extends PanelHandler implements MouseListener {
 				PlayerVO data = profiles.get(i).getPlayerData();
 				Animation anim = SpriteFactory.loadAnimation("/shape/char/"+data.character+"/stand.tcp");
 				profileLabels.get(i).setAnim(anim);
+				//装上武器
+				ItemInstance weaponItem = profiles.get(i).getItems()[2];
+				if(weaponItem != null) {
+					if(ItemTypes.isType(weaponItem.getItem(), ItemTypes.TYPE_WEAPON)){
+						//TODO 装上武器
+						//player.takeupWeapon((WeaponItem) weaponItem.getItem());
+						//System.out.println("takeup weapon: "+weaponItem.getItem());
+						break;
+					}			
+				}
 			}
 		} catch (ProfileException e) {
 			e.printStackTrace();

@@ -88,7 +88,7 @@ public class buy extends PanelHandler implements MouseListener,MouseMotionListen
 			money -= totalCost;
 			context.getPlayer().getData().money = money;
 			ItemInstance item = new ItemInstance(selectedItem.getItem(),amount);
-			dataManager.addItemToPlayer(context.getPlayer(),item);
+			dataManager.addItemToPlayerBag(context.getPlayer(),item);
 			doTalk(context.getTalker(),"你购买了"+amount+"个"+selectedItem.getName()+"，总共花费了#R"+totalCost+"#n两。#32");
 			System.out.println( "buy "+selectedItem.getName()+"*"+amount+", cost "+totalCost);
 		}	}

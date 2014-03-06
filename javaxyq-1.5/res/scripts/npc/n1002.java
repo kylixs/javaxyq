@@ -65,7 +65,7 @@ public class n1002 extends PlayerAdapter {
 					//额外奖励
 					String[] items = {"天不老","六道轮回","仙狐涎","白露为霜","麝香","熊胆"};
 					String item = items[new Random().nextInt(items.length)];
-					dataManager.addItemToPlayer(player,dataManager.createItem(item));
+					dataManager.addItemToPlayerBag(player,dataManager.createItem(item));
 					chat += "#r完成了第"+rounds+"轮师门任务，额外奖励你一个#R"+item+"#n！";
 				}
 				doTalk(context.getTalker(),chat);				

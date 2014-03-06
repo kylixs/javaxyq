@@ -226,12 +226,12 @@ public class DataStore implements DataManager {
 	 * 给以人物某物品
 	 * @return 给予成功返回true
 	 */
-	public boolean addItemToPlayer(Player player,ItemInstance item) {
+	public boolean addItemToPlayerBag(Player player,ItemInstance item) {
 		//TODO 获得物品
 		synchronized(player) {
 			ItemInstance[] items = getItems(player);
-			int index = 0;
-			for(index =6;index < items.length;index++) {
+			int index = 6;//背包从6开始，前面是装备栏
+			for(;index < items.length;index++) {
 				if(items[index] == null) {
 					items[index] = item;
 					return true;
@@ -627,14 +627,14 @@ public class DataStore implements DataManager {
 		
 		ItemInstance item = createItem("四叶花");
 		item.setAmount(99);
-		addItemToPlayer(p,item);
+		addItemToPlayerBag(p,item);
 		item = createItem("佛手");
 		item.setAmount(99);
-		addItemToPlayer(p,item);
+		addItemToPlayerBag(p,item);
 		item = createItem("血色茶花");
 		item.setAmount(30);
 		item = createItem("九香虫");
-		addItemToPlayer(p,item);
+		addItemToPlayerBag(p,item);
 		int money = 50000;
 		addMoney(p, money);		
 		System.out.println("create game data: "+new java.util.Date());
@@ -860,15 +860,7 @@ public class DataStore implements DataManager {
 		vo.mp += vo.maxMp-maxMp0;
 	}
 
-	public boolean removeItem(String name,int amount) {
-		return false;
-	}
-	
-	public boolean removeItemFromPlayer() {
-		return false;
-	}
-	
-	public boolean removePlayerItem(Player player,int index) {
+	public boolean removeItemFromPlayer(Player player,int index) {
 		ItemInstance[] items = getItems(player);
 		if(items[index]!=null) {
 			System.out.println("remove item: "+items[index]);
@@ -878,7 +870,8 @@ public class DataStore implements DataManager {
 		return false;
 	}
 
-	public void removePlayerItem(Player player,ItemInstance item) {
+	public void removeItemFromPlayer(Player player,ItemInstance item) {
+		if(item == null) return;
 		ItemInstance[] items = getItems(player);
 		for (int i = 0; i < items.length; i++) {
 			if(items[i] == item) {
@@ -1000,18 +993,6 @@ public class DataStore implements DataManager {
 		}
 	}
 	
-	@Override
-	public void removeItem(Player player, ItemInstance item) {
-		if(item == null) return;
-		ItemInstance[] items = getItems(player);
-		for (int i = 0; i < items.length; i++) {
-			if(items[i] == item){
-				items[i] = null;
-				break;
-			}
-		}
-	}
-
 	public void storeDataToFile(String filename) {
 		//TODO
 	}

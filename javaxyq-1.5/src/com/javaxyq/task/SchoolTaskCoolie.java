@@ -92,7 +92,7 @@ public class SchoolTaskCoolie extends TaskCoolie {
 				if(item!=null && StringUtils.equals(required, item.getName())) {
 					item.alterAmount(-1);
 					if(item.getAmount() == 0) {//TODO ÎïÆ·Ïú»Ù£¿
-						dataManager.removePlayerItem(player,item);
+						dataManager.removeItemFromPlayer(player,item);
 					}
 					task.setFinished(true);
 					rounds = (Integer)task.get("rounds");

@@ -31,10 +31,10 @@ import com.javaxyq.data.WeaponItem;
 import com.javaxyq.event.ActionEvent;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
-import com.javaxyq.model.Item;
 import com.javaxyq.model.ItemTypes;
 import com.javaxyq.ui.ItemDetailLabel;
 import com.javaxyq.ui.ItemLabel;
+import com.javaxyq.ui.ItemLabel.CellType;
 import com.javaxyq.ui.Label;
 import com.javaxyq.ui.Panel;
 import com.javaxyq.ui.UIHelper;
@@ -79,6 +79,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 		Player player = context.getPlayer();
 		Label face  = (Label) this.panel.findCompByName("face");
 		face.setAnim(SpriteFactory.loadAnimation("wzife/photo/facebig/"+player.getCharacter()+".tcp"));
+		
 		this.updateItems();
 		this.updateLabels(this.panel);
 		this.setAutoUpdate(true);
@@ -116,10 +117,12 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 		}
 		
 		ItemInstance oldItem = dataManager.getItemAt(player, targetIndex);
-		dataManager.removeItem(player, item);
-		dataManager.setItem(player, targetIndex, item);
-		if(oldItem != null) {
-			dataManager.addItemToPlayer(player, oldItem);
+		if(oldItem != item) {
+			dataManager.removeItemFromPlayer(player, item);
+			dataManager.setItem(player, targetIndex, item);
+			if(oldItem != null) {
+				dataManager.addItemToPlayerBag(player, oldItem);
+			}
 		}
 		
 		
@@ -137,8 +140,8 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 			//player.takeoffEquipment();
 		}
 
-		dataManager.removeItem(player, item);
-		dataManager.addItemToPlayer(player, item);
+		dataManager.removeItemFromPlayer(player, item);
+		dataManager.addItemToPlayerBag(player, item);
 	}
 	
 	 /* 销毁物品
@@ -149,7 +152,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 			context.getWindow().getHelper().prompt("请先选择要销毁的物品，然后再点击【销毁】按钮。", 3000);
 			return;
 		}
-		dataManager.removePlayerItem(context.getPlayer(), selectedIndex);
+		dataManager.removeItemFromPlayer(context.getPlayer(), selectedIndex);
 		stopMoving();
 		updateItems();
 
@@ -167,6 +170,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 		// 2  | 3
 		//----|-----
 		// 4  | 5
+		//装备栏
 		for(int r=0;r<erows;r++) {
 			for(int c=0;c<ecols;c++) {
 				//create label
@@ -191,6 +195,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 							e1.printStackTrace();
 						}
 					}
+					label.setCellType(CellType.EQUIP);
 				}else {//清除格子
 					if(label!=null) {
 						panel.remove(label);
@@ -202,6 +207,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 			}
 		}
 		
+		//背包栏
 		for(int r=0;r<rows;r++) {
 			for(int c=0;c<cols;c++) {
 				//create label
@@ -227,6 +233,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 							e.printStackTrace();
 						}
 					}
+					label.setCellType(CellType.BAG);
 				}else {//清除格子
 					if(label!=null) {
 						panel.remove(label);
@@ -301,15 +308,15 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
     	Object src = e.getComponent();
     	Point cell = getCell(e);
     	if(cell!=null) {
+    		int newIndex = cell.x + cols*cell.y + 6;
     		if(selItemLabel!=null) {//已经选择了物品
-    			int newIndex = cell.x + cols*cell.y;
 				if(selectedIndex == newIndex) {
 					stopMoving();
 					return;
 				}
 				Player player = context.getPlayer();
 				//如果不能叠加物品则进行移动
-				if(!overlayItems(selectedIndex,newIndex)) {
+				if(!overlayItems(selectedIndex, newIndex)) {
 					//交换模型中的数据
 					dataManager.swapItem(player, selectedIndex, newIndex);
 				}
@@ -323,7 +330,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
     			label.setVisible(false);
     			helper.setMovingObject(label.getAnim(), new Point(-e.getX(),-e.getY()));
     			selItemLabel = label;
-    			selectedIndex = cell.y*cols +cell.x;
+    			selectedIndex = newIndex;
     		}
     		
     	}else {//没有点击在单元格上，撤销移动物品
@@ -332,13 +339,6 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
     			
 	}
 	
-	/**
-	 * 
-	 */
-	private void setItemLabel(int index){
-		
-	}
-    
     /**
      * 停止移动物品（移动完成或者取消移动）
      */
@@ -382,16 +382,21 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 		Component c = e.getComponent();
 		if (c instanceof ItemLabel) {
 			ItemLabel label = (ItemLabel) c;
-			Item item = label.getItem().getItem();
+			ItemInstance item = label.getItem();
 			
-			if(ItemTypes.isType(item, ItemTypes.TYPE_WEAPON)){
-				takeupEquipment(label.getItem());
-			}else if(ItemTypes.isType(item, ItemTypes.TYPE_MEDICINE)){	
+			//点击在装备栏上
+			if(CellType.EQUIP.equals(label.getCellType())) {
+				takeoffEquipment(label.getItem());
+			}else {
+				//点击在背包栏，如果是武器类则装备上，否则使用物品
+				if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_WEAPON)){
+					takeupEquipment(label.getItem());
+				}else {
+					application.getItemManager().useItem(context.getPlayer(),label.getItem());
+				}
 			}
 			
-			application.getItemManager().useItem(context.getPlayer(),label.getItem());
 			updateItems();
-			
 			return true;
 		}
 		return false;
@@ -399,13 +404,13 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 
     public void mouseMoved(MouseEvent e){
     	Object src = e.getComponent();
-    	Point cell = getCell(e);
-    	Point cell1 = getCell1(e);
-    	if(cell!=null) {
-	    	selectingBorder.setLocation(x0+cell.x*cellWidth-1, y0+cell.y*cellHeight-1);
+    	Point bagCell = getCell(e);
+    	Point equipCell = getEquipCell1(e);
+    	if(bagCell!=null) {
+	    	selectingBorder.setLocation(x0+bagCell.x*cellWidth-1, y0+bagCell.y*cellHeight-1);
 	    	panel.add(selectingBorder,0);
-    	}else if(cell1!=null){
-		    selectingBorder.setLocation(x1+cell1.x*ecellWidth-1, y1+cell1.y*ecellHeight-1);
+    	}else if(equipCell!=null){
+		    selectingBorder.setLocation(x1+equipCell.x*ecellWidth-1, y1+equipCell.y*ecellHeight-1);
 		    panel.add(selectingBorder,0);
     	}else {
     		panel.remove(selectingBorder);
@@ -439,7 +444,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
     	return null;
     }
     
-    private Point getCell1(MouseEvent e){
+    private Point getEquipCell1(MouseEvent e){
 		JComponent src = (JComponent) e.getComponent();
 		Point p = e.getPoint();
 		if(src != panel) {
