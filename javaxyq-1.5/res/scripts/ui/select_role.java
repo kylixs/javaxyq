@@ -140,7 +140,7 @@ public class select_role extends PanelHandler implements MouseListener {
 		label = (Label) panel.findCompByName("role_appellation");
 		label.setText(data.getTitle());
 		label = (Label) panel.findCompByName("role_head");
-		Animation anim = SpriteFactory.loadAnimation("/wzife/login/photo/selected/"+getCharacterName(data.character)+".tcp");
+		Animation anim = SpriteFactory.loadAnimation("/wzife/login/photo/selected/"+data.character+".tcp");
 		if(anim != null) {
 			label.setAnim(anim);
 		}

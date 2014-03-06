@@ -5,7 +5,7 @@
     <Button id="btn_back" name="btn_back" text="" x="486" y="369" width="" height="" actionId="goback" was="/wzife/login/back.tcp" tooltip="" toggle=""/>
     <Button id="btn_next" name="btn_next" text="" x="484" y="412" width="" height="" actionId="gonext" was="/wzife/login/next.tcp" tooltip="" toggle=""/>
     <Sprite id="" name="" x="269" y="0" width="" height="" tooltip="" path="/wzife/login/selectrole.tcp" actionId="null"/>
-    <Sprite id="role_head" name="role_head" x="24" y="43" width="" height="" tooltip="" path="/wzife/login/photo/selected/骨精灵.tcp" actionId="null"/>
+    <Sprite id="role_head" name="role_head" x="24" y="43" width="" height="" tooltip="" path="/wzife/login/photo/selected/0010.tcp" actionId="null"/>
     <Sprite id="icon_role1" name="icon_role1" x="280" y="76" width="" height="" tooltip="" path="/shape/char/0001/stand.tcp" actionId="selectRole 1"/>
     <Sprite id="icon_role2" name="icon_role2" x="380" y="76" width="" height="" tooltip="" path="/shape/char/0002/stand.tcp" actionId="selectRole 2"/>
     <Sprite id="icon_role3" name="icon_role3" x="480" y="76" width="" height="" tooltip="" path="/shape/char/0003/stand.tcp" actionId="selectRole 3"/>

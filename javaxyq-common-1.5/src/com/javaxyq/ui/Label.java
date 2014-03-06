@@ -42,7 +42,7 @@ public class Label extends JLabel {
 	private boolean debug;
 
 	public Label(Animation anim) {
-		this(null, new ImageIcon(anim.getImage()), LEFT);
+		this(null, anim!=null?new ImageIcon(anim.getImage()):null, LEFT);
 		setAnim(anim);
 	}
 
