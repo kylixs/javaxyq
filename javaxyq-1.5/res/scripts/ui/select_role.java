@@ -112,12 +112,12 @@ public class select_role extends PanelHandler implements MouseListener {
 				//装上武器
 				ItemInstance weaponItem = profiles.get(i).getItems()[2];
 				if(weaponItem != null) {
-					if(ItemTypes.isType(weaponItem.getItem(), ItemTypes.TYPE_WEAPON)){
+					//weaponItem.getType()
+					//if(ItemTypes.isType(weaponItem.getItem(), ItemTypes.TYPE_WEAPON)){
 						//TODO 装上武器
 						//player.takeupWeapon((WeaponItem) weaponItem.getItem());
 						//System.out.println("takeup weapon: "+weaponItem.getItem());
-						break;
-					}			
+					//}			
 				}
 			}
 		} catch (ProfileException e) {
@@ -141,7 +141,9 @@ public class select_role extends PanelHandler implements MouseListener {
 		label.setText(data.getTitle());
 		label = (Label) panel.findCompByName("role_head");
 		Animation anim = SpriteFactory.loadAnimation("/wzife/login/photo/selected/"+getCharacterName(data.character)+".tcp");
-		label.setAnim(anim);
+		if(anim != null) {
+			label.setAnim(anim);
+		}
 		System.out.println("select："+profile);
 	}
 

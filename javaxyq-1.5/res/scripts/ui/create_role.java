@@ -102,8 +102,12 @@ public class create_role extends PanelHandler {
 
 	private void displayRoleInfo() {
 		Label label = (Label) panel.findCompByName("role_head");
-		Animation anim = SpriteFactory.loadAnimation("/wzife/login/photo/selected/"+getCharacterName(character)+".tcp");
-		label.setAnim(anim);
+		String filename = "/wzife/login/photo/selected/"+getCharacterName(character)+".tcp";
+		Animation anim = SpriteFactory.loadAnimation(filename);
+		if(anim != null) {
+			label.setAnim(anim);
+			System.err.println("displayRoleInfo failed: "+filename);
+		}
 		//TODO 更新其它信息
 		
 	}	
