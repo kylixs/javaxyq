@@ -129,4 +129,6 @@ public interface Application {
 	 * ½áÊøÓÎÏ·
 	 */
 	void endGame();
+
+	public abstract SceneCanvas getSceneCanvas();
 }

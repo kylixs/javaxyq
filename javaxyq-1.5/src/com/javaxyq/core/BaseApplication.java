@@ -88,6 +88,7 @@ public abstract class BaseApplication implements Application {
 		dataloadingThread.start();
 		//创建窗口
 		window = createWindow();
+		window.installWindowListeners();
 		prepareShow();
 		System.out.println("prepareShow at: "+new java.util.Date());
 		show(window);
@@ -465,6 +466,10 @@ public abstract class BaseApplication implements Application {
 		}
 		
 		//返回到欢迎界面
-		
+	}
+	
+	@Override
+	public SceneCanvas getSceneCanvas() {
+		return sceneCanvas;
 	}
 }

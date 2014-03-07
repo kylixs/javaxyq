@@ -31,6 +31,4 @@
 	<Listener type="MouseListener" class="com.javaxyq.event.CanvasMouseHandler"></Listener>
 	<Listener type="MouseMotionListener" class="com.javaxyq.event.CanvasMouseHandler"></Listener>
 	<Listener type="KeyListener" class="com.javaxyq.event.CanvasKeyHandler"></Listener>
-	<Listener type="WindowListener" class="com.javaxyq.event.GameWindowHandler"></Listener>
-	<Listener type="WindowStateListener" class="com.javaxyq.event.GameWindowStateHandler"></Listener>
 </Actions>

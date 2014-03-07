@@ -8,8 +8,6 @@
 package com.javaxyq.data;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -24,9 +22,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.javaxyq.core.DialogFactory;
-import com.javaxyq.core.GameMain;
 import com.javaxyq.core.GameWindow;
-import com.javaxyq.event.Listener;
 import com.javaxyq.io.CacheManager;
 import com.javaxyq.util.StringUtils;
 

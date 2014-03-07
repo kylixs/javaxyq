@@ -32,7 +32,7 @@ import com.javaxyq.widget.Player;
  */
 public class DesktopApplication extends BaseApplication {
 
-	private DesktopWindow window;
+	private GameWindow window;
 	
 	protected GameWindow createWindow() {
 		window = new DesktopWindow();
@@ -180,8 +180,10 @@ public class DesktopApplication extends BaseApplication {
 	@Override
 	public void endGame() {
 		super.endGame();
-		sceneCanvas.dispose();
-		sceneCanvas = null;
+		if(sceneCanvas != null) {
+			sceneCanvas.dispose();
+			sceneCanvas = null;
+		}
 		showMainMenuCanvas();
 	}
 	/**

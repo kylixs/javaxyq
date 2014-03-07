@@ -11,8 +11,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +22,8 @@ import javax.swing.SwingUtilities;
 
 import com.javaxyq.battle.BattleCanvas;
 import com.javaxyq.battle.BattleListener;
+import com.javaxyq.event.GameWindowHandler;
+import com.javaxyq.event.GameWindowStateHandler;
 import com.javaxyq.event.Listener;
 import com.javaxyq.ui.Panel;
 import com.javaxyq.ui.UIHelper;
@@ -137,23 +137,17 @@ public class DesktopWindow extends JFrame implements GameWindow {
 						sceneCanvas.addMouseWheelListener((MouseWheelListener) instance);
 					} 
 				}
-				if ("WindowListener".equals(strType)) {
-					WindowListener[] windowListeners = this.getWindowListeners();
-					for (WindowListener windowListener : windowListeners) {
-						this.removeWindowListener(windowListener);
-					}
-					this.addWindowListener((WindowListener) instance);
-				} else if ("WindowStateListener".equals(strType)) {
-					WindowStateListener[] windowStateListeners = this.getWindowStateListeners();
-					for (WindowStateListener windowStateListener : windowStateListeners) {
-						this.removeWindowStateListener(windowStateListener);
-					}
-					this.addWindowStateListener((WindowStateListener) instance);
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@Override
+	public void installWindowListeners() {
+		this.addWindowListener(new GameWindowHandler());
+		this.addWindowStateListener(new GameWindowStateHandler());
+		
 	}
 
 	/**

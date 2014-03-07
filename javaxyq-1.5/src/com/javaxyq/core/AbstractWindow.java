@@ -194,4 +194,7 @@ public class AbstractWindow implements GameWindow {
 		return 0;
 	}
 
+	public void installWindowListeners() {
+	}
+
 }

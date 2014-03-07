@@ -754,4 +754,11 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 		// TODO Auto-generated method stub
 		
 	}
+
+	public SceneCanvas getSceneCanvas() {
+		return null;
+	}
+
+	public void installWindowListeners() {
+	}
 }

@@ -89,4 +89,6 @@ public interface GameWindow {
 	public void removeBattleListener(BattleListener listener);
 	
 	public void addListener(String type, String className);
+
+	public void installWindowListeners();
 }
