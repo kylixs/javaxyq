@@ -242,6 +242,7 @@ public class DataStore implements DataManager {
 			return false;
 		}
 	}
+	
 	public void addMoney(Player player,int money) {
 		PlayerVO vo = player.getData();
 		vo.money += money;
@@ -788,10 +789,6 @@ public class DataStore implements DataManager {
 		System.out.println("loaded game data: "+new java.util.Date());
 	}
 
-	public void loadDataFromFile(String filename) {
-		//TODO
-	}
-
 	/**
 	 * 叠加物品
 	 * @param srcItem 源物品
@@ -918,6 +915,7 @@ public class DataStore implements DataManager {
 					oos.writeObject(tasks.get(i));
 				}
 				oos.close();
+				
 				//替换默认存档
 				File defaultfile = CacheManager.getInstance().createFile("save/0.jxd");
 //			if(defaultfile!=null && defaultfile.exists()) {
@@ -993,10 +991,6 @@ public class DataStore implements DataManager {
 		}
 	}
 	
-	public void storeDataToFile(String filename) {
-		//TODO
-	}
-
 	public void swapItem(Player player, int srcIndex, int destIndex){
 		synchronized(player) {
 			ItemInstance[] items = getItems(player);

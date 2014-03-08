@@ -11,6 +11,7 @@ import java.util.HashMap;
 import com.javaxyq.core.DataManager;
 import com.javaxyq.core.DataStore;
 import com.javaxyq.core.SpriteFactory;
+import com.javaxyq.data.CharacterConstants;
 import com.javaxyq.data.ItemInstance;
 import com.javaxyq.event.ActionEvent;
 import com.javaxyq.event.PanelEvent;
@@ -34,7 +35,6 @@ public class create_role extends PanelHandler {
 	
 	private String character = "0003";
 	private String roleName;
-	private HashMap<String, String> charNames;
 	
 	public void initial(PanelEvent evt) {
 		super.initial(evt);
@@ -67,14 +67,31 @@ public class create_role extends PanelHandler {
 		try {
 			ProfileManager profileManager = application.getProfileManager();
 			DataManager dataManager = application.getDataManager();
-			String name = newProfileName();
+			String filename = newProfileName();
 			String sceneId = "1506";
-			ItemInstance[] items = null;
-			Profile profile = profileManager.newProfile(name);
-			PlayerVO data = dataManager.createPlayerData(character);
-			data.setName(roleName);
-			data.setSceneLocation(new Point(38, 20));
-			profile.setPlayerData(data);
+			Profile profile = profileManager.newProfile(filename);
+			PlayerVO playerVo = dataManager.createPlayerData(character);
+			playerVo.setName(roleName);
+			playerVo.setSceneLocation(new Point(38, 20));
+			playerVo.setMoney(50000);
+			
+			ItemInstance[] items = new ItemInstance[26];
+			ItemInstance item = dataManager.createItem("四叶花");
+			item.setAmount(99);
+			items[6] = item;
+			item = dataManager.createItem("佛手");
+			item.setAmount(99);
+			items[7] = item;
+			item = dataManager.createItem("血色茶花");
+			item.setAmount(99);
+			items[8] = item;
+			item = dataManager.createItem("九香虫");
+			item.setAmount(99);
+			items[9] = item;
+			items[10] = createWeapon(character);
+			
+			
+			profile.setPlayerData(playerVo);
 			profile.setSceneId(sceneId);
 			profile.setItems(items);
 			profileManager.saveProfile(profile);
@@ -113,22 +130,19 @@ public class create_role extends PanelHandler {
 		
 	}	
 	
-	private String getCharacterName(String character) {
-		if(charNames == null) {
-			charNames= new HashMap<String, String>();
-			charNames.put("0001", "逍遥生");
-			charNames.put("0002", "剑侠客");
-			charNames.put("0003", "飞燕女");
-			charNames.put("0004", "英女侠");
-			charNames.put("0005", "巨魔王");
-			charNames.put("0006", "虎头怪");
-			charNames.put("0007", "狐美人");
-			charNames.put("0008", "骨精灵");
-			charNames.put("0009", "神天兵");
-			charNames.put("0010", "龙太子");
-			charNames.put("0011", "舞天姬");
-			charNames.put("0012", "玄彩娥");
+	private ItemInstance createWeapon(String charName) {
+		//随机分配指定级别武器
+		String weaponName = null;
+		if(CharacterConstants.char_0010.equals(charName)) {
+			weaponName = "五虎断魂";//逍遥江湖
+		}else if(CharacterConstants.char_0009.equals(charName)) {
 		}
-		return charNames.get(character);
+		
+		if(weaponName != null) {
+			return application.getDataManager().createItem(weaponName);
+		}
+		return null;
 	}
+
+
 }

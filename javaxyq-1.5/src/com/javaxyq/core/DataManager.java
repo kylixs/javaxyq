@@ -93,20 +93,12 @@ public interface DataManager {
 	public PlayerVO createPlayerData(String character);
 	
 	/**
-	 * 加载默认存档
-	 */
-	public void loadData();
-
-	public void loadDataFromFile(String filename);
-
-	/**
 	 * 叠加物品
 	 * @param srcItem 源物品
 	 * @param destItem 目标物品
 	 * @return 叠加成功返回true
 	 */
-	public boolean overlayItems(ItemInstance srcItem,
-			ItemInstance destItem);
+	public boolean overlayItems(ItemInstance srcItem, ItemInstance destItem);
 
 	/**
 	 * 计算怪物的属性值
@@ -126,21 +118,12 @@ public interface DataManager {
 	public void removeItemFromPlayer(Player player, ItemInstance item);
 
 	/**
-	 * 保存游戏数据到存档
-	 */
-	public void saveData();
-
-	/**
 	 * 设置人物的道具
 	 * @param index 道具位置序号，自上而下，自左至右排列 in 5*4 = [0,20) 
 	 */
-	public void setItem(Player player, int index,
-			ItemInstance item);
+	public void setItem(Player player, int index, ItemInstance item);
 
-	public void setItemByName(Player player, int index,
-			String itemName);
-
-	public void storeDataToFile(String filename);
+	public void setItemByName(Player player, int index, String itemName);
 
 	public void swapItem(Player player, int srcIndex, int destIndex);
 

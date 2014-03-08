@@ -534,10 +534,10 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 	
 	protected void loadData() {
 		promptMsg("loading data ...");	
-		dataManager.loadData();
+//		dataManager.loadData();
 	}
 	protected void saveData() {
-		dataManager.saveData();
+//		dataManager.saveData();
 	}
 
 	public DataManager getDataManager() {
