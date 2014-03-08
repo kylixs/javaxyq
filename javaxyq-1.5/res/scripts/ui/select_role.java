@@ -90,6 +90,10 @@ public class select_role extends PanelHandler implements MouseListener {
 	}
 	
 	public void gonext(ActionEvent evt) {
+		if(profileIndex>=profiles.size()) {
+			return;
+		}
+
 		try {
 			Profile profile = profiles.get(profileIndex);
 			String profileName = profile.getName();

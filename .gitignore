@@ -9,4 +9,4 @@ log
 build
 deploy
 *.lck
-
+*.jxd
