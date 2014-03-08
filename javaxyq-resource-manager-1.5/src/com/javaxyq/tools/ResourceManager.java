@@ -342,7 +342,7 @@ public class ResourceManager extends SingleFrameApplication {
 			frame.setIcon(false);
 			frame.setMaximum(true);
 			desktop.setSelectedFrame(frame);
-		} catch (PropertyVetoException e) {
+		} catch (Exception e) {
 			System.out.println("open new frame failed!");
 			e.printStackTrace();
 		}
@@ -680,7 +680,7 @@ public class ResourceManager extends SingleFrameApplication {
 		mainFrame.setContentPane(topPanel);
 	}
 
-	protected JInternalFrame createPreviewFrame(File selectFile) {
+	protected JInternalFrame createPreviewFrame(File selectFile) throws Exception {
 		FileSystem filesystem = null;
 		if (selectFile.isDirectory()) {
 			filesystem = new DefaultFileSystem(selectFile);

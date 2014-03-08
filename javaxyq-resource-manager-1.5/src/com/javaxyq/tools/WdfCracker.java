@@ -22,14 +22,14 @@ public class WdfCracker {
 	 * @param args
 	 * @throws FileNotFoundException 
 	 */
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws Exception {
 		//crackSound();
 		//crackWzife();
 		crackScene();
 	}
 	
 	
-	private static void crackScene() throws FileNotFoundException {
+	private static void crackScene() throws Exception {
 		WdfFile wdf = new WdfFile("E:/Game/梦幻西游/Scene.wdf");
 		PrintWriter pw = new PrintWriter("resources/names/scene1.lst");
 		String[] formats = new String[] { "%04d.nav", "%04d.spr","%04d.cell"};
@@ -50,7 +50,7 @@ public class WdfCracker {
 		System.out.printf("共%d个，匹配%d个",wdf.getFileNodeCount(),iCount);
 	}
 	
-	private static void crackWzife() throws FileNotFoundException {
+	private static void crackWzife() throws Exception {
 		WdfFile wdf = new WdfFile("E:/Game/梦幻西游/wzife.wd1");
 		PrintWriter pw = new PrintWriter("resources/names/test1.lst");
 		String[] formats = new String[] { "magic\\normal\\%04d.tcp","magic\\small\\%04d.tcp" };
@@ -76,7 +76,7 @@ public class WdfCracker {
 		System.out.printf("共%d个，匹配%d个",wdf.getFileNodeCount(),iCount);
 	}
 
-	private static void crackSound() throws FileNotFoundException {
+	private static void crackSound() throws Exception {
 		String[] list1 = new String[] { "attack", "magic", "hit", "defend", "die", "rusha", "rushb", "guard", "悲伤",
 				"发怒", "亲近", "舞蹈", "休息", "招呼" };
 		WdfFile wdf = new WdfFile("E:/Game/梦幻西游/sound1.wdf");

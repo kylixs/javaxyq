@@ -4,6 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/appFramework-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jide.jar"/>
+	<classpathentry kind="lib" path="lib/forms_rt.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/javaxyq-common-1.5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

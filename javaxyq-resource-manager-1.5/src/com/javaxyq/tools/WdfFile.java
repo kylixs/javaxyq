@@ -62,23 +62,17 @@ public class WdfFile implements FileSystem {
 
     private long[] dh3Keys;
 
-    /**
-     * 判断打开的文件是否为WDF文件
-     * 
-     * @param raf
-     * @return
-     * @throws IOException
-     */
-    private boolean isWdfFile(RandomAccessFile raf) throws IOException {
-        byte[] buf = new byte[4];
-        raf.seek(0);
-        raf.read(buf);
-        fileTag = new String(buf);
-        return fileTag.equals(WDFP_FILE) || fileTag.equals(WDFX_FILE) || fileTag.equals(WDFH_FILE);
+
+    public WdfFile(String filename, boolean resovePath) throws Exception {
+        loadWdf(filename, resovePath);
     }
 
-    public WdfFile(String filename) {
-        try {
+    public WdfFile(String filename) throws Exception {
+    	loadWdf(filename, true);
+    }
+    
+	private void loadWdf(String filename, boolean resovePath) throws Exception {
+		try {
             filename = StringUtils.replaceChars(filename, '\\', '/');
             this.filename = filename;
             fileHandler = new RandomAccessFile(filename, "r");
@@ -118,17 +112,34 @@ public class WdfFile implements FileSystem {
                 fileNodeMap.put(node.getId(), node);
             }
             rootNode = new WdfDirectoryObject(this);
-            //load description
-            load(null);
-            //restore path
-            String name = StringUtils.substringAfterLast(filename, "/");
-            restorePaths(name);
-
+            if(resovePath) {
+	            //load description
+	            load(null);
+	            //restore path
+	            String name = StringUtils.substringAfterLast(filename, "/");
+	            restorePaths(name);
+            }
         } catch (Exception e) {
             System.err.println("打开WDF文件出错：" + filename);
             e.printStackTrace();
+            throw new Exception("打开WDF文件出错：" + filename, e);
         }
         System.out.printf("nodeCount=%s, total find:%s\n", fileNodeCount, fileNodes().size());
+	}
+    
+    /**
+     * 判断打开的文件是否为WDF文件
+     * 
+     * @param raf
+     * @return
+     * @throws IOException
+     */
+    private boolean isWdfFile(RandomAccessFile raf) throws IOException {
+        byte[] buf = new byte[4];
+        raf.seek(0);
+        raf.read(buf);
+        fileTag = new String(buf);
+        return fileTag.equals(WDFP_FILE) || fileTag.equals(WDFX_FILE) || fileTag.equals(WDFH_FILE);
     }
     
     private Map<Long, String> buildPaths(String filename) {

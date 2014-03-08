@@ -435,7 +435,7 @@ public class PreviewPanel extends JPanel {
 			String description = userObject.getPath();
 			if(userObject instanceof WdfFileNode) {
 				WdfFileNode wdfNode = (WdfFileNode) userObject;
-				description = wdfNode.getDescription();
+				description = wdfNode.getPath()+"\n"+ wdfNode.getDescription();
 			}
 			this.setTitle(title);
 			this.setDescription(description);
