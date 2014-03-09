@@ -8,18 +8,19 @@ public class WeaponItem implements Item, Serializable{
 	private static final long serialVersionUID = 7254665375041414867L;
 
 	private Long id;
+	private String resNo;
 	private String name;
 	private String type;
 	private String description;
 	private String character;
 	
 	private long price;
-	private long add_attribute1;
-	private long add_attribute2;
+	private long addAttribute1;
+	private long addAttribute2;
 	private long accuracy;
 	private long damage;
 	private long dodge;
-	private String add_skill;
+	private String addSkill;
 	private String efficacy;
 	private short level;
 	
@@ -36,6 +37,14 @@ public class WeaponItem implements Item, Serializable{
 		this.id = id;
 	}
 	
+	public String getResNo() {
+		return resNo;
+	}
+
+	public void setResNo(String resNo) {
+		this.resNo = resNo;
+	}
+
 	public String getName(){
 		return name;
 	}
@@ -76,20 +85,20 @@ public class WeaponItem implements Item, Serializable{
 		this.price = price;
 	}
 	
-	public long getAdd_attribute1(){
-		return add_attribute1;
+	public long getAddAttribute1(){
+		return addAttribute1;
 	}
 	
-	public void setAdd_attribute1(long add_attribute1){
-		this.add_attribute1 = add_attribute1;
+	public void setAddAttribute1(long add_attribute1){
+		this.addAttribute1 = add_attribute1;
 	}
 	
-	public long getAdd_attribute2(){
-		return add_attribute2;
+	public long getAddAttribute2(){
+		return addAttribute2;
 	}
 	
-	public void setAdd_attribute2(long add_attribute2){
-		this.add_attribute2 = add_attribute2;
+	public void setAddAttribute2(long add_attribute2){
+		this.addAttribute2 = add_attribute2;
 	}
 	
 	public long getAccuracy(){
@@ -116,12 +125,12 @@ public class WeaponItem implements Item, Serializable{
 		this.dodge = dodge;
 	}
 	
-	public String getAdd_skill(){
-		return add_skill;
+	public String getAddSkill(){
+		return addSkill;
 	}
 	
-	public void setAdd_skill(String add_skill){
-		this.add_skill = add_skill;
+	public void setAddSkill(String add_skill){
+		this.addSkill = add_skill;
 	}
 	
 	public String getEfficacy(){
@@ -140,18 +149,66 @@ public class WeaponItem implements Item, Serializable{
 		this.level = level;
 	}
 	
+	@Override
 	public String toString() {
-		return String
-			.format(
-				"WeaponItem [id=%s, name=%s, description=%s, character=%s, price=%s, add_attribute1=%s, add_attribute2=%s, accuracy=%s, damage=%s, dodge=%s, type=%s, add_skill=%s, efficacy=%s, level=%s]",
-				id, name, description, character, price, add_attribute1, add_attribute2, accuracy, damage, dodge, type, add_skill, efficacy, level);
+		StringBuilder builder = new StringBuilder();
+		builder.append("WeaponItem [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", accuracy=");
+		builder.append(accuracy);
+		builder.append(", addAttribute1=");
+		builder.append(addAttribute1);
+		builder.append(", addAttribute2=");
+		builder.append(addAttribute2);
+		builder.append(", addSkill=");
+		builder.append(addSkill);
+		builder.append(", character=");
+		builder.append(character);
+		builder.append(", damage=");
+		builder.append(damage);
+		builder.append(", description=");
+		builder.append(description);
+		builder.append(", dodge=");
+		builder.append(dodge);
+		builder.append(", efficacy=");
+		builder.append(efficacy);
+		builder.append(", level=");
+		builder.append(level);
+		builder.append(", price=");
+		builder.append(price);
+		builder.append(", resNo=");
+		builder.append(resNo);
+		builder.append(", type=");
+		builder.append(type);
+		builder.append("]");
+		return builder.toString();
 	}
 	
 	@Override
 	public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WeaponItem other = (WeaponItem) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
 
 }

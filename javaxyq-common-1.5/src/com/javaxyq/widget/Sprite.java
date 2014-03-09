@@ -176,13 +176,21 @@ public class Sprite extends AbstractWidget {
     }
 
     public void reset() {
-        direction = 0;
-        currAnimation = animations.get(0);
-        resetFrames();
+        try {
+			direction = 0;
+			currAnimation = animations.get(0);
+			resetFrames();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     public synchronized void resetFrames() {
-        this.currAnimation.setIndex(0);
+        try {
+			this.currAnimation.setIndex(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     public void setAutoPlay(boolean autoPlay) {
@@ -209,10 +217,14 @@ public class Sprite extends AbstractWidget {
     }
 
     public synchronized void setDirection(int index) {
-        index %= animations.size();
-        this.direction = index;
-        currAnimation = animations.get(this.direction);
-        this.currAnimation.setRepeat(this.repeat);
+        try {
+			index %= animations.size();
+			this.direction = index;
+			currAnimation = animations.get(this.direction);
+			this.currAnimation.setRepeat(this.repeat);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     public void setRepeat(int repeat) {
@@ -226,7 +238,11 @@ public class Sprite extends AbstractWidget {
 
     public void update(long elapsedTime) {
         // update animation
-        currAnimation.update(elapsedTime);
+        try {
+			currAnimation.update(elapsedTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     public int[] getColorations() {

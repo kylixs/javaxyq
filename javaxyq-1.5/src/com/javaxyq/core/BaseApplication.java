@@ -389,7 +389,7 @@ public abstract class BaseApplication implements Application {
 		ItemInstance[] items = dataManager.getItems(context.getPlayer());
 		ItemInstance item = items[2];
 		if(item != null) {
-			if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_WEAPON)){
+			if(ItemTypes.isWeapon(item.getItem())){
 				player.takeupWeapon((WeaponItem) item.getItem());
 				System.out.println("takeup weapon: "+item.getItem());
 			}			

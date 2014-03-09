@@ -7,6 +7,8 @@ import java.util.Vector;
 
 public class Animation extends AbstractWidget {
 
+	private static final long serialVersionUID = 1L;
+
 	private Object UPDATE_LOCK = new Object();
 
 	private Vector<Frame> frames;
@@ -34,19 +36,23 @@ public class Animation extends AbstractWidget {
 		frameCount = frames.size();
 	}
 
-	public synchronized void addFrame(Frame frame) {
-		frames.add(frame);
-		totalDuration += frame.getEndTime();
-		currFrame = frame;
-		frameCount = frames.size();
+	public void addFrame(Frame frame) {
+		synchronized (UPDATE_LOCK) {
+			frames.add(frame);
+			totalDuration += frame.getEndTime();
+			currFrame = frame;
+			frameCount = frames.size();
+		}
 	}
 
-	public synchronized void addFrame(BufferedImage image, long duration, int centerX, int centerY) {
-		totalDuration += duration;
-		Frame frame = new Frame(image, totalDuration, centerX, centerY);
-		frames.add(frame);
-		currFrame = frame;
-		frameCount = frames.size();
+	public void addFrame(BufferedImage image, long duration, int centerX, int centerY) {
+		synchronized (UPDATE_LOCK) {
+			totalDuration += duration;
+			Frame frame = new Frame(image, totalDuration, centerX, centerY);
+			frames.add(frame);
+			currFrame = frame;
+			frameCount = frames.size();
+		}
 	}
 
 	/**
@@ -55,14 +61,12 @@ public class Animation extends AbstractWidget {
 	 * @param elapsedTime
 	 * @return 返回此次跳过的帧数
 	 */
-	public int update(long elapsedTime) {
+	public void update(long elapsedTime) {
 		if (repeat == 0) {
-			return 0;
+			return;
 		}
 		animTime += elapsedTime;
-		int orgIndex = index;
 		this.updateToTime(animTime);
-		return (frameCount + index - orgIndex) % frameCount;
 	}
 
 	/**
@@ -101,33 +105,45 @@ public class Animation extends AbstractWidget {
 		}
 	}
 
-	public synchronized Image getImage() {
-		return (currFrame == null) ? null : currFrame.getImage();
+	public Image getImage() {
+		synchronized (UPDATE_LOCK) {
+			return (currFrame == null) ? null : currFrame.getImage();
+		}
 	}
 
 	/**
 	 * 从头开始播放这个动画
 	 */
-	public synchronized void reset() {
-		animTime = 0;
-		index = 0;
-		currFrame = frames.size() > 0 ? frames.get(0) : null;
+	public void reset() {
+		synchronized (UPDATE_LOCK) {
+			animTime = 0;
+			index = 0;
+			currFrame = frames.size() > 0 ? frames.get(0) : null;
+		}
 	}
 
-	public synchronized int getWidth() {
-		return (currFrame == null) ? 0 : currFrame.getWidth();
+	public int getWidth() {
+		synchronized (UPDATE_LOCK) {
+			return (currFrame == null) ? 0 : currFrame.getWidth();
+		}
 	}
 
-	public synchronized int getHeight() {
-		return (currFrame == null) ? 0 : currFrame.getHeight();
+	public int getHeight() {
+		synchronized (UPDATE_LOCK) {
+			return (currFrame == null) ? 0 : currFrame.getHeight();
+		}
 	}
 
-	public synchronized int getRefPixelX() {
-		return (currFrame == null) ? 0 : currFrame.getRefPixelX();
+	public int getRefPixelX() {
+		synchronized (UPDATE_LOCK) {
+			return (currFrame == null) ? 0 : currFrame.getRefPixelX();
+		}
 	}
 
-	public synchronized int getRefPixelY() {
-		return (currFrame == null) ? 0 : currFrame.getRefPixelY();
+	public int getRefPixelY() {
+		synchronized (UPDATE_LOCK) {
+			return (currFrame == null) ? 0 : currFrame.getRefPixelY();
+		}
 	}
 
 	public int getRepeat() {

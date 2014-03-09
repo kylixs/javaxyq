@@ -36,6 +36,7 @@ public interface DataManager {
 	public void addProp(Player player, String prop, int val);
 
 	public ItemInstance createItem(String name);
+	public ItemInstance createItem(String string, int amount);
 
 	public boolean existItem(String name, int amount);
 
@@ -143,5 +144,6 @@ public interface DataManager {
 	public Player createPlayer(PlayerVO playerData);
 
 	public void setItems(Player player, ItemInstance[] items);
+
 
 }

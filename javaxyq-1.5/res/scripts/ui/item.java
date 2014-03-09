@@ -107,12 +107,12 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 		// 4  | 5
 		Player player = context.getPlayer();
 		int targetIndex = 0;
-		if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_WEAPON)){
+		if(ItemTypes.isWeapon(item.getItem())){
 			targetIndex = 2;
 			player.takeupWeapon((WeaponItem) item.getItem());
 			System.out.println("takeup weapon: "+item.getItem());
-		}else if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_EQUIPMENT)){
-			targetIndex = 3;
+//		}else if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_EQUIPMENT)){
+//			targetIndex = 3;
 			//takeup equipment
 		}
 		
@@ -134,9 +134,9 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 	 */
 	private void takeoffEquipment(ItemInstance item){
 		Player player = context.getPlayer();
-		if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_WEAPON)){
+		if(ItemTypes.isWeapon(item.getItem())){
 			player.takeoffWeapon();
-		}else if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_EQUIPMENT)){
+//		}else if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_EQUIPMENT)){
 			//player.takeoffEquipment();
 		}
 
@@ -389,7 +389,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 				takeoffEquipment(label.getItem());
 			}else {
 				//点击在背包栏，如果是武器类则装备上，否则使用物品
-				if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_WEAPON)){
+				if(ItemTypes.isWeapon(item.getItem())){
 					takeupEquipment(label.getItem());
 				}else {
 					application.getItemManager().useItem(context.getPlayer(),label.getItem());

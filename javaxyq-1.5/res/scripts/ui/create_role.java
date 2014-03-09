@@ -11,7 +11,7 @@ import java.util.HashMap;
 import com.javaxyq.core.DataManager;
 import com.javaxyq.core.DataStore;
 import com.javaxyq.core.SpriteFactory;
-import com.javaxyq.data.CharacterConstants;
+import com.javaxyq.data.CharacterUtils;
 import com.javaxyq.data.ItemInstance;
 import com.javaxyq.event.ActionEvent;
 import com.javaxyq.event.PanelEvent;
@@ -76,19 +76,15 @@ public class create_role extends PanelHandler {
 			playerVo.setMoney(50000);
 			
 			ItemInstance[] items = new ItemInstance[26];
-			ItemInstance item = dataManager.createItem("ËÄÒ¶»¨");
-			item.setAmount(99);
-			items[6] = item;
-			item = dataManager.createItem("·ğÊÖ");
-			item.setAmount(99);
-			items[7] = item;
-			item = dataManager.createItem("ÑªÉ«²è»¨");
-			item.setAmount(99);
-			items[8] = item;
-			item = dataManager.createItem("¾ÅÏã³æ");
-			item.setAmount(99);
-			items[9] = item;
-			items[10] = createWeapon(character);
+			ItemInstance item = dataManager.createItem("ËÄÒ¶»¨",99);
+			addItem(items, item);
+			item = dataManager.createItem("·ğÊÖ",99);
+			addItem(items, item);
+			item = dataManager.createItem("ÑªÉ«²è»¨",99);
+			addItem(items, item);
+			item = dataManager.createItem("¾ÅÏã³æ",99);
+			addItem(items, item);
+			createWeapon(character, items);
 			
 			
 			profile.setPlayerData(playerVo);
@@ -112,6 +108,15 @@ public class create_role extends PanelHandler {
 		}
 	}
 
+	private void addItem(ItemInstance[] items, ItemInstance item) {
+		for(int i=6;i<items.length;i++) {
+			if(items[i] == null) {
+				items[i] = item;
+				break;
+			}
+		}
+	}
+
 	private String newProfileName() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssS");
 		return sdf.format(new Date());
@@ -130,18 +135,31 @@ public class create_role extends PanelHandler {
 		
 	}	
 	
-	private ItemInstance createWeapon(String charName) {
-		//Ëæ»ú·ÖÅäÖ¸¶¨¼¶±ğÎäÆ÷
-		String weaponName = null;
-		if(CharacterConstants.char_0010.equals(charName)) {
-			weaponName = "Îå»¢¶Ï»ê";//åĞÒ£½­ºş
-		}else if(CharacterConstants.char_0009.equals(charName)) {
+	private void createWeapon(String charName, ItemInstance[] items) {
+		//·ÖÅäÎäÆ÷
+		String[] weaponNames = null;
+		if(CharacterUtils.char_0001.equals(charName)) {
+			weaponNames = new String[] {"ÇàÍ­¶Ì½£","åĞÒ£½­ºş"};
+		}else if(CharacterUtils.char_0002.equals(charName)) {
+			weaponNames = new String[] {"ÁøÒ¶µ¶"};
+		}else if(CharacterUtils.char_0003.equals(charName)) {
+		}else if(CharacterUtils.char_0004.equals(charName)) {
+		}else if(CharacterUtils.char_0005.equals(charName)) {
+		}else if(CharacterUtils.char_0006.equals(charName)) {
+		}else if(CharacterUtils.char_0007.equals(charName)) {
+		}else if(CharacterUtils.char_0008.equals(charName)) {
+		}else if(CharacterUtils.char_0009.equals(charName)) {
+			weaponNames = new String[] {"Îå»¢¶Ï»ê"};
+		}else if(CharacterUtils.char_0010.equals(charName)) {
+			weaponNames = new String[] {"ºìÓ§Ç¹","Îå»¢¶Ï»ê","åĞÒ£½­ºş"};
+		}else if(CharacterUtils.char_0011.equals(charName)) {
+		}else if(CharacterUtils.char_0012.equals(charName)) {
 		}
 		
-		if(weaponName != null) {
-			return application.getDataManager().createItem(weaponName);
+		for (int i = 0; (weaponNames != null) && (i<weaponNames.length); i++) {
+			ItemInstance item = dataManager.createItem(weaponNames[i]);
+			addItem(items, item);
 		}
-		return null;
 	}
 
 

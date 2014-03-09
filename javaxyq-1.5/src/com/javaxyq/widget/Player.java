@@ -20,9 +20,8 @@ import javax.swing.event.EventListenerList;
 
 import com.javaxyq.core.Application;
 import com.javaxyq.core.ApplicationHelper;
-import com.javaxyq.core.DataStore;
 import com.javaxyq.core.SpriteFactory;
-import com.javaxyq.data.ItemInstance;
+import com.javaxyq.data.CharacterUtils;
 import com.javaxyq.data.WeaponItem;
 import com.javaxyq.event.EventDispatcher;
 import com.javaxyq.event.EventException;
@@ -51,6 +50,9 @@ public class Player extends AbstractWidget implements EventTarget {
 	public static final String STATE_STAND = "stand";
 
 	public static final String STATE_WALK = "walk";
+	
+	private Object MOVE_LOCK = new Object();
+	private Object UPDATE_LOCK = new Object();
 
 	private String id;
 
@@ -296,9 +298,11 @@ public class Player extends AbstractWidget implements EventTarget {
 		return chatHistory;
 	}
 
-	public synchronized void move() {
+	public void move() {
 		// TODO
-		this.prepareStep();
+		synchronized(MOVE_LOCK) {
+			this.prepareStep();
+		}
 	}
 
 	/**
@@ -406,13 +410,32 @@ public class Player extends AbstractWidget implements EventTarget {
 	}
 
 	private Sprite createPerson(String state) {
-		Sprite sprite = SpriteFactory.loadSprite("/shape/char/" + this.character + "/" + state + ".tcp", colorations);
+		int charNo = Integer.parseInt(this.character);
+		if(weaponItem != null){
+			if(!CharacterUtils.isFirstWeapon(this.character, weaponItem.getType())) {
+				if(!CharacterUtils.isNormalState(state)) {
+					charNo +=12;
+				}
+			}
+		}		
+		String filename = String.format("/shape/char/%04d/%s.tcp", charNo, state);
+		Sprite sprite = SpriteFactory.loadSprite(filename);
 		return sprite;
 	}
 
 	private Sprite createWeapon(String state) {
 		if(weaponItem != null){
-			Sprite sprite = SpriteFactory.loadSprite("/shape/weapon/"+weaponItem.getId()+"/0001/"+ state + ".tcp", null);
+			int charNo = Integer.parseInt(this.character);
+			int resNo = Integer.parseInt(weaponItem.getResNo());
+			if(!CharacterUtils.isFirstWeapon(this.character, weaponItem.getType())) {
+				if(CharacterUtils.isNormalState(state)) {
+					resNo +=50;
+				}else {
+					charNo +=12;
+				}
+			}
+			String filename = String.format("/shape/char/%04d/%02d/%s.tcp", charNo, resNo, state);
+			Sprite sprite = SpriteFactory.loadSprite(filename);
 	        return sprite;
 		}
 		return null;
@@ -422,22 +445,26 @@ public class Player extends AbstractWidget implements EventTarget {
 		return state;
 	}
 
-	public synchronized void stop(boolean force) {
-		if (force) {
-			stopAction();
-		} else {
-			this.movingOn = false;
+	public void stop(boolean force) {
+		synchronized(MOVE_LOCK) {			
+			if (force) {
+				stopAction();
+			} else {
+				this.movingOn = false;
+			}
+			this.directionMoving = false;
+			// this.setState(STATE_STAND);
+			// System.out.println("stop");
 		}
-		this.directionMoving = false;
-		// this.setState(STATE_STAND);
-		// System.out.println("stop");
 	}
 
-	private synchronized void stopAction() {
-		this.moving = false;
-		this.movingOn = false;
-		this.setState(STATE_STAND);
-		// System.out.println("stop action!");
+	private void stopAction() {
+		synchronized(MOVE_LOCK) {			
+			this.moving = false;
+			this.movingOn = false;
+			this.setState(STATE_STAND);
+			// System.out.println("stop action!");
+		}
 	}
 
 	public void update(long elapsedTime) {
@@ -734,17 +761,19 @@ public class Player extends AbstractWidget implements EventTarget {
 	/**
 	 * 准备下一步
 	 */
-	private synchronized void prepareStep() {
-		this.nextStep = this.popPath();
-		// 路径已经为空,停止移动
-		if (this.nextStep == null) {
-			if (this.movingOn) {
-				this.stepTo(direction);
-			} else {
-				this.stopAction();
+	private void prepareStep() {
+		synchronized(MOVE_LOCK) {
+			this.nextStep = this.popPath();
+			// 路径已经为空,停止移动
+			if (this.nextStep == null) {
+				if (this.movingOn) {
+					this.stepTo(direction);
+				} else {
+					this.stopAction();
+				}
 			}
+			this.stepAction();
 		}
-		this.stepAction();
 	}
 
 	private void stepAction() {

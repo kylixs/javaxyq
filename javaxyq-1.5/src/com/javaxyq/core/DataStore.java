@@ -290,11 +290,16 @@ public class DataStore implements DataManager {
 	}
 
 	public ItemInstance createItem(String name) {
+		return this.createItem(name, 1);
+	}
+	
+	@Override
+	public ItemInstance createItem(String name, int amount) {
 		if(name == null || name.isEmpty()) return null;
 		name = name.trim();
 		Item item = this.findItemByName(name);
 		if(item != null) {
-			return new ItemInstance(item, 1);
+			return new ItemInstance(item, amount);
 		}
 		System.err.println("createItem failed: "+name);
 		return null;

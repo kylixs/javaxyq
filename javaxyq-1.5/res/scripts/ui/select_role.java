@@ -113,6 +113,7 @@ public class select_role extends PanelHandler implements MouseListener {
 				PlayerVO data = profiles.get(i).getPlayerData();
 				Animation anim = SpriteFactory.loadAnimation("/shape/char/"+data.character+"/stand.tcp");
 				profileLabels.get(i).setAnim(anim);
+				profileLabels.get(i).setSize(90, 120);
 				//×°ÉÏÎäÆ÷
 				ItemInstance weaponItem = profiles.get(i).getItems()[2];
 				if(weaponItem != null) {

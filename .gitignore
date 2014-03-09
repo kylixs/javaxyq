@@ -9,5 +9,4 @@ log
 build
 deploy
 *.lck
-*.jxd
 javaxyq.properties

@@ -7,13 +7,16 @@
  */
 package com.javaxyq.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * ÓÎÏ·ÎïÆ·ÀàÐÍ
  * @author gongdewei
  * @date 2010-4-14 create
  */
 public class ItemTypes {
-	public static final int TYPE_MEDICINE = 0x1000;
+	public static final int TYPE_MEDICINE = 0x1000; //Ò©Æ·
 	public static final int TYPE_MEDICINE_HP = 0x1001;
 	public static final int TYPE_MEDICINE_MP = 0x1002;
 	public static final int TYPE_MEDICINE_HPMP = 0x1003;//hp+mp
@@ -23,25 +26,30 @@ public class ItemTypes {
 	public static final int TYPE_MEDICINE_SOBERUP  = 0x1020;//½â¾ÆÀàÒì³£
 	public static final int TYPE_MEDICINE_DETOXIFY  = 0x1040;//½â¶¾
 	public static final int TYPE_MEDICINE_BREAKSEAL  = 0x1080;//½â³ý·âÓ¡
-	public static final int TYPE_WEAPON = 0x2000;
-	public static final int TYPE_WEAPON_WAND = 0x2001;//Ä§°ô
-	public static final int TYPE_WEAPON_WHIP = 0x2002;//±Þ
+	
+	public static final int TYPE_WEAPON = 0x2000; //ÎäÆ÷
+	public static final int TYPE_WEAPON_SWORD = 0x2001;//½£
+	public static final int TYPE_WEAPON_MACHETES = 0x2002;//µ¶
 	public static final int TYPE_WEAPON_HAMMER = 0x2003;//´¸
-	public static final int TYPE_WEAPON_MACHETES = 0x2004;//µ¶
+	public static final int TYPE_WEAPON_CLAWTHORN = 0x2014;//×¦´Ì
 	public static final int TYPE_WEAPON_LARGEAXE = 0x2005;//¸«îá
-	public static final int TYPE_WEAPON_HOOP = 0x2006;//»·È¦
-	public static final int TYPE_WEAPON_SWORD = 0x2007;//½£
-	public static final int TYPE_WEAPON_RIBBON = 0x2008;//Æ®´ø
-	public static final int TYPE_WEAPON_SPEAR = 0x2009;//Ç¹Ã¬
-	public static final int TYPE_WEAPON_FAN = 0x2010;//ÉÈ
-	public static final int TYPE_WEAPON_DOUBLEDAGGER = 0x2011;//Ë«¶Ì½£
-	public static final int TYPE_WEAPON_CLAWTHORN = 0x2012;//×¦´Ì
-	public static final int TYPE_EQUIPMENT = 0x4000;
+	public static final int TYPE_WEAPON_FAN = 0x2006;//ÉÈ
+	public static final int TYPE_WEAPON_SPEAR = 0x2007;//Ç¹Ã¬
+	public static final int TYPE_WEAPON_WHIP = 0x2008;//±Þ
+	public static final int TYPE_WEAPON_WAND = 0x2009;//Ä§°ô
+	public static final int TYPE_WEAPON_RIBBON = 0x2010;//Æ®´ø
+	public static final int TYPE_WEAPON_HOOP = 0x2011;//»·È¦
+	public static final int TYPE_WEAPON_DOUBLEDAGGER = 0x2012;//Ë«¶Ì½£
+	
+	public static final int TYPE_EQUIPMENT = 0x4000; //ÒÂ·þ×°±¸
 	public static final int TYPE_EQUIPMENT_HELMET = 0x4001;//Í·¿ø
 	public static final int TYPE_EQUIPMENT_JEWELRY = 0x4002;//ÊÎÎï
 	public static final int TYPE_EQUIPMENT_ARMOR = 0x4003;//»¤¼×
 	public static final int TYPE_EQUIPMENT_BELT = 0x4004;//Ñü´ø
 	public static final int TYPE_EQUIPMENT_BOOTS = 0x4005;//Ð¬
+	
+	private static List<String> weaponTypes = Arrays.asList(new String[] {"½£","µ¶","´¸","×¦´Ì","¸«îá","ÉÈ","Ç¹Ã¬","±Þ","Ä§°ô","Æ®´ø","»·È¦","Ë«½£"});
+	
 	/**
 	 * »ñÈ¡ÎïÆ·µÄÀàÐÍ
 	 * @param item
@@ -72,7 +80,8 @@ public class ItemTypes {
 	}
 	
 	public static boolean isWeapon(Item item) {
-		return (getType(item) & TYPE_WEAPON)==TYPE_WEAPON;
+//		return (getType(item) & TYPE_WEAPON)==TYPE_WEAPON;
+		return weaponTypes.contains(item.getType());
 	}
 	public static boolean isEquipment(Item item) {
 		return (getType(item) & TYPE_EQUIPMENT)==TYPE_EQUIPMENT;

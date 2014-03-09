@@ -43,6 +43,8 @@ public class Label extends JLabel {
 
 	public Label(Animation anim) {
 		this(null, anim!=null?new ImageIcon(anim.getImage()):null, LEFT);
+//		this(null, anim!=null?new ImageIcon(anim.getImage()):null, CENTER);
+//		this.setVerticalAlignment(CENTER);
 		setAnim(anim);
 	}
 
