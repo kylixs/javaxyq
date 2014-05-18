@@ -31,15 +31,18 @@ import com.javaxyq.data.SceneNpc;
 import com.javaxyq.data.SceneNpcDAO;
 import com.javaxyq.data.SceneTeleporter;
 import com.javaxyq.data.SceneTeleporterDAO;
+import com.javaxyq.data.SkillMain;
 import com.javaxyq.data.impl.MedicineItemDAOImpl;
 import com.javaxyq.data.impl.SceneDAOImpl;
 import com.javaxyq.data.impl.SceneNpcDAOImpl;
 import com.javaxyq.data.impl.SceneTeleporterDAOImpl;
+import com.javaxyq.data.impl.SkillMainDAOImpl;
 import com.javaxyq.data.impl.WeaponItemDAOImpl;
 import com.javaxyq.io.CacheManager;
 import com.javaxyq.model.Item;
 import com.javaxyq.model.ItemTypes;
 import com.javaxyq.model.PlayerVO;
+import com.javaxyq.model.Skill;
 import com.javaxyq.model.Task;
 import com.javaxyq.task.TaskManager;
 import com.javaxyq.util.StringUtils;
@@ -129,6 +132,7 @@ public class DataStore implements DataManager {
 	private SceneDAO sceneDAO;
 	private SceneNpcDAO sceneNpcDAO;
 	private SceneTeleporterDAO sceneTeleporterDAO;
+	private SkillMainDAOImpl skillMain;
 	private String[] 魔族 = {"0005","0006","0007","0008"};
 	private WeaponItemDAOImpl weaponDAO;
 
@@ -512,6 +516,16 @@ public class DataStore implements DataManager {
 		return null;
 	}
 	
+	public List<SkillMain> findMainSkill(String school){
+		try {
+			return  skillMain.findSkillBySchool(school);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public List<SceneTeleporter> findTeleportersBySceneId(int sceneId) {
 		try {
 			return sceneTeleporterDAO.findTeleportersBySceneId(sceneId);
@@ -603,9 +617,19 @@ public class DataStore implements DataManager {
 		sceneDAO = new SceneDAOImpl();
 		sceneNpcDAO = new SceneNpcDAOImpl();
 		sceneTeleporterDAO = new SceneTeleporterDAOImpl();
+		skillMain = new SkillMainDAOImpl();
+		
 		
 		itemDAOs.add(weaponDAO);
 		itemDAOs.add(medicineDAO);
+		
+		/*try {
+			Skill skill = skillMain.findSkillByName("五行学说");
+			System.out.println("skill's description is:"+skill.getDescription());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 
 		System.out.println("initialized datastore: "+new java.util.Date());
 	}

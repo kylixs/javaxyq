@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Dialogs>
-  <Dialog id="main_skill" x="0" y="0" width="451" height="465" background="/wzife/dialog/mskill.tcp"/>
+  <Dialog id="main_skill" x="0" y="0" width="451" height="465" background="/wzife/dialog/mskill.tcp">
+   <Button text="师门技能" x="25" y="27" width="" height="" id="" actionId="school_skill" was="/wzife/button/longbtn.tcp"/>
+   <Button text="辅助技能" x="107" y="27" width="" height="" id="" actionId="assist_skill" was="/wzife/button/longbtn.tcp"/>
+   <Button text="剧情技能" x="189" y="27" width="" height="" id="" actionId="plot_skill" was="/wzife/button/longbtn.tcp"/>
+   <Button text="修炼技能" x="271" y="27" width="" height="" id="" actionId="practice_skill" was="/wzife/button/longbtn.tcp"/>
+   <Button text="奇经八脉" x="353" y="27" width="" height="" id="" actionId="qjbm" was="/wzife/button/longbtn.tcp"/>
+   
+   <Sprite id="" name="技能0" x="105" y="62" width="40" height="40" tooltip="" path="" actionId="processText"/>
+   <Sprite id="" name="技能1" x="105" y="130" width="40" height="40" tooltip="" path="" actionId="processText"/>
+   <Sprite id="" name="技能2" x="105" y="199" width="40" height="40" tooltip="" path="" actionId="processText"/>
+   <Sprite id="" name="技能3" x="45" y="95" width="40" height="40" tooltip="" path="" actionId="processText"/>
+   <Sprite id="" name="技能4" x="45" y="164" width="40" height="40" tooltip="" path="" actionId="processText"/>
+   <Sprite id="" name="技能5" x="165" y="95" width="40" height="40" tooltip="" path="" actionId="processText"/>
+   <Sprite id="" name="技能6" x="165" y="164" width="40" height="40" tooltip="" path="/wzife/skillmain/1001.tcp" actionId="processText"/>
+  
+   <Text name="技能描述" text="" x="243" y="78" width="146" height="200" align="NORTH"/>  
+   <Text name="技能名称" text="" x="243" y="61" width="146" height="17" font="16" size="" color="red" align=""/> 
+  </Dialog>
 </Dialogs>

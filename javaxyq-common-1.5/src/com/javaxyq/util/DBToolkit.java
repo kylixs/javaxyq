@@ -78,6 +78,7 @@ public class DBToolkit {
 			Connection _conn = ds.getConnection();
 			ScriptRunner runner = new ScriptRunner(_conn, true, false);
 			File[] files = dir.listFiles(new SuffixFilenameFilter(".sql"));
+			System.out.println("length is:"+files.length);
 			for (int i = 0; i < files.length; i++) {
 				System.out.println("[db]µ¼Èë: "+files[i].getName()+" ..");
 				//importSQL(_conn, new FileInputStream(files[i]));
