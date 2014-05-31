@@ -10,6 +10,7 @@ import com.javaxyq.data.SceneTeleporter;
 import com.javaxyq.data.SkillMain;
 import com.javaxyq.model.Item;
 import com.javaxyq.model.PlayerVO;
+import com.javaxyq.model.Skill;
 import com.javaxyq.widget.Player;
 
 public interface DataManager {
@@ -67,12 +68,15 @@ public interface DataManager {
 	public SceneNpc findSceneNpc(Integer id);
 
 	public SceneTeleporter findSceneTeleporter(Integer id);
+	
+	public Skill findSkillByName(String name);
 
 	public List<SceneTeleporter> findTeleportersBySceneId(int sceneId);
 
 	public ItemInstance getItemAt(Player player, int index);
 	
 	public List<SkillMain> findMainSkill(String school);
+	
 
 	/**
 	 * 物品可以叠加的最大数量

@@ -22,7 +22,10 @@ public interface Skill extends Serializable {
 	String getDescription();
 
 	String getEffection();
+	
+	String getConditions();
+	
+	String getConsumption();
 
-	String getMagic_skill();
 
 }

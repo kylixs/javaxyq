@@ -19,14 +19,13 @@ public interface BaseSkillDAO {
 
 	//List<Item> findItemEntities(int maxResults, int firstResult) throws SQLException;
 
-	List<SkillMain> findSkillBySchool(String school) throws SQLException;
+	//List<SkillMain> findSkillBySchool(String school) throws SQLException;
 
 
 	//************* custom *********************//
-	String findMagicSkillByName(String name)throws SQLException;
 	
 	Skill findSkillByName(String name) throws SQLException;
-
-	//List<Item> findItemsByType(int type) throws SQLException;
+	
+	//public String findMagicSkillByName(String name) throws SQLException;
 
 }

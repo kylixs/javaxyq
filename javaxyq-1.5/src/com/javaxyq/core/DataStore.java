@@ -31,11 +31,13 @@ import com.javaxyq.data.SceneNpc;
 import com.javaxyq.data.SceneNpcDAO;
 import com.javaxyq.data.SceneTeleporter;
 import com.javaxyq.data.SceneTeleporterDAO;
+import com.javaxyq.data.SkillMagic;
 import com.javaxyq.data.SkillMain;
 import com.javaxyq.data.impl.MedicineItemDAOImpl;
 import com.javaxyq.data.impl.SceneDAOImpl;
 import com.javaxyq.data.impl.SceneNpcDAOImpl;
 import com.javaxyq.data.impl.SceneTeleporterDAOImpl;
+import com.javaxyq.data.impl.SkillMagicDAOImpl;
 import com.javaxyq.data.impl.SkillMainDAOImpl;
 import com.javaxyq.data.impl.WeaponItemDAOImpl;
 import com.javaxyq.io.CacheManager;
@@ -133,6 +135,7 @@ public class DataStore implements DataManager {
 	private SceneNpcDAO sceneNpcDAO;
 	private SceneTeleporterDAO sceneTeleporterDAO;
 	private SkillMainDAOImpl skillMain;
+	private SkillMagicDAOImpl skillMagic;
 	private String[] Д§Че = {"0005","0006","0007","0008"};
 	private WeaponItemDAOImpl weaponDAO;
 
@@ -516,9 +519,21 @@ public class DataStore implements DataManager {
 		return null;
 	}
 	
+	
 	public List<SkillMain> findMainSkill(String school){
 		try {
 			return  skillMain.findSkillBySchool(school);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Skill findSkillByName(String name) {
+		try {
+			Skill magic = skillMagic.findSkillByName(name);
+			return magic;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -618,6 +633,7 @@ public class DataStore implements DataManager {
 		sceneNpcDAO = new SceneNpcDAOImpl();
 		sceneTeleporterDAO = new SceneTeleporterDAOImpl();
 		skillMain = new SkillMainDAOImpl();
+		skillMagic = new SkillMagicDAOImpl();
 		
 		
 		itemDAOs.add(weaponDAO);
@@ -1028,4 +1044,6 @@ public class DataStore implements DataManager {
 			items[destIndex] = temp;
 		}
 	}
+
+	
 }

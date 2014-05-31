@@ -113,7 +113,6 @@ public class SkillMainDAOImpl implements BaseSkillDAO{
 	}
 
 	
-	@Override
 	public String findMagicSkillByName(String name) throws SQLException {
 		String sql = "select * from SKILL_MAIN where name=? ";
 		List<SkillMain> results;
@@ -125,7 +124,7 @@ public class SkillMainDAOImpl implements BaseSkillDAO{
 		}
 		if(results.size() == 1) {
 			SkillMain skill = results.get(0);
-			return skill.getMagic_skill();
+			return skill.getMagicSkill();
 		}else if(results.size() >= 1) {
 			throw new SQLException("¼ÇÂ¼²»Î¨Ò»");
 		}

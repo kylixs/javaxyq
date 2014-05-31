@@ -10,7 +10,7 @@ public class SkillMain implements Skill,Serializable{
 	private String name;
 	private String description;
 	private String effection;
-	private String magic_skill;
+	private String magicSkill;
 	
 	private static final long serialVersionUID = -4733685782201972492L;
 	
@@ -53,18 +53,20 @@ public class SkillMain implements Skill,Serializable{
 	public String getEffection() {
 		return effection;
 	}
-
+	
 	public void setEffection(String effection) {
 		this.effection = effection;
 	}
-
-	public String getMagic_skill() {
-		return magic_skill;
+	
+	public String getMagicSkill() {
+		return magicSkill;
 	}
 
-	public void setMagic_skill(String magic_skill) {
-		this.magic_skill = magic_skill;
+	public void setMagicSkill(String magic) {
+		this.magicSkill = magic;
 	}
+
+	
 	
 	@Override
 	public String toString() {
@@ -79,10 +81,22 @@ public class SkillMain implements Skill,Serializable{
 		builder.append(description);
 		builder.append(", effection=");
 		builder.append(effection);
-		builder.append(", magic_skill=");
-		builder.append(magic_skill);
+		builder.append(", magicskill=");
+		builder.append(magicSkill);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	@Override
+	public String getConditions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getConsumption() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

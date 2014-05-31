@@ -32,6 +32,7 @@ import com.javaxyq.util.StringUtils;
 import com.javaxyq.widget.Player;
 import com.javaxyq.model.Skill;
 import com.javaxyq.core.*;
+import com.javaxyq.data.BaseItemDAO;
 import com.javaxyq.data.SkillMain;
 /**
  * @author wpaul
@@ -39,8 +40,11 @@ import com.javaxyq.data.SkillMain;
  */
 public class main_skill extends PanelHandler implements MouseListener,MouseMotionListener{
 	private List<SkillMain> skills;
+	private List<Skill> magicskills;
 	private List<Label>labels;
-	private int index;
+	private int textrow;
+	private StringBuffer sb;
+	//private int index;
 
 	public void initial(PanelEvent evt) {
 		super.initial(evt);
@@ -48,16 +52,17 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		Player player = context.getPlayer();
 		String school = player.getData().school;
 		skills = dataManager.findMainSkill(school);
+		magicskills = new ArrayList<Skill>();
+		textrow = 0;
 		for(int s=0; s<skills.size(); s++){
 			SkillMain skill = skills.get(s);
-			System.out.println("skill is id:"+skill.getId());
 			Label mainskill  = (Label) this.panel.findCompByName("技能"+s);
 			mainskill.setAnim(SpriteFactory.loadAnimation("wzife/skillmain/normal/"+
 			skill.getId()+".tcp"));
 		}
 
 	}
-	public void school_skill(ActionEvent evt) {
+	public void school_skill(ActionEvent evt) {		
 		this.updateLabels(panel);
 		Player player = context.getPlayer();
 		String school = player.getData().school;
@@ -67,9 +72,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			Label mainskill  = (Label) this.panel.findCompByName("技能"+s);
 			mainskill.setAnim(SpriteFactory.loadAnimation("wzife/skillmain/normal/"+
 			skill.getId()+".tcp"));
-			panel.add(mainskill);
-		}
-		
+		}	
 		String background = "/wzife/dialog/mskill.tcp/";
 		panel.setBgImage(new ImageConfig(background));
 		//updateSkills();
@@ -113,11 +116,36 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		//println "background is : $background"
 		//this.panel.setBgImage(new ImageConfig(background));
 	}
-	
-	private void qjbm(ActionEvent evt) {
+	public void qjbm(ActionEvent evt) {
 		/*String fname = "wzife.wd2"
 		String background = "界面 "+evt.getActionCommand();*/
 	}
+	public void text_down(ActionEvent evt){
+		Label skilldes  = (Label) this.panel.findCompByName("技能说明");
+		textrow++;
+		String tt = sb.toString();
+		for(int i=0; i<textrow; i++){
+			int index = tt.indexOf("<br>")+4;
+        	tt = tt.substring(index);
+		}
+    	String sdes = "<html>" + tt + "</html>";
+		skilldes.setText(sdes);
+	}
+	public void text_up(ActionEvent event){
+		Label skilldes  = (Label) this.panel.findCompByName("技能说明");
+		if(textrow>0){
+			textrow--;
+		}
+		String tt = sb.toString();
+		for(int i=textrow; i>0; i--){
+			int index = tt.indexOf("<br>")+4;
+        	tt = tt.substring(index);
+		}
+    	String sdes = "<html>" + tt + "</html>";
+		skilldes.setText(sdes);
+	}
+	
+	
 	
 	private void updateLabels(Panel panel) {
 		Component[] comps = panel.getComponents();
@@ -134,35 +162,70 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		
 	}
 	
-	private void processText(MouseEvent e) {
-		//System.out.println("mouseEvent is:"+e);
+	private void processSkill(MouseEvent e){
 		Object c = e.getComponent();
 		if(c instanceof Label){
 			Label label = (Label)c;
 			String name = label.getName();
-			//System.out.println("skill is:"+name);
-			index = Integer.parseInt(name.substring(2));
-			//System.out.println("index is:"+index);
+			int index = Integer.parseInt(name.substring(2));
+			if(name.contains("技能")){
+				System.out.println("skill is:"+skills.get(index));
+				String[] magics = skills.get(index).getMagicSkill().split("、");
+				magicskills.removeAll(magicskills);
+                int p = 0;
+				for(String magic:magics){
+					Skill skill = dataManager.findSkillByName(magic);
+					magicskills.add(skill);
+					System.out.println("Magic"+magicskills);		
+					Label magicskill  = (Label) this.panel.findCompByName("法术"+(p++));
+					magicskill.setAnim(SpriteFactory.loadAnimation("wzife/skillmagic/normal/"+
+					skill.getId()+".tcp"));					
+				}	
+				for(int i=p;i<13;i++){
+					Label magicskill  = (Label) this.panel.findCompByName("法术"+i);
+					magicskill.setAnim(SpriteFactory.loadAnimation(""));
+				}
+				processText(skills.get(index));
+			}
+			else if(name.contains("法术")){
+				processText(magicskills.get(index));
+			}
+		}
+	
+	}
+	
+	private void processText(Skill skill) {
 			//技能名称
-			String sname = skills.get(index).getName();
+			String sname = skill.getName();
 			Label skillname  = (Label) this.panel.findCompByName("技能名称");
             skillname.setText(sname);
-			
+			//技能说明
+            sb = new StringBuffer();
+            textrow = 0;
+			Label skilldes  = (Label) this.panel.findCompByName("技能说明");
+			skilldes.setVerticalAlignment(JLabel.NORTH);          
 			//技能描述
-			String des = skills.get(index).getDescription();
-			Label skilldes  = (Label) this.panel.findCompByName("技能描述");
-			skilldes.setVerticalAlignment(JLabel.NORTH);
-			
-			StringBuffer sb = new StringBuffer();
-			sb.append(linefeed(skilldes,des));
-			String effect = skills.get(index).getEffection();
+			String des = skill.getDescription();
+			sb.append(linefeed(skilldes,des));			
+			//效果
+			String effect = skill.getEffection();
 			if(!effect.equals("0")){
-				effect = "学习效果:"+effect+"。";
 				sb.append(linefeed(skilldes,effect));
 			}
+			//使用条件
+			if(skill.getConditions() != null){
+				String conditions = skill.getConditions();
+                sb.append(linefeed(skilldes,conditions));
+			}			
+			//使用消耗
+			if(skill.getConsumption() != null){
+				String consumption = skill.getConsumption();
+                sb.append(linefeed(skilldes,consumption));
+			}
+			
 	    	String sdes = "<html>" + sb.toString() + "</html>";
 	    	skilldes.setText(sdes);
-		}
+		
 	}
 	
 	/**
@@ -197,7 +260,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		switch(e.getButton()){
 			case MouseEvent.BUTTON1:
 				//左键点击技能图标
-			    processText(e);
+			    processSkill(e);
 				break;
 		}
 
