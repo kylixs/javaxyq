@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.FontMetrics;
 
+import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 
 import org.apache.commons.jexl2.JexlContext;
@@ -24,7 +25,6 @@ import com.javaxyq.event.ActionEvent;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
 import com.javaxyq.config.ImageConfig;
-//import com.javaxyq.ui.TextDescLabel;
 import com.javaxyq.ui.ItemLabel;
 import com.javaxyq.ui.Label;
 import com.javaxyq.ui.Panel;
@@ -42,28 +42,37 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 	private List<SkillMain> skills;
 	private List<Skill> magicskills;
 	private List<Label>labels;
+	private List<AbstractButton>buttons;
 	private int textrow;
 	private StringBuffer sb;
 	//private int index;
 
 	public void initial(PanelEvent evt) {
 		super.initial(evt);
-		this.updateLabels(panel);
+		//this.updateLabels(panel);
+		labels = new ArrayList<Label>();
+		buttons = new ArrayList<AbstractButton>();
 		Player player = context.getPlayer();
 		String school = player.getData().school;
 		skills = dataManager.findMainSkill(school);
 		magicskills = new ArrayList<Skill>();
+		sb = new StringBuffer();
 		textrow = 0;
 		for(int s=0; s<skills.size(); s++){
 			SkillMain skill = skills.get(s);
 			Label mainskill  = (Label) this.panel.findCompByName("技能"+s);
 			mainskill.setAnim(SpriteFactory.loadAnimation("wzife/skillmain/normal/"+
 			skill.getId()+".tcp"));
+			mainskill.addMouseListener(this);
+			mainskill.addMouseMotionListener(this);
+			labels.add(mainskill);
 		}
-
+		AbstractButton button_down = (AbstractButton)this.panel.findCompByName("向下按钮");
+		AbstractButton button_up = (AbstractButton)this.panel.findCompByName("向上按钮");
+		buttons.add(button_up);
+		buttons.add(button_down);
 	}
 	public void school_skill(ActionEvent evt) {		
-		this.updateLabels(panel);
 		Player player = context.getPlayer();
 		String school = player.getData().school;
 		skills = dataManager.findMainSkill(school);
@@ -72,7 +81,13 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			Label mainskill  = (Label) this.panel.findCompByName("技能"+s);
 			mainskill.setAnim(SpriteFactory.loadAnimation("wzife/skillmain/normal/"+
 			skill.getId()+".tcp"));
-		}	
+			mainskill.addMouseListener(this);
+			mainskill.addMouseMotionListener(this);
+			labels.add(mainskill);
+		}
+		for(AbstractButton button:buttons){
+			panel.add(button);
+		}
 		String background = "/wzife/dialog/mskill.tcp/";
 		panel.setBgImage(new ImageConfig(background));
 		//updateSkills();
@@ -98,7 +113,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		}
 		String background = "/wzife/dialog/assistskill.tcp/";
 		panel.setBgImage(new ImageConfig(background));
-		Component[] comps = panel.getComponents();
+		//Component[] comps = panel.getComponents();
 		
 		
 		//println "background is : $background"
@@ -111,6 +126,9 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			label.removeMouseListener(this);
 			label.removeMouseMotionListener(this);
 		}
+		for(AbstractButton button:buttons){
+			panel.remove(button);
+		}
 		String background = "/wzife/dialog/practiceskill.tcp/";
 		panel.setBgImage(new ImageConfig(background));
 		//println "background is : $background"
@@ -121,15 +139,17 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		String background = "界面 "+evt.getActionCommand();*/
 	}
 	public void text_down(ActionEvent evt){
-		Label skilldes  = (Label) this.panel.findCompByName("技能说明");
-		textrow++;
-		String tt = sb.toString();
-		for(int i=0; i<textrow; i++){
-			int index = tt.indexOf("<br>")+4;
-        	tt = tt.substring(index);
-		}
-    	String sdes = "<html>" + tt + "</html>";
-		skilldes.setText(sdes);
+		if(!sb.toString().equals("")){
+			Label skilldes  = (Label) this.panel.findCompByName("技能说明");
+			textrow++;
+			String tt = sb.toString();
+			for(int i=0; i<textrow; i++){
+				int index = tt.indexOf("<br>")+4;
+	        	tt = tt.substring(index);
+			}
+	    	String sdes = "<html>" + tt + "</html>";
+			skilldes.setText(sdes);
+		}	
 	}
 	public void text_up(ActionEvent event){
 		Label skilldes  = (Label) this.panel.findCompByName("技能说明");
@@ -147,11 +167,12 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 	
 	
 	
-	private void updateLabels(Panel panel) {
+	/*private void updateLabels(Panel panel) {
 		Component[] comps = panel.getComponents();
 		labels = new ArrayList<Label>();
 		for (Component c : comps) {
 			if (c instanceof Label) {
+				System.out.println("lable"+c);
 				labels.add((Label) c);
 			}
 		}
@@ -160,7 +181,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			label.addMouseMotionListener(this);
 		}
 		
-	}
+	}*/
 	
 	private void processSkill(MouseEvent e){
 		Object c = e.getComponent();
@@ -169,17 +190,18 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			String name = label.getName();
 			int index = Integer.parseInt(name.substring(2));
 			if(name.contains("技能")){
-				System.out.println("skill is:"+skills.get(index));
 				String[] magics = skills.get(index).getMagicSkill().split("、");
 				magicskills.removeAll(magicskills);
                 int p = 0;
 				for(String magic:magics){
 					Skill skill = dataManager.findSkillByName(magic);
-					magicskills.add(skill);
-					System.out.println("Magic"+magicskills);		
+					magicskills.add(skill);	
 					Label magicskill  = (Label) this.panel.findCompByName("法术"+(p++));
 					magicskill.setAnim(SpriteFactory.loadAnimation("wzife/skillmagic/normal/"+
-					skill.getId()+".tcp"));					
+					skill.getId()+".tcp"));	
+					magicskill.addMouseListener(this);
+					magicskill.addMouseMotionListener(this);
+					labels.add(magicskill);
 				}	
 				for(int i=p;i<13;i++){
 					Label magicskill  = (Label) this.panel.findCompByName("法术"+i);
@@ -200,10 +222,12 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			Label skillname  = (Label) this.panel.findCompByName("技能名称");
             skillname.setText(sname);
 			//技能说明
-            sb = new StringBuffer();
             textrow = 0;
+            sb.setLength(0);
 			Label skilldes  = (Label) this.panel.findCompByName("技能说明");
-			skilldes.setVerticalAlignment(JLabel.NORTH);          
+			skilldes.setVerticalAlignment(JLabel.NORTH);
+			labels.add(skilldes);
+			labels.add(skillname);
 			//技能描述
 			String des = skill.getDescription();
 			sb.append(linefeed(skilldes,des));			
@@ -221,11 +245,9 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			if(skill.getConsumption() != null){
 				String consumption = skill.getConsumption();
                 sb.append(linefeed(skilldes,consumption));
-			}
-			
+			}			
 	    	String sdes = "<html>" + sb.toString() + "</html>";
-	    	skilldes.setText(sdes);
-		
+	    	skilldes.setText(sdes);	
 	}
 	
 	/**
@@ -238,7 +260,22 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		StringBuffer sb = new StringBuffer();
 		char[] deschar = des.toCharArray();
     	FontMetrics fm = skilldes.getFontMetrics(skilldes.getFont());
-    	int fw = fm.charWidth(deschar[0]);
+    	int linelen = 0;
+    	int offset = 0;
+    	for (int i=0;i<deschar.length;i++){
+    		if(linelen <= skilldes.getWidth()-fm.charWidth(deschar[0])){
+        		linelen += fm.charWidth(deschar[i]);	
+    		}else{
+    			sb.append(deschar, offset, i-offset);
+        		sb.append("<br>");
+        		linelen = fm.charWidth(deschar[i]);
+    			offset = i;
+    		}
+    	}
+    	sb.append(deschar, offset, deschar.length-offset);
+		sb.append("<br>");
+    	
+    	/*int fw = fm.charWidth(deschar[0]);
     	int fh = fm.getHeight();
     	  	
     	int linelen = deschar.length*fw/skilldes.getWidth()+1;
@@ -251,7 +288,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
     			sb.append(deschar,i*offset,deschar.length-i*offset);
     			sb.append("<br>");
     		}  		
-    	}
+    	}*/
     	return sb.toString();
 	}
 	

@@ -97,7 +97,6 @@ public class DBToolkit {
 					String line = scanner.nextLine();
 					String[] values = line.split(",");
 					if (values.length > 1) {
-						System.out.println(line);
 						preStatment = createInsertStatement(_conn, preStatment, tableName, values);
 						preStatment.clearParameters();
 						for (int i = 0; i < values.length; i++) {
