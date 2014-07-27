@@ -15,6 +15,7 @@ import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 import org.apache.commons.jexl2.MapContext;
 import org.apache.commons.jexl2.UnifiedJEXL;
+import org.apache.commons.jexl2.UnifiedJEXL.Expression;
 
 import java.util.*;
 
@@ -45,6 +46,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 	private List<AbstractButton>buttons;
 	private int textrow;
 	private StringBuffer sb;
+	private Expression expression;
 	//private int index;
 
 	public void initial(PanelEvent evt) {
@@ -61,12 +63,16 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		for(int s=0; s<skills.size(); s++){
 			SkillMain skill = skills.get(s);
 			Label mainskill  = (Label) this.panel.findCompByName("技能"+s);
+			Label mskilllevel  = (Label) this.panel.findCompByName("skill"+s);
 			mainskill.setAnim(SpriteFactory.loadAnimation("wzife/skillmain/normal/"+
 			skill.getId()+".tcp"));
 			mainskill.addMouseListener(this);
 			mainskill.addMouseMotionListener(this);
+
 			labels.add(mainskill);
+			labels.add(mskilllevel);
 		}
+		this.updateLabels(this.panel);
 		AbstractButton button_down = (AbstractButton)this.panel.findCompByName("向下按钮");
 		AbstractButton button_up = (AbstractButton)this.panel.findCompByName("向上按钮");
 		buttons.add(button_up);
@@ -76,7 +82,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		Player player = context.getPlayer();
 		String school = player.getData().school;
 		skills = dataManager.findMainSkill(school);
-		for(int s=0; s<skills.size(); s++){
+		/*for(int s=0; s<skills.size(); s++){
 			SkillMain skill = skills.get(s);
 			Label mainskill  = (Label) this.panel.findCompByName("技能"+s);
 			mainskill.setAnim(SpriteFactory.loadAnimation("wzife/skillmain/normal/"+
@@ -84,6 +90,10 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			mainskill.addMouseListener(this);
 			mainskill.addMouseMotionListener(this);
 			labels.add(mainskill);
+		}*/
+		for(Label label:labels){
+            System.out.println("label is:"+label);
+			panel.add(label);
 		}
 		for(AbstractButton button:buttons){
 			panel.add(button);
@@ -96,9 +106,10 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 	}
 	public void plot_skill(ActionEvent evt) {
 		for(Label label:labels){
-			label.setAnim(SpriteFactory.loadAnimation(""));
-			label.removeMouseListener(this);
-			label.removeMouseMotionListener(this);
+			//label.setAnim(SpriteFactory.loadAnimation(""));
+			panel.remove(label);
+			//label.removeMouseListener(this);
+			//label.removeMouseMotionListener(this);
 		}
 		String background = "/wzife/dialog/plotskill.tcp/";
 		panel.setBgImage(new ImageConfig(background));
@@ -107,9 +118,10 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 	}
 	public void assist_skill(ActionEvent evt) {
 		for(Label label:labels){
-			label.setAnim(SpriteFactory.loadAnimation(""));
-			label.removeMouseListener(this);
-			label.removeMouseMotionListener(this);
+			//label.setAnim(SpriteFactory.loadAnimation(""));
+			panel.remove(label);
+			//label.removeMouseListener(this);
+			//label.removeMouseMotionListener(this);
 		}
 		String background = "/wzife/dialog/assistskill.tcp/";
 		panel.setBgImage(new ImageConfig(background));
@@ -121,10 +133,11 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 	}
 	public void practice_skill(ActionEvent evt) {
 		for(Label label:labels){
-			label.setAnim(SpriteFactory.loadAnimation(""));
-			label.setText("");
-			label.removeMouseListener(this);
-			label.removeMouseMotionListener(this);
+			//label.setAnim(SpriteFactory.loadAnimation(""));
+			panel.remove(label);
+			//label.setText("");
+			//label.removeMouseListener(this);
+			//label.removeMouseMotionListener(this);
 		}
 		for(AbstractButton button:buttons){
 			panel.remove(button);
@@ -188,12 +201,16 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		if(c instanceof Label){
 			Label label = (Label)c;
 			String name = label.getName();
-			int index = Integer.parseInt(name.substring(2));
+		
 			if(name.contains("技能")){
+				int index = Integer.parseInt(name.substring(2));
 				String[] magics = skills.get(index).getMagicSkill().split("、");
 				magicskills.removeAll(magicskills);
                 int p = 0;
 				for(String magic:magics){
+					if(StringUtils.equals(magic, "0")){
+						break;
+					}
 					Skill skill = dataManager.findSkillByName(magic);
 					magicskills.add(skill);	
 					Label magicskill  = (Label) this.panel.findCompByName("法术"+(p++));
@@ -210,6 +227,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 				processText(skills.get(index));
 			}
 			else if(name.contains("法术")){
+				int index = Integer.parseInt(name.substring(2));
 				processText(magicskills.get(index));
 			}
 		}
@@ -299,6 +317,54 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 				//左键点击技能图标
 			    processSkill(e);
 				break;
+		}
+
+	}
+	
+	private void updateLabels(Panel panel) {
+		Component[] comps = panel.getComponents();
+		List<Label>labels = new ArrayList<Label>();
+		for (Component c : comps) {
+			if (c instanceof Label) {
+				labels.add((Label) c);
+			}
+		}
+		if(expression == null) {
+			try {
+				List<String> vars = new ArrayList<String>(); 
+				for(Label label : labels) {
+					String name = label.getName();
+					String text = label.getTextTpl();
+					if(StringUtils.isNotBlank(name) && text!=null) {
+						System.out.println("getTextTpl is:"+text);
+						vars.add(name+"#="+ label.getTextTpl());
+					}
+				}
+				String tpl = StringUtils.join(vars,"#;");
+				JexlEngine jexl = new JexlEngine();
+				UnifiedJEXL ujexl = new UnifiedJEXL(jexl);
+				expression = ujexl.parse(tpl);
+			} catch (Exception e) {
+				System.out.println("创建JEXL表达式失败");
+				e.printStackTrace();
+			}
+		}
+		if(expression != null) {
+			Map<String, Object> properties = dataManager.getProperties(context.getPlayer());
+	        System.out.println("proerties is:"+properties);
+			JexlContext jexlcontext = new MapContext(properties);
+	        String result = expression.evaluate(jexlcontext).toString();
+			System.out.println("result is:"+result);
+	        String[] items = result.split("#;");
+			for (String item : items) {
+				String[] values = item.split("#=");
+				if(values.length>1){
+					System.out.println("item is:"+item);
+					Label label = (Label) panel.findCompByName(values[0]);
+					label.setText(values[1]);
+				}
+
+			}
 		}
 
 	}

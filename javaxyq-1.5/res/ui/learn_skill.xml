@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialogs>
+  <Dialog id="learn_skill" x="100" y="5" width="385" height="473" background="/wzife/dialog/learnskill.tcp">
+    <Button id="" name="" text="" x="363" y="5" width="" height="" actionId="close" was="/wzife/button/closebtn.tcp" tooltip="" />
+    <Button name="法术向上" x="354" y="37" width="18" height="19" id="" actionId="magics_up" was="/wzife/button/sup.tcp"/>
+    <Button name="法术向下" x="354" y="169" width="18" height="19" id="" actionId="magics_down" was="/wzife/button/sdown.tcp"/>
+    <Button name="文本向上" x="354" y="202" width="18" height="19" id="" actionId="text_up" was="/wzife/button/sup.tcp"/>
+    <Button name="文本向下" x="354" y="333" width="18" height="19" id="" actionId="text_down" was="/wzife/button/sdown.tcp"/>
+    <Button name="学习" text="学习" x="156" y="428" width="43" height="22" id="" actionId="learnSkill" was="/wzife/button/button.tcp"/>
+    
+    <Sprite id="" name="技能0" x="17" y="66" width="30" height="30" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="技能1" x="17" y="101" width="30" height="30" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="技能2" x="17" y="136" width="30" height="30" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="技能3" x="17" y="171" width="30" height="30" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="技能4" x="17" y="206" width="30" height="30" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="技能5" x="17" y="241" width="30" height="30" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="技能6" x="17" y="276" width="30" height="30" tooltip="" path="" actionId=""/>
+    
+    <Sprite id="" name="法术0" x="206" y="72" width="24" height="24" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="法术1" x="206" y="107" width="24" height="24" tooltip="" path="" actionId=""/>
+    <Sprite id="" name="法术2" x="206" y="142" width="24" height="24" tooltip="" path="" actionId=""/>
+    
+    <Text name="skillLevel0" text="${skillLevel0}" x="17" y="66" width="160" height="35" actionId="" size="" align=""/>
+    <Text name="skillLevel1" text="${skillLevel1}" x="17" y="101" width="160" height="35" actionId="" size="" align=""/>
+    <Text name="skillLevel2" text="${skillLevel2}" x="17" y="136" width="160" height="35" actionId="" size="" align=""/>
+    <Text name="skillLevel3" text="${skillLevel3}" x="17" y="171" width="160" height="35" actionId="" size="" align=""/>
+    <Text name="skillLevel4" text="${skillLevel4}" x="17" y="206" width="160" height="35" actionId="" size="" align=""/>
+    <Text name="skillLevel5" text="${skillLevel5}" x="17" y="241" width="160" height="35" actionId="" size="" align=""/>
+    <Text name="skillLevel6" text="${skillLevel6}" x="17" y="276" width="160" height="35" actionId="" size="" align=""/>
+    
+    <Text name="法术名0" text="" x="206" y="66" width="145" height="35" actionId="" size="" align=""/>
+    <Text name="法术名1" text="" x="206" y="101" width="145" height="35" actionId="" size="" align=""/>
+    <Text name="法术名2" text="" x="206" y="136" width="145" height="35" actionId="" size="" align=""/>
+    
+    <Text name="技能说明" text="" x="208" y="206" width="140" height="140" align="NORTH"/>  
+    
+    <Text name="exp" text="${exp}" x="83" y="360" width="79" height="13" actionId="" size="" align=""/>
+    <Text name="money" text="${money}" x="83" y="383" width="79" height="13" actionId="" size="" align=""/>
+    <Text name="deposit" text="${deposit}" x="83" y="406" width="79" height="13" actionId="" size="" align=""/>    
+    <Text name="mskillsLevelExp" text="${mskillsLevelExp}" x="290" y="360" width="79" height="13" actionId="" size="" align=""/>
+    <Text name="mskillsLevelSpend" text="${mskillsLevelSpend}" x="290" y="383" width="79" height="13" actionId="" size="" align=""/>
+    <Text name="储备金" text="" x="290" y="406" width="79" height="13" actionId="" size="" align=""/>
+    
+  
+  </Dialog>
+</Dialogs>

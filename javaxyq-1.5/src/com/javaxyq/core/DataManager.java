@@ -146,7 +146,13 @@ public interface DataManager {
 	 */
 	public Map<String, Object> getProperties(Player player);
 	
+	public String getBasicSkillName(String school);
+	
 	public long getLevelExp(int level);
+	
+	public long getMSkillsLevelExp(int level);
+	
+	public long getMSkillsLevelSpend(int level);
 
 	public Player createPlayer(PlayerVO playerData);
 

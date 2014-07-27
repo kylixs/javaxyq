@@ -40,30 +40,30 @@ public class PlayerVO  implements Serializable{
 	public Date createDate = new Date();
 	
 	/** 力量 */
-	public int strength = 10;
+	public int strength = 0;
 	/** 体质*/
-	public int physique = 10;
+	public int physique = 0;
 	/** 魔力 */
-	public int magic = 10;
+	public int magic = 0;
 	/** 耐力 */
-	public int durability = 10;
+	public int durability = 0;
 	/** 敏捷 */
-	public int agility = 10;
+	public int agility = 0;
 	/** 潜力*/
 	public int potentiality = 0;
 	
 	/** 命中 */
-	public int hitrate = 62;
+	public int hitrate = 0;
 	/** 伤害*/
-	public int harm = 50;
+	public int harm = 0;
 	/** 防御*/
-	public int defense = 16;
+	public int defense = 0;
 	/** 速度*/
-	public int speed = 11;
+	public int speed = 0;
 	/** 躲避*/
-	public int shun = 21;
+	public int shun = 0;
 	/** 灵力*/
-	public int wakan = 19;
+	public int wakan = 0;
 	/** tmp命中*/
 	public int tmpHitrate = 0;
 	/** tmp伤害*/
@@ -93,6 +93,14 @@ public class PlayerVO  implements Serializable{
 	//待分配点数
 	public Map<String,Integer> assignPoints = new HashMap<String, Integer>();//[体质:0,魔力:0,力量:0,耐力:0,敏捷:0];
 
+	//师门技能等级
+	public Map<String,Integer> mskillsLevel = new HashMap<String, Integer>();
+	
+	public Map<String,Integer> attrsLevel = new HashMap<String, Integer>();
+	
+	public String[] attrs = {"伤害","灵力","防御","灵力","躲避","速度","命中","HP","MP"};
+
+	
 	//成长率
 	public float growthRate; 
 	
@@ -107,6 +115,16 @@ public class PlayerVO  implements Serializable{
 		assignPoints.put("strength", 0);
 		assignPoints.put("durability", 0);
 		assignPoints.put("agility", 0);
+		mskillsLevel.put("skill0", 0);
+		mskillsLevel.put("skill1", 0);
+		mskillsLevel.put("skill2", 0);
+		mskillsLevel.put("skill3", 0);
+		mskillsLevel.put("skill4", 0);
+		mskillsLevel.put("skill5", 0);
+		mskillsLevel.put("skill6", 0);
+		for(String attr:attrs){
+			attrsLevel.put(attr, 0);
+		}
 	}
 	public PlayerVO(String id, String name, String character) {
 		this.id = id;
@@ -117,6 +135,16 @@ public class PlayerVO  implements Serializable{
 		assignPoints.put("strength", 0);
 		assignPoints.put("durability", 0);
 		assignPoints.put("agility", 0);
+		mskillsLevel.put("skill0", 0);
+		mskillsLevel.put("skill1", 0);
+		mskillsLevel.put("skill2", 0);
+		mskillsLevel.put("skill3", 0);
+		mskillsLevel.put("skill4", 0);
+		mskillsLevel.put("skill5", 0);
+		mskillsLevel.put("skill6", 0);
+		for(String attr:attrs){
+			attrsLevel.put(attr, 0);
+		}
 	}
 
 	/**
@@ -171,11 +199,15 @@ public class PlayerVO  implements Serializable{
 		this.direction = data.direction;
 		this.colorations = data.colorations;
 		this.sceneLocation = new Point(data.sceneLocation);
+		this.mskillsLevel = new HashMap(data.mskillsLevel);
+		this.attrsLevel = new HashMap(data.attrsLevel);
 	}
 	protected void writeObject(ObjectOutputStream s)
 	throws IOException
 	{
 		s.writeObject(assignPoints);
+		s.writeObject(mskillsLevel);
+		//s.wrtieObject(attrsLevel);
 		s.writeUTF(character);
 		s.writeObject(colorations);
 		s.writeObject(createDate);
@@ -225,7 +257,6 @@ public class PlayerVO  implements Serializable{
 		s.writeInt(speed);
 		s.writeInt(stamina);
 		s.writeInt(physique);
-		
 	}
 	
 	/**
@@ -235,6 +266,8 @@ public class PlayerVO  implements Serializable{
 	throws IOException, ClassNotFoundException
 	{
 		assignPoints=(Map) s.readObject();
+	    mskillsLevel=(Map) s.readObject();
+	    attrsLevel=(Map) s.readObject();
 		character=s.readUTF();
 		colorations=(int[]) s.readObject();
 		createDate=(Date) s.readObject();
@@ -290,6 +323,10 @@ public class PlayerVO  implements Serializable{
 		StringBuilder builder = new StringBuilder();
 		builder.append("PlayerVO [assignPoints=");
 		builder.append(assignPoints);
+		builder.append(", mskillslevel=");
+		builder.append(mskillsLevel);
+		builder.append(", attrslevel=");
+		builder.append(attrsLevel);
 		builder.append(", character=");
 		builder.append(character);
 		builder.append(", colorations=");
@@ -675,6 +712,18 @@ public class PlayerVO  implements Serializable{
 	}
 	public void setSceneLocation(Point sceneLocation) {
 		this.sceneLocation = sceneLocation;
+	}
+	public Map getMskillsLevel() {
+		return mskillsLevel;
+	}
+	public void setMskillsLevel(Map mskillsLevel) {
+		this.mskillsLevel = mskillsLevel;
+	}
+	public Map getAttrsLevel(){
+		return attrsLevel;
+	}
+	public void setAttrsLevel(Map attrsLevel){
+		this.attrsLevel = attrsLevel;
 	}
 
 }

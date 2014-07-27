@@ -6,7 +6,9 @@ CREATE TABLE "APP"."SKILL_MAIN" (
 		"NAME" VARCHAR(20) NOT NULL,
 		"DESCRIPTION" VARCHAR(400),
 		"EFFECTION" VARCHAR(50),
-                "MAGIC_SKILL" VARCHAR(300)
+                "MAGIC_SKILL" VARCHAR(300),
+                "BASIC_SKILL" VARCHAR(10),
+                "LEVEL" NUMERIC(10 ,0) NOT NULL
 		
 	);
 

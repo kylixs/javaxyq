@@ -4,9 +4,13 @@
 package ui;
 
 import java.awt.Point;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 
 import com.javaxyq.core.DataManager;
 import com.javaxyq.core.DataStore;
@@ -35,11 +39,47 @@ public class create_role extends PanelHandler {
 	
 	private String character = "0003";
 	private String roleName;
+	private static String[] attr_points = {"physique", "magic", "strength", "durability", "agility"};
+	private static String[] 人族 = {"0001","0002","0003","0004"};
+	private static String[] 魔族 = {"0005","0006","0007","0008"};
+	private static String[] 仙族 = {"0009","0010","0011","0012"};
+	private static int[] 人族初始属性点 = {10, 10, 10, 10, 10};
+	private static int[] 魔族初始属性点 = {12, 11, 11, 8, 8};
+	private static int[] 仙族初始属性点 = {12, 5, 11, 12, 10};
 	
 	public void initial(PanelEvent evt) {
 		super.initial(evt);
 		displayRoleInfo();
 	}	
+	
+	/**
+	 * 判断数组array是否包含值value
+	 * @return
+	 */
+	private static boolean inArray(String[] array, String value) {
+		for (int i = 0; i < array.length; i++) {
+			if(array[i].equals(value))return true;
+		}
+		return false;
+	}
+	
+	private static void init_属性点(PlayerVO playerVo,int[] 初始属性点){
+		for(int i=0; i<attr_points.length;i++){
+				try {
+					PropertyUtils.setProperty(playerVo, attr_points[i], 初始属性点[i]);
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	
+		}
+	}
 
 	public void dispose(PanelEvent evt) {
 		System.out.println("dispose: select_role ");
@@ -73,7 +113,15 @@ public class create_role extends PanelHandler {
 			PlayerVO playerVo = dataManager.createPlayerData(character);
 			playerVo.setName(roleName);
 			playerVo.setSceneLocation(new Point(38, 20));
-			playerVo.setMoney(50000);
+			playerVo.setMoney(1500000);
+			if(inArray(人族,playerVo.character)) {			
+				init_属性点(playerVo, 人族初始属性点);
+			}else if(inArray(魔族,playerVo.character)) {
+				init_属性点(playerVo, 魔族初始属性点);
+			}else if(inArray(仙族,playerVo.character)) {
+				init_属性点(playerVo, 仙族初始属性点);
+			}
+			dataManager.recalcProperties(playerVo);
 			
 			ItemInstance[] items = new ItemInstance[26];
 			ItemInstance item = dataManager.createItem("四叶花",99);
@@ -85,7 +133,6 @@ public class create_role extends PanelHandler {
 			item = dataManager.createItem("九香虫",99);
 			addItem(items, item);
 			createWeapon(character, items);
-			
 			
 			profile.setPlayerData(playerVo);
 			profile.setSceneId(sceneId);

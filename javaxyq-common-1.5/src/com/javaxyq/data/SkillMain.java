@@ -11,6 +11,8 @@ public class SkillMain implements Skill,Serializable{
 	private String description;
 	private String effection;
 	private String magicSkill;
+	private String basicSkill;
+	private int level;
 	
 	private static final long serialVersionUID = -4733685782201972492L;
 	
@@ -66,7 +68,21 @@ public class SkillMain implements Skill,Serializable{
 		this.magicSkill = magic;
 	}
 
-	
+	public String getBasicSkill() {
+		return basicSkill;
+	}
+
+	public void setBasicSkill(String basicSkill) {
+		this.basicSkill = basicSkill;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
 	
 	@Override
 	public String toString() {
@@ -83,6 +99,10 @@ public class SkillMain implements Skill,Serializable{
 		builder.append(effection);
 		builder.append(", magicskill=");
 		builder.append(magicSkill);
+		builder.append(", basicskill=");
+		builder.append(basicSkill);
+		builder.append(", level=");
+		builder.append(level);
 		builder.append("]");
 		return builder.toString();
 	}

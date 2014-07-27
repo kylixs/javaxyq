@@ -75,6 +75,7 @@ public class player_status extends PanelHandler{
 			}
 		}
 		dataManager.recalcProperties(player.getData());
+		updateLabels(panel);
 	}
 
 	public void level_up(ActionEvent evt) {

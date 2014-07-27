@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import com.javaxyq.data.ItemInstance;
+import com.javaxyq.data.SkillMain;
 import com.javaxyq.model.PlayerVO;
 import com.javaxyq.model.Task;
 
@@ -85,6 +86,7 @@ public class Profile {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
+	
 	
 	@Override
 	public String toString() {

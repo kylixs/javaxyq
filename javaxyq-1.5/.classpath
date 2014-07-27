@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="/javaxyq-common-1.5/lib/commons-jexl-2.0.1.jar"/>
 	<classpathentry kind="lib" path="/javaxyq-common-1.5/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/derby.jar"/>
+	<classpathentry kind="lib" path="/javaxyq-1.5/lib/Calc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

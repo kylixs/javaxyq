@@ -96,10 +96,10 @@ public class n1002 extends PlayerAdapter {
     
     public void learn_skill(PlayerEvent evt) {
     	Player player = context.getPlayer();
-    	if(player.getData().level < 10) {
+    	if(player.getData().level > 10) {
     		doTalk(context.getTalker(),"你的根基尚浅，过些日子再来找为师吧！");
     	}else {
-    		helper.showDialog("main_skill");
+    		helper.showDialog("learn_skill");
     	}
     }
 }

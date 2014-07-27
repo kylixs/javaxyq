@@ -171,26 +171,26 @@ public class TileMap extends AbstractWidget {
        int firstTilex = pixelsToTilesw(viewX);
        int lastTilex = pixelsToTilesw(viewX + MAP_BLOCK_WIDTH*2);
        int firstTiley = pixelsToTilesh(viewY);
-       int lastTiley = pixelsToTilesh(viewY + MAP_BLOCK_HEIGHT*2);
+       int lastTiley = pixelsToTilesh(viewY + MAP_BLOCK_HEIGHT*3);
         
        lastTilex=Math.min(lastTilex, (int)(provider.getXBlockCount()-1));
-       lastTiley=Math.min(lastTiley, (int)provider.getYBlockCount()-1);
+       lastTiley=Math.min(lastTiley, (int)provider.getYBlockCount());
         //System.out.println("fistX,Y is:"+firstTilex+","+firstTiley);
         //System.out.println("lastX,Y is:"+lastTilex+","+lastTiley);
         
        //读取地图mask信息;
-        for (int y = firstTiley; y <=lastTiley; y++) {
+        for (int y = firstTiley; y <lastTiley; y++) {
             for (int x = firstTilex; x <= lastTilex; x++) {
             	
             	int unitnum = (y*xBlockCount+x);
             	//System.out.println("unitnum"+ "is:"+unitnum);
-        		if(tileImageDes[unitnum] != null) {
-        			return;
-        		}
             	MapUnit mapUnit = provider.ReadUnit(x, y);
             	int []masknum = mapUnit.getMaskIndexs();
             	for(int i=0;i<masknum.length;i++){
             		int maskIndex = masknum[i];
+            		if(tileImageDes[maskIndex] != null) {
+        			continue;
+        		    }
         			MaskUnit maskUnit = getMaskUnit(maskIndex);
                 	createTileMaskImg(masknum[i],maskUnit.getX(),maskUnit.getY(),maskUnit.getWidth(),
                 			maskUnit.getHeight(), maskUnit.getData());           		
@@ -411,7 +411,6 @@ public class TileMap extends AbstractWidget {
         	   MapUnit mapUnit = provider.ReadUnit(x, y);
         	   int[] masknum = mapUnit.getMaskIndexs();
         	   //System.out.println("mapUnit: ("+x+","+y+")"+", maskIndex: "+Arrays.toString(masknum));
-        	   
         	   for(int i=0;i<masknum.length;i++){
         		   int maskIndex = masknum[i];
         		   //防止重复绘制同一个mask
@@ -422,8 +421,10 @@ public class TileMap extends AbstractWidget {
         		   
         		   MaskUnit maskUnit = getMaskUnit(maskIndex);
         		   int []maskdata = maskUnit.getData();
+        		   //this.createTileMaskImg(maskIndex, maskUnit.getX(), maskUnit.getY(), maskUnit.getWidth(), 
+        			//	   maskUnit.getHeight(), maskdata);
         		   //检测mask是否盖住人物或者NPC
-       	        	boolean bDrawMask = true;//false;
+       	           boolean bDrawMask = true;//false;
         		   if(pcoordx<=maskUnit.getX()+maskUnit.getWidth()-1 && pcoordx>=maskUnit.getX()){
         			   bDrawMask = true;
         			   int length = maskUnit.getWidth()*maskUnit.getHeight();

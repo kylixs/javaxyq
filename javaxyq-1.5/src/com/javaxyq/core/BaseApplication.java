@@ -8,7 +8,9 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -421,6 +423,7 @@ public abstract class BaseApplication implements Application {
 				return;
 			}
 			PlayerVO data = player.getData();
+			
 			profile.setPlayerData(data);
 			profile.setCreateDate(new java.util.Date());
 			profile.setItems(dataManager.getItems(player));
