@@ -1,0 +1,6 @@
+rootProject.name = 'javaxyq'
+
+include ':javaxyq-app'
+include ':javaxyq-common'
+include ':javaxyq-maker'
+include ':javaxyq-resource-manager'

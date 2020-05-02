@@ -1,5 +1,0 @@
-Version: 1.0
-Created-By: gongdewei
-Created-Time: 2010-5-29
-Class-Path: lib/appFramework-1.0.jar
-Main-Class: com.javaxyq.tools.ResourceManager

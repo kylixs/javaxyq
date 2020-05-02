@@ -1,0 +1,91 @@
+buildscript {
+    repositories {
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+    }
+    dependencies {
+        classpath "io.freefair.gradle:lombok-plugin:$lombok_plugin_version"
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.freefair.lombok'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF8"
+    }
+
+    compileJava {
+        options.compilerArgs << '-parameters'
+    }
+
+    repositories {
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://www.gridgainsystems.com/nexus/content/repositories/external/" }
+        maven { url "http://maven.icm.edu.pl/artifactory/repo/" }
+        maven { url "https://clojars.org/repo/" }
+    }
+}
+
+project(":javaxyq-app") {
+    dependencies {
+        compile fileTree(dir: 'lib', include: '*.jar')
+
+        compile project(":javaxyq-common")
+
+        compile "ch.qos.logback:logback-classic:$logback_version"
+
+        testCompile "junit:junit:$junit_version"
+    }
+}
+
+project(":javaxyq-common") {
+    dependencies {
+        compile fileTree(dir: 'lib', include: '*.jar')
+
+        compile "org.slf4j:slf4j-api:$slf4j_version"
+
+        compile 'org.springframework:spring-core:5.2.6.RELEASE'
+        compile "commons-beanutils:commons-beanutils-core:1.8.3"
+        compile "commons-dbutils:commons-dbutils:1.3"
+        compile 'org.apache.commons:commons-jexl:2.0.1'
+        compile "com.zaxxer:HikariCP:3.4.3"
+
+        compile 'org.clojars.automata:jl:1.0.0'
+        compile 'org.codehaus.groovy:groovy-all:1.6.9'
+        compile 'org.xerial:sqlite-jdbc:3.30.1'
+
+        compile 'com.jidesoft:jide-components:3.5.15'
+
+        compile "com.typesafe:config:$typesafe_config_version"
+
+        testCompile "junit:junit:$junit_version"
+    }
+}
+
+project(":javaxyq-maker") {
+    dependencies {
+        compile fileTree(dir: 'lib', include: '*.jar')
+        compile project(":javaxyq-common")
+
+        compile "ch.qos.logback:logback-classic:$logback_version"
+
+        testCompile "junit:junit:$junit_version"
+    }
+}
+
+project(":javaxyq-resource-manager") {
+    dependencies {
+        compile fileTree(dir: 'lib', include: '*.jar')
+
+        compile project(":javaxyq-common")
+
+        compile "ch.qos.logback:logback-classic:$logback_version"
+
+        testCompile "junit:junit:$junit_version"
+    }
+}
