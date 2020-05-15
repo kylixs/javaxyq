@@ -23,6 +23,7 @@ import javax.swing.SwingUtilities;
 import com.javaxyq.event.DownloadEvent;
 import com.javaxyq.event.DownloadListener;
 import com.javaxyq.util.IoUtil;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 缓存管理器
@@ -30,6 +31,7 @@ import com.javaxyq.util.IoUtil;
  * @author gongdewei
  * @date 2010-3-4 create
  */
+@Slf4j
 public class CacheManager {
 	private static CacheManager instance = new CacheManager();
 	private ArrayList<DownloadListener> listeners = new ArrayList<DownloadListener>();
@@ -80,7 +82,7 @@ public class CacheManager {
 			fireDownloadStarted(filename);
 			File file = createFile(filename);
 			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-			System.out.println("下载资源：" + filename + ", url=" + url);
+			log.info("下载资源：" + filename + ", url=" + url);
 			// BufferedInputStream bis = new
 			// BufferedInputStream(url.openStream());
 			InputStream bis = url.openStream();
@@ -98,11 +100,11 @@ public class CacheManager {
 				}
 			}
 			bos.close();
-			System.out.println("资源下载完毕：" + filename);
+			log.info("资源下载完毕：" + filename);
 			fireDownloadCompleted(filename);
 			return file;
 		} catch (IOException e) {
-			System.out.println("下载资源失败：" + filename + ", error=" + e.getMessage());
+			log.info("下载资源失败：" + filename + ", error=" + e.getMessage());
 			fireDownloadInterrupted(filename);
 			if (!(e instanceof FileNotFoundException)) {
 				e.printStackTrace();
@@ -130,7 +132,7 @@ public class CacheManager {
 		}
 		file.getParentFile().mkdirs();
 		file.createNewFile();
-		System.out.println("createFile: "+file.getAbsolutePath());
+		log.info("createFile: "+file.getAbsolutePath());
 		return file;
 	}
 
@@ -152,10 +154,10 @@ public class CacheManager {
 //				file = download(filename, url);
 //			}
 //		} catch (MalformedURLException e) {
-//			System.out.println("资源URL格式不正确：" + filename);
+//			log.info("资源URL格式不正确：" + filename);
 //			e.printStackTrace();
 //		} catch (Exception e) {
-//			System.out.println("读取文件失败：" + filename);
+//			log.info("读取文件失败：" + filename);
 //			e.printStackTrace();
 //		}
 //		return file;
@@ -231,10 +233,10 @@ public class CacheManager {
 		try {
 			if (file.exists()) {
 				file.delete();
-				System.out.println("删除文件："+filename);
+				log.info("删除文件："+filename);
 			}
 		} catch (Exception e) {
-			System.out.println("删除文件失败：" + filename);
+			log.info("删除文件失败：" + filename);
 			e.printStackTrace();
 		}
 	}

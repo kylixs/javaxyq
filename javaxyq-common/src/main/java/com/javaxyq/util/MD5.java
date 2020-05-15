@@ -1,5 +1,7 @@
 package com.javaxyq.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.security.MessageDigest;
 
 /**
@@ -7,13 +9,11 @@ import java.security.MessageDigest;
  * Modify by Kylixs <br>
  * 2007-1-22
  */
+@Slf4j
 public class MD5 {
 
 	/**
 	 * Constructs the MD5 object and sets the string whose MD5 is to be computed.
-	 * 
-	 * @param inStr
-	 *            the <code>String</code> whose MD5 is to be computed
 	 */
 	public MD5() {
 	}
@@ -45,10 +45,10 @@ public class MD5 {
 		}
 		byte[] md5Bytes = md5.digest(byteArray);
 
-		StringBuffer hexValue = new StringBuffer();
+		StringBuilder hexValue = new StringBuilder();
 
-		for (int i = 0; i < md5Bytes.length; i++) {
-			int val = ((int) md5Bytes[i]) & 0xff;
+		for (byte md5Byte : md5Bytes) {
+			int val = ((int) md5Byte) & 0xff;
 			if (val < 16)
 				hexValue.append("0");
 			hexValue.append(Integer.toHexString(val));

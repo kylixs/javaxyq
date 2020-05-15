@@ -56,6 +56,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.FrameView;
@@ -90,6 +91,7 @@ import com.jidesoft.swing.JideSwingUtilities;
  * @author 龚德伟
  * @history 2008-6-27 龚德伟 新建
  */
+@Slf4j
 public class ResourceManager extends SingleFrameApplication {
 
 	private JMenuBar menuBar;
@@ -215,7 +217,7 @@ public class ResourceManager extends SingleFrameApplication {
 				FileOutputStream fos = new FileOutputStream(tmpFile);
 				fos.write(buf);
 				fos.close();
-				System.out.println("tmp: "+tmpFile.getAbsolutePath());
+				log.info("tmp: "+tmpFile.getAbsolutePath());
 			}
 			// 调用命令行
 			Desktop.getDesktop().open(tmpFile);
@@ -239,7 +241,7 @@ public class ResourceManager extends SingleFrameApplication {
 			if (files[i] instanceof WdfFileNode) {
 				WdfFileNode filenode = (WdfFileNode) files[i];
 				exportNode(filenode);
-				System.out.println("export item: " + filenode.getPath());
+				log.info("export item: " + filenode.getPath());
 			}
 		}
 	}
@@ -304,7 +306,7 @@ public class ResourceManager extends SingleFrameApplication {
 	@Action
 	public void openItemWith(ActionEvent e) {
 		// TODO
-		System.out.println("open item with:" + e.getActionCommand());
+		log.info("open item with:" + e.getActionCommand());
 	}
 
 	private void openPreviewFrame(File selectFile) {
@@ -343,7 +345,7 @@ public class ResourceManager extends SingleFrameApplication {
 			frame.setMaximum(true);
 			desktop.setSelectedFrame(frame);
 		} catch (Exception e) {
-			System.out.println("open new frame failed!");
+			log.info("open new frame failed!");
 			e.printStackTrace();
 		}
 	}

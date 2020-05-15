@@ -33,7 +33,7 @@ public class n1002 extends PlayerAdapter {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	
     public void talk(PlayerEvent evt) {
-    	System.out.println("talk: "+this.getClass().getName());
+    	log.info("talk: "+this.getClass().getName());
     	String chat = "五庄观是地仙发源地，庄内的人参果与天地同寿，乃是三界之珍稀宝贝！#r你找为师何事？";
     	Option[] options = new Option[3];
     	options[0] = new Option("为师门做贡献","applyfor_task");

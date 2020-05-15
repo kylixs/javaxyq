@@ -26,7 +26,7 @@ public class DefaultTalkAction extends PlayerAdapter {
 	public void talk(PlayerEvent evt) {
 		Player player = evt.getPlayer();
 		String npcId = player.getId();
-		System.out.println("talk: "+evt);
+		log.info("talk: "+evt);
 		//任务处理
 		TaskManager taskManager = ApplicationHelper.getApplication().getTaskManager();
 		List tasks =  taskManager.getTasksFor(player.getName());

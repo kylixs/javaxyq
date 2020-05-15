@@ -175,8 +175,7 @@ public class UIHelper {
 	}
 	/**
 	 * 显示或隐藏指定对话框
-	 * 
-	 * @param autoSwap
+	 *
 	 */
 	public void showHideDialog(Panel dialog) {
 		if (dialog != null) {

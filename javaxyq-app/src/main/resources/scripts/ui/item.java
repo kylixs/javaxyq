@@ -113,7 +113,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 		if(ItemTypes.isWeapon(item.getItem())){
 			targetIndex = 2;
 			player.takeupWeapon((WeaponItem) item.getItem());
-			System.out.println("takeup weapon: "+item.getItem());
+			log.info("takeup weapon: "+item.getItem());
 //		}else if(ItemTypes.isType(item.getItem(), ItemTypes.TYPE_EQUIPMENT)){
 //			targetIndex = 3;
 			//takeup equipment
@@ -194,7 +194,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 							panel.add(label,0);
 							itemlabels[index] = label;
 						}catch(Exception e1) {
-							System.out.println("添加item失败！"+item);
+							log.info("添加item失败！"+item);
 							e1.printStackTrace();
 						}
 					}
@@ -232,7 +232,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 							panel.add(label);
 							itemlabels[index] = label;
 						}catch(Exception e) {
-							System.out.println("添加item失败！"+item);
+							log.info("添加item失败！"+item);
 							e.printStackTrace();
 						}
 					}
@@ -271,7 +271,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 				UnifiedJEXL ujexl = new UnifiedJEXL(jexl);
 				expression = ujexl.parse(tpl);
 			} catch (Exception e) {
-				System.out.println("创建JEXL表达式失败");
+				log.info("创建JEXL表达式失败");
 				e.printStackTrace();
 			}
 		}

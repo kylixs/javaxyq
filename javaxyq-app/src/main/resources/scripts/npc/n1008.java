@@ -33,7 +33,7 @@ public class n1008 extends PlayerAdapter {
 	private Random rand = new Random();
 	
     public void talk(PlayerEvent evt) {
-    	System.out.println("talk: "+this.getClass().getName());
+    	log.info("talk: "+this.getClass().getName());
     	
     	String chat="身为五庄首席弟子，我一定不负师门使命。我可以帮助你练习武艺，还可以购买门派特特产额！";   
     	Option[] options = new Option[5];
@@ -52,7 +52,7 @@ public class n1008 extends PlayerAdapter {
 			}
 		}
     	
-    	System.out.println("result: "+result);
+    	log.info("result: "+result);
     }
 	
     /**
@@ -75,7 +75,7 @@ public class n1008 extends PlayerAdapter {
     }
     
 	private boolean patrol(final Task task) {
-		//System.out.println("patrol $task");
+		//log.info("patrol $task");
 		final Player player = context.getPlayer();
 		player.stop(true);
 		//初始化小怪队伍
@@ -99,7 +99,7 @@ public class n1008 extends PlayerAdapter {
 		window.addBattleListener(new BattleListener() {
 			//战斗胜利处理
 			public void battleWin(BattleEvent e) {
-				System.out.println("战斗胜利");
+				log.info("战斗胜利");
 				task.add("battle_rounds",1);
 				task.add("battle_win",1);
 				int exp = player.getData().level*(1000 + rand.nextInt(200))*elfCount/10;
@@ -109,7 +109,7 @@ public class n1008 extends PlayerAdapter {
 			}
 			//战斗失败处理
 			public void battleDefeated(BattleEvent e) {
-				System.out.println("战斗失败");
+				log.info("战斗失败");
 				task.add("battle_rounds",1);
 				//气血为0的人物恢复一点气血
 				if(player.getData().hp ==0) {

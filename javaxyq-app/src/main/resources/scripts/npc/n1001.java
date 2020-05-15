@@ -25,7 +25,7 @@ public class n1001 extends PlayerAdapter {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	
     public void talk(PlayerEvent evt) {
-    	System.out.println("talk: "+this.getClass().getName());
+    	log.info("talk: "+this.getClass().getName());
     	
     	String chat="从这里可以传送到下面的地方#56";
     	Option[] options = new Option[3];
@@ -34,7 +34,7 @@ public class n1001 extends PlayerAdapter {
     	options[2] = new Option("哪也不去","close");
     	Option result = ApplicationHelper.getApplication().doTalk(evt.getPlayer(), chat,options);
     	
-    	System.out.println("result: "+result);
+    	log.info("result: "+result);
     }
 	
 }

@@ -90,22 +90,13 @@ public class Profile {
 	
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Profile [name=");
-		builder.append(name);
-		builder.append(", filename=");
-		builder.append(filename);
-		builder.append(", sceneId=");
-		builder.append(sceneId);
-		builder.append(", playerData=");
-		builder.append(playerData);
-		builder.append(", items=");
-		builder.append(Arrays.toString(items));
-		builder.append(", tasks=");
-		builder.append(Arrays.toString(tasks));
-		builder.append(", createDate=");
-		builder.append(createDate);
-		builder.append("]");
-		return builder.toString();
+		return "Profile [name=" + name +
+				", filename=" + filename +
+				", sceneId=" + sceneId +
+				", playerData=" + playerData +
+				", items=" + Arrays.toString(items) +
+				", tasks=" + Arrays.toString(tasks) +
+				", createDate=" + createDate +
+				"]";
 	}
 }

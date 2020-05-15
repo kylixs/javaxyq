@@ -44,6 +44,7 @@ import com.javaxyq.widget.Animation;
 import com.javaxyq.widget.Cursor;
 import com.javaxyq.widget.Player;
 import com.javaxyq.widget.Sprite;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 游戏战斗系统
@@ -51,6 +52,7 @@ import com.javaxyq.widget.Sprite;
  * @author dewitt
  * @date 2009-11-06
  */
+@Slf4j
 public class BattleCanvas extends Canvas implements MouseListener, MouseMotionListener, KeyListener {
 
 	private static final String BATTLE_ROLE_CMD = "battle_role_cmd";
@@ -534,8 +536,7 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 			drawDebug(g);
 			drawDownloading(g);
 		} catch (Exception e) {
-			System.out.printf("更新Canvas时失败！\n");
-			e.printStackTrace();
+			log.error("更新Canvas时失败！", e);
 		}
 	}
 
@@ -960,7 +961,7 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 			long interval = 50; 
 			float alpha = 1.0f;
 			while (passTime < duration) {
-				// System.out.println(this.getId()+" "+this.getName());
+				// log.info(this.getId()+" "+this.getName());
 				passTime += interval;
 				alpha = (float) (1 - (1.0 * passTime / duration));
 				if (alpha < 0) {
@@ -978,7 +979,7 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 			}
 			removePlayerFromTeam(player);
 			player.setAlpha(1.0f);
-			System.out.println("将"+player.getName()+"移出队伍。");
+			log.info("将"+player.getName()+"移出队伍。");
 			return alpha;
 		}
 		
@@ -991,7 +992,7 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 		protected void process(List<Float> chunks) {
 			super.process(chunks);
 //			for (Float a : chunks) {
-//				System.out.println("player alpha: "+a);
+//				log.info("player alpha: "+a);
 //			}
 		}
 		

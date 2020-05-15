@@ -172,22 +172,22 @@ public class learn_skill extends PanelHandler implements MouseListener,MouseMoti
     	//升级所需经验和金钱
     	long mskillLevelExp = dataManager.getMSkillsLevelExp(skillLevel);
     	long mskillLevelSpend = dataManager.getMSkillsLevelSpend(skillLevel);
-    	System.out.println("i,b is:"+index+","+bindex);
-    	System.out.println("level is:"+skillLevel+","+basic_skillLevel);
+    	log.info("i,b is:"+index+","+bindex);
+    	log.info("level is:"+skillLevel+","+basic_skillLevel);
     	if(skillLevel >= vo.level + 10){
-    		System.out.println("所选技能等级不能超过人物等级+10");
+    		log.info("所选技能等级不能超过人物等级+10");
     		helper.prompt( "所选技能等级不能超过人物等级+10", 2000);
     	}else if(skillLevel >= basic_skillLevel && index != bindex){
-    		System.out.println("所选技能等级不能超过基础技能等级");
+    		log.info("所选技能等级不能超过基础技能等级");
     		helper.prompt( "所选技能等级不能超过基础技能等级", 2000);
     	}else if(vo.exp < mskillLevelExp){
     		//经验不够
-    		System.out.println("你的经验没达到升级所需的经验");
+    		log.info("你的经验没达到升级所需的经验");
     		helper.prompt( "你的经验没达到升级所需的经验", 2000);
     		//MP3Player.play()
     	}else if(vo.money <mskillLevelSpend){
     		//金钱不够
-    		System.out.println("你的金钱没达到升级所需的金钱");
+    		log.info("你的金钱没达到升级所需的金钱");
     		helper.prompt( "你的捡钱没达到升级所需的金钱", 2000);
     	}else{
     		//helper.prompt( "恭喜你，升级咯~~加油吧！", 2000);
@@ -241,7 +241,7 @@ public class learn_skill extends PanelHandler implements MouseListener,MouseMoti
 				Label magicname = (Label) this.panel.findCompByName(skill_name);
 				//选择法术为默认项
 				setDefault_magiclabel(magicname);
-				//System.out.println("color is:"+magicname.getBackground());
+				//log.info("color is:"+magicname.getBackground());
 				magicname.setBackground(new Color(0x4d,0x32,0xd7));
 				updateLabelBackground();
 				magicname.setOpaque(true);
@@ -257,7 +257,7 @@ public class learn_skill extends PanelHandler implements MouseListener,MouseMoti
 		for(int i=mlistrow; i<length+mlistrow; i++){
 			Skill skill = dataManager.findSkillByName(magics[i]);
 			magicskills.add(skill);	
-			//System.out.println("法术名 is :"+index);
+			//log.info("法术名 is :"+index);
 			Label magicskill  = (Label) this.panel.findCompByName("法术"+index);
 			Label magicname  = (Label) this.panel.findCompByName("法术名"+index);
 			magicskill.setAnim(SpriteFactory.loadAnimation("wzife/skillmagic/small/"+
@@ -351,7 +351,7 @@ public class learn_skill extends PanelHandler implements MouseListener,MouseMoti
 				UnifiedJEXL ujexl = new UnifiedJEXL(jexl);
 				expression = ujexl.parse(tpl);
 			} catch (Exception e) {
-				System.out.println("创建JEXL表达式失败");
+				log.info("创建JEXL表达式失败");
 				e.printStackTrace();
 			}
 		}
@@ -364,7 +364,7 @@ public class learn_skill extends PanelHandler implements MouseListener,MouseMoti
 			for (String lText : labelTexts) {
 				String[] values = lText.split("#=");
 				if(values.length>1){
-					//System.out.println("ltext is:"+lText);
+					//log.info("ltext is:"+lText);
 					Label label = (Label) panel.findCompByName(values[0]);
 					label.setText(values[1]);
 				}

@@ -250,9 +250,6 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 		}
 	}
 
-	/**
-	 * @param string
-	 */
 	public void updateLoading(String msg) {
 		log.info(msg);
 		firePropertyChange("loadingText", null, msg);
@@ -323,9 +320,9 @@ public class AppletApplication extends JApplet implements Application,GameWindow
         device = environment.getDefaultScreenDevice();
 		int width = 640, height = 480;
 		if (args!=null && args.length == 3) {
-			width = Integer.valueOf(args[0]);
-			height = Integer.valueOf(args[1]);
-			displayMode = new DisplayMode(width, height, Integer.valueOf(args[2]),
+			width = Integer.parseInt(args[0]);
+			height = Integer.parseInt(args[1]);
+			displayMode = new DisplayMode(width, height, Integer.parseInt(args[2]),
 					DisplayMode.REFRESH_RATE_UNKNOWN);
 		} else {
 			displayMode = new DisplayMode(width, height, 16, DisplayMode.REFRESH_RATE_UNKNOWN);
@@ -589,8 +586,6 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 	}
 	/**
 	 * 触发与npc的对话
-	 * 
-	 * @param npc
 	 */
 	public void doTalk(Player p,String chat) {
 		doTalk(p, chat, null);
@@ -598,8 +593,6 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 
 	/**
 	 * 触发与npc的对话
-	 * @param options TODO
-	 * @param npc
 	 */
 	public Option doTalk(Player talker,String chat, Option[] options) {
 		context.setTalker(talker);

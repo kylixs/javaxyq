@@ -88,10 +88,6 @@ public class DataStore implements DataManager {
         return false;
     }
 
-    /**
-     * @param config
-     * @return
-     */
     private static Properties parseConfig(String str) {
         Properties configs = new Properties();
         try {
@@ -734,8 +730,6 @@ public class DataStore implements DataManager {
 
     /**
      * 初始化npc属性（怪物）
-     *
-     * @param vo
      */
     public void initNPC(Player player) {
         //TODO
@@ -842,14 +836,12 @@ public class DataStore implements DataManager {
             for (int i = 0; i < items.length; i++) {
                 setItem(player, i, items[i]);
             }
-            if (tasks != null) {
-                TaskManager taskManager = ApplicationHelper.getApplication().getTaskManager();
-                for (int i = 0; i < tasks.length; i++) {
-                    taskManager.add(tasks[i]);
-                }
+            TaskManager taskManager = ApplicationHelper.getApplication().getTaskManager();
+            for (Task task : tasks) {
+                taskManager.add(task);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
         }
         log.info("loaded game data");
     }

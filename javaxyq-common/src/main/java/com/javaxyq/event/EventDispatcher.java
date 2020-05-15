@@ -79,10 +79,8 @@ public class EventDispatcher<S extends EventTarget, E extends EventObject> exten
             try {
                 // 等待下一个事件
                 E evt = eventQueue.take();
-                if (evt != null) {
-                    //System.out.println("handle event: "+evt);
-                    ((S) evt.getSource()).handleEvent(evt);
-                }
+                //System.out.println("handle event: "+evt);
+                ((S) evt.getSource()).handleEvent(evt);
             } catch (Exception e) {
                 log.error("event process error!");
                 e.printStackTrace();
@@ -97,10 +95,6 @@ public class EventDispatcher<S extends EventTarget, E extends EventObject> exten
         log.info(getName() + " stopped.");
     }
 
-    /**
-     * @param currentThread
-     * @param cond
-     */
     public static void pumpEvents(Thread currentThread, Conditional cond) {
         if (currentThread instanceof EventDispatcher) {
             EventDispatcher dispatcher = (EventDispatcher) currentThread;

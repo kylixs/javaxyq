@@ -2,9 +2,12 @@ package com.javaxyq.core;
 
 import com.javaxyq.model.PlayerVO;
 import com.javaxyq.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+@Slf4j
 public class PlayerPropertyCalculator {
     private static String[] 人物门派 = new String[]{"大唐官府", "方寸山", "化生寺", "女儿村", "阴曹地府", "魔王寨", "狮驼岭", "盘丝洞", "天宫", "龙宫", "五庄观", "普陀山"};
     private static double[] 加成系数1 = new double[]{20.0D, 30.0D, 5.0D, 25.5D, 30.0D, 30.0D, 30.5D, 35.0D, 25.0D, 25.0D, 30.0D, 20.0D};
@@ -194,8 +197,8 @@ public class PlayerPropertyCalculator {
             double mp = (double)attrs.magic * 3.5D + 80.0D;
             if (StringUtils.equals("五庄观", attrs.school)) {
                 for(int level = 0; level < (Integer)attrs.attrsLevel.get("MP"); ++level) {
-                    System.out.println("mp is:" + mp);
-                    System.out.println("attrsLevel is:" + attrs.attrsLevel.get("MP"));
+                    log.info("mp is:" + mp);
+                    log.info("attrsLevel is:" + attrs.attrsLevel.get("MP"));
                     mp += mp * 0.005D * (double)(Integer)attrs.attrsLevel.get("MP");
                 }
             }

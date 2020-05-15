@@ -7,6 +7,8 @@
 
 package com.javaxyq.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +23,7 @@ import java.util.Map.Entry;
  * @author 龚德伟
  * @history 2008-7-14 龚德伟 新建
  */
+@Slf4j
 public class HashUtil {
     static {
         System.loadLibrary("lib/JStringId");
@@ -31,8 +34,8 @@ public class HashUtil {
      */
     public static void main(String[] args) {
         String str = "1123斩龙决.tcp";
-        System.out.printf("stringToId:%s=%s\n", str, Long.toHexString(stringToId(str)));
-        System.out.printf("stringToIdAsHex:%s=%s\n", str, stringToIdAsHex(str));
+        log.info("stringToId:{}={}", str, Long.toHexString(stringToId(str)));
+        log.info("stringToIdAsHex:{}={}", str, stringToIdAsHex(str));
         Map<Long, String> map = createId2PathMap("resources/names/shape.lst");
         Set<Entry<Long, String>> entryset = map.entrySet();
         for (Iterator iterator = entryset.iterator(); iterator.hasNext();) {
@@ -43,7 +46,7 @@ public class HashUtil {
     }
 
     public static Map<Long, String> createId2PathMap(String listfile) {
-        System.out.println("load filelist: " + listfile);
+        log.info("load filelist: " + listfile);
         Map<Long, String> map = new HashMap<Long, String>();
         InputStream is = Utils.getResourceAsStream(listfile);
         if (is != null) {
@@ -53,7 +56,7 @@ public class HashUtil {
                 while ((strPath = br.readLine()) != null) {
                 	strPath = strPath.trim();
                 	if(strPath.length()>0) {
-                		//System.out.println("stringToId: "+strPath);
+                		//log.info("stringToId: "+strPath);
                 		map.put(stringToId(strPath), strPath);
                 	}
                 }

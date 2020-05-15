@@ -42,14 +42,14 @@ public class player_status extends PanelHandler{
 	
 	public void initial(PanelEvent evt) {
 		super.initial(evt);
-		System.out.println("initial：player_status ");
+		log.info("initial：player_status ");
 		this.updateLabels(panel);
 		this.setAutoUpdate(true);
 	}
 	
 	public void dispose(PanelEvent evt) {
 		super.dispose(evt);
-		System.out.println("dispose: player_status ");
+		log.info("dispose: player_status ");
 	}
 	
 	public void assignPoints(ActionEvent evt) {
@@ -105,7 +105,7 @@ public class player_status extends PanelHandler{
 			updateLabels(panel);
 		}else {
 			//经验不够
-			System.out.println("你的经验没达到升级所需的经验");
+			log.info("你的经验没达到升级所需的经验");
 			helper.prompt( "你的经验没达到升级所需的经验", 2000);
 			//MP3Player.play()
 		}
@@ -116,7 +116,7 @@ public class player_status extends PanelHandler{
 	 * @param evt
 	 */
 	public void add_point(ActionEvent evt) {
-		System.out.println("add point: "+evt);
+		log.info("add point: "+evt);
 		//取参数 , like 'add_point 体质'
 		String attr = evt.getArgumentAsString(0);
 		Label label = (Label) panel.findCompByName(attr);
@@ -136,7 +136,7 @@ public class player_status extends PanelHandler{
 	 * @param evt
 	 */
 	public void subtract_point(ActionEvent evt) {
-		System.out.println("subtract point: " + evt);
+		log.info("subtract point: " + evt);
 		//取参数 , like 'add_point 体质'
 		String attr = evt.getArgumentAsString(1);
 		Label label = (Label) panel.findCompByName(attr);
@@ -158,7 +158,7 @@ public class player_status extends PanelHandler{
 	}
 	
 	public void changeTitle(ActionEvent evt) {
-		System.out.println("称谓");
+		log.info("称谓");
 	}
 	
 	private void updateLabels(Panel panel) {
@@ -183,7 +183,7 @@ public class player_status extends PanelHandler{
 				UnifiedJEXL ujexl = new UnifiedJEXL(jexl);
 				expression = ujexl.parse(tpl);
 			} catch (Exception e) {
-				System.out.println("创建JEXL表达式失败");
+				log.info("创建JEXL表达式失败");
 				e.printStackTrace();
 			}
 		}

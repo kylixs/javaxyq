@@ -23,12 +23,14 @@ import com.javaxyq.core.DataManager;
 import com.javaxyq.data.Scene;
 import com.javaxyq.io.CacheManager;
 import com.javaxyq.widget.TileMap;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 龚德伟
  * @history 2008-5-29 龚德伟 新建
  *          2013-12-26 wpaul modify
  */
+@Slf4j
 public class DefaultTileMapProvider implements MapProvider {
 
     public class ImageLoadThread extends Thread {
@@ -68,7 +70,7 @@ public class DefaultTileMapProvider implements MapProvider {
 
         public void run() {
             while (true) {
-            	//System.out.println(this.getId()+" "+this.getName());
+            	//log.info(this.getId()+" "+this.getName());
                 synchronized (this) {
                     if (image != null) {
                         // load image
@@ -80,7 +82,7 @@ public class DefaultTileMapProvider implements MapProvider {
                             tracker.waitForID(id, 0);
                             isCompleted = true;
                         } catch (InterruptedException e) {
-                            System.out.println("INTERRUPTED while loading Image");
+                            log.info("INTERRUPTED while loading Image");
                         }
                         tracker.removeImage(image, id);
                         isFinished = true;
@@ -306,7 +308,7 @@ public class DefaultTileMapProvider implements MapProvider {
             for (int y = 0; y < yBlockCount; y++) {
                 for (int x = 0; x < xBlockCount; x++) {
                     blockOffsetTable[x][y] = mapFile.readInt2();
-                    //System.out.println("blockoffsettable is:"+blockOffsetTable[x][y]);
+                    //log.info("blockoffsettable is:"+blockOffsetTable[x][y]);
                 }
             }
             ReadHead();
@@ -347,14 +349,14 @@ public class DefaultTileMapProvider implements MapProvider {
           //读取mask数量；
           maskCount=mapFile.readInt2();
           
-         //System.out.println("headsize is:"+offsetlsize);
+         //log.info("headsize is:"+offsetlsize);
           maskOffsets=new int[maskCount];
           int tmpdata = 0;
           for(int i=0;i<maskCount;i++){
           	maskOffsets[i]=mapFile.readInt2();
           	int masksize = maskOffsets[i]-tmpdata;
           	tmpdata=maskOffsets[i];
-          //System.out.println("m_MaskList is:"+i+" data is:"+m_MaskList[i]+"  Masksize is:"+masksize);
+          //log.info("m_MaskList is:"+i+" data is:"+m_MaskList[i]+"  Masksize is:"+masksize);
 
           } 
           return true;
@@ -379,21 +381,21 @@ public class DefaultTileMapProvider implements MapProvider {
   			
   			
   			mapFile.seek(seek);
-  			//System.out.println("seek is:"+seek);
+  			//log.info("seek is:"+seek);
   			
   			byte masknum[]=new byte[4];
   			mapFile.read(masknum, 0, 4);
   			int m_MaskNum = constructInt(masknum,0); //读取mask数量
   			
   			
-  			//System.out.println("masknum is:"+m_MaskNum);
+  			//log.info("masknum is:"+m_MaskNum);
   			if(m_MaskNum>0){
   			byte MaskList[]=new byte[4*m_MaskNum];
   			masklist = new int[m_MaskNum];
   			mapFile.read(MaskList, 0, 4*m_MaskNum);
   			    for(int i=0;i<m_MaskNum;i++){
   				    masklist[i]=constructInt(MaskList,4*i);
-  			        //System.out.println("masklist "+i+" is:"+masklist[i]+" is:"+m_MaskList[masklist[i]]);
+  			        //log.info("masklist "+i+" is:"+masklist[i]+" is:"+m_MaskList[masklist[i]]);
   			    }
   			}
   			
@@ -403,20 +405,20 @@ public class DefaultTileMapProvider implements MapProvider {
   				int m_unithead=constructInt(unithead,0); //读取单元的头数据
   				int m_headSize=constructInt(unithead,4);
   				
-  				//System.out.println(0x494D4147+","+0x4A504547+","+0x4D41534B+","+
+  				//log.info(0x494D4147+","+0x4A504547+","+0x4D41534B+","+
   						//0x424C4F4B+","+0x43454C4C+","+0x42524947);
   				
-  				//System.out.println("head.flag is:"+m_unithead+"  head.size is:"+
+  				//log.info("head.flag is:"+m_unithead+"  head.size is:"+
   					//	m_headSize);
   				
   				switch (m_unithead){
-  				case 0x494D4147: System.out.println("imag"); break;//GAMI
-  				case 0x4A504547: //System.out.println("jpeg");
+  				case 0x494D4147: log.info("imag"); break;//GAMI
+  				case 0x4A504547: //log.info("jpeg");
   				byte []m_jpeg=new byte[m_headSize];
   				
   				
   				
-  				//System.out.println("$%$^$%#%$#%#%#%"+size);
+  				//log.info("$%$^$%#%$#%#%#%"+size);
   				/*try {
   					
   					mapFile.read(m_jpeg,0,m_headSize);
@@ -430,9 +432,9 @@ public class DefaultTileMapProvider implements MapProvider {
   				
   				break;//GEPJ
   				
-  				case 0x4D41534B: System.out.println("mask");break;//KSAM
-  				case 0x424C4F4B: System.out.println("blok");break;//KOLB
-  				case 0x43454C4C: //System.out.println("cell");
+  				case 0x4D41534B: log.info("mask");break;//KSAM
+  				case 0x424C4F4B: log.info("blok");break;//KOLB
+  				case 0x43454C4C: //log.info("cell");
   				m_cell = new byte[m_headSize];
   				try {
   					mapFile.read(m_cell,0,m_headSize);
@@ -442,7 +444,7 @@ public class DefaultTileMapProvider implements MapProvider {
   					e.printStackTrace();
   				}
   				break;//LLEC
-  				case 0x42524947: //System.out.println("brig");
+  				case 0x42524947: //log.info("brig");
   				byte m_brig[]=new byte[m_headSize];
   				
   				try {
@@ -479,7 +481,7 @@ public class DefaultTileMapProvider implements MapProvider {
 		try {
 	
 			long seek;
-			//System.out.println("UnitNum is:"+UnitNum+",maskoffestlist is:"+m_MaskList[UnitNum]);
+			//log.info("UnitNum is:"+UnitNum+",maskoffestlist is:"+m_MaskList[UnitNum]);
 			seek = maskOffsets[UnitNum];
 			mapFile.seek(seek);
 			byte maskhead[] = new byte[20];
@@ -492,13 +494,13 @@ public class DefaultTileMapProvider implements MapProvider {
 			int masksize = constructInt(maskhead,16);
 			
 			//读mask数据
-			//System.out.println("mask x,y,width,height is:"+maskkeyx+","+maskkeyy+","+maskwidth+","+maskheight);
-			//System.out.println("masksize is:"+masksize);
+			//log.info("mask x,y,width,height is:"+maskkeyx+","+maskkeyy+","+maskwidth+","+maskheight);
+			//log.info("masksize is:"+masksize);
 			m_mask = new byte[masksize];
 			mapFile.read(m_mask,0,masksize);
 			
 			/*for(int i=0;i<masksize;i++){
-				System.out.println(constructMask(m_mask,i));
+				log.info(constructMask(m_mask,i));
 			}*/
 			
 			// 解密mask数据
@@ -511,51 +513,51 @@ public class DefaultTileMapProvider implements MapProvider {
 			int align_width = (maskWidth / 4 + bol) * 4;	// 以4对齐的宽度
 			byte[] pMaskDataDec = new byte[align_width * maskHeight / 4];		// 1个字节4个像素，故要除以4
 			int dec_mask_size = DecompressMask(m_mask, pMaskDataDec);
-			//System.out.println("alignwidth is:"+align_width);
-			//System.out.println("pmaskdatasize is:"+pMaskDataDec.length);
+			//log.info("alignwidth is:"+align_width);
+			//log.info("pmaskdatasize is:"+pMaskDataDec.length);
 			
-			//System.out.println("dec_mask_size is:"+dec_mask_size);
+			//log.info("dec_mask_size is:"+dec_mask_size);
 			
 			/*for(int i=0;i<dec_mask_size;i++){
-				System.out.println(constructMask(pMaskDataDec,i));
+				log.info(constructMask(pMaskDataDec,i));
 			}*/
 			
 			//mask数据还原
 			int[] maskData = new int[maskWidth*maskHeight];
 			int ow=align_width-maskWidth;
 			int md=0;
-			//System.out.println("align width is:"+align_width);
-			//System.out.println("ow is:"+ow);
+			//log.info("align width is:"+align_width);
+			//log.info("ow is:"+ow);
 			
 			
 			for(int i=0;i<dec_mask_size;i++){
 				
-				//System.out.println("i is:"+i+",dec_mask is:"+(int)constructMask(pMaskDataDec,i));
+				//log.info("i is:"+i+",dec_mask is:"+(int)constructMask(pMaskDataDec,i));
 				if(((i+1)*4)%align_width==0 ){
 					
 					for(int j=0;j<4-ow;j++){
 						maskData[md++]=constructMaskData(pMaskDataDec[i],j);
-						//System.out.println("num is:"+(md-1)+","+maskData[md-1]);
+						//log.info("num is:"+(md-1)+","+maskData[md-1]);
 					}
 	
 			    }else if(maskWidth<4){
 			    	for(int j=0;j<maskWidth;j++){
 						maskData[md++]=constructMaskData(pMaskDataDec[i],j);
-						//System.out.println("num is:"+(md-1)+","+maskData[md-1]);
+						//log.info("num is:"+(md-1)+","+maskData[md-1]);
 					}
 			    }
 				else{
 					 for(int j=0;j<4;j++){
 						maskData[md++]=constructMaskData(pMaskDataDec[i],j);
-						//System.out.println("num is:"+(md-1)+","+maskData[md-1]);
+						//log.info("num is:"+(md-1)+","+maskData[md-1]);
 					 }
 			    }
 	
 				//masktemp=constructMask(pMaskDataDec,i);
-			   // System.out.println(masktemp);	
+			   // log.info(masktemp);	
 			}
 			/*for(int i=0;i<maskwidth*maskheight;i++){
-				System.out.println(maskData[i]);
+				log.info(maskData[i]);
 			}*/
 		
 			return new MaskUnit(maskX, maskY, maskWidth, maskHeight, maskData);
@@ -661,7 +663,7 @@ public class DefaultTileMapProvider implements MapProvider {
 					if(match(op,ip)==1){   //goto match
 						break; 
 					}else{
-						//System.out.println("i_pos is:"+i_pos);
+						//log.info("i_pos is:"+i_pos);
 						continue cont;
 					}
 					
@@ -675,16 +677,16 @@ public class DefaultTileMapProvider implements MapProvider {
 			}
 
 			if(first_literal_run){
-				//System.out.println("ip is:"+ip[i_pos]+",i_pos is:"+i_pos);
+				//log.info("ip is:"+ip[i_pos]+",i_pos is:"+i_pos);
 			t=constructMask(ip,i_pos++);
 			
-			//System.out.println("t is:"+t);
+			//log.info("t is:"+t);
 			
 			if(t>=16) {
 				if(match(op,ip)==1){
 					break;
 				}else{
-					//System.out.println("i_pos is:"+i_pos);
+					//log.info("i_pos is:"+i_pos);
 					continue cont;
 				}
 			}
@@ -699,11 +701,11 @@ public class DefaultTileMapProvider implements MapProvider {
 			//op[o_pos]=ip[i_pos];
             for(int i=0;i<4;i++){
             	op[o_pos++]=ip[i_pos++];    // 获取sizeof(unsigned)个新字符
-            	//System.out.println("op is:"+op[o_pos-1]);
+            	//log.info("op is:"+op[o_pos-1]);
             	
             }
             
-            //System.out.println("t is:"+t);
+            //log.info("t is:"+t);
 			if(--t>0){
 				
 				if(t>=4){
@@ -711,7 +713,7 @@ public class DefaultTileMapProvider implements MapProvider {
 						for(int i=0;i<4;i++){
 			            	op[o_pos++]=ip[i_pos++];   // 获取sizeof(unsigned)个新字符
 			            	
-			            	//System.out.println("--t op is:"+op[o_pos-1]);
+			            	//log.info("--t op is:"+op[o_pos-1]);
 			            }
 						t-=4;
 					}while(t>=4);
@@ -723,7 +725,7 @@ public class DefaultTileMapProvider implements MapProvider {
 				}else {
 					do{
 						op[o_pos++]=ip[i_pos++];
-						//System.out.println("op is:"+op[o_pos-1]);
+						//log.info("op is:"+op[o_pos-1]);
 					}while(--t>0);
 				}
 			}
@@ -734,17 +736,17 @@ public class DefaultTileMapProvider implements MapProvider {
 			
 				t=constructMask(ip,i_pos++);
 				
-				//System.out.println("t is:"+t+",ipos is:"+i_pos);
+				//log.info("t is:"+t+",ipos is:"+i_pos);
 			if(t>=16){                             // 是重复字符编码
 				if(match(op,ip)==1){
 					break;
 				}else{
-					//System.out.println("i_pos is:"+i_pos);
+					//log.info("i_pos is:"+i_pos);
 					continue cont;
 				}
 				
 			}else{
-				System.out.println("0x0801");
+				log.info("0x0801");
 				m_pos = o_pos - 0x0801;
 				m_pos -= t>>2;
 	            m_pos -= constructMask(ip,i_pos++)<<2;
@@ -765,7 +767,7 @@ public class DefaultTileMapProvider implements MapProvider {
 				if(match(op,ip)==1){
 					break;
 				}else{
-					//System.out.println("i_pos is:"+i_pos);
+					//log.info("i_pos is:"+i_pos);
 					continue cont;
 				}
 				}
@@ -794,7 +796,7 @@ public class DefaultTileMapProvider implements MapProvider {
 			byte []ms=new byte[o_pos];
 			int num=0;
 			
-			//System.out.println("t is:"+t);
+			//log.info("t is:"+t);
 			if(t>=64){
 
 				for(int i=0;i<o_pos;i++){
@@ -826,7 +828,7 @@ public class DefaultTileMapProvider implements MapProvider {
 					}
 				
 				 /*for(int i=0;i<o_pos;i++){
-				   System.out.println("op is:"+op[i]);
+				   log.info("op is:"+op[i]);
 			    }*/
 				
 				t = (t>>5)-1;
@@ -865,7 +867,7 @@ public class DefaultTileMapProvider implements MapProvider {
 				}
 
 				/*for(int i=0;i<o_pos;i++){
-				System.out.println("op2 is:"+op[i]);
+				log.info("op2 is:"+op[i]);
 			    }
 				*/
 				i_pos +=2;
@@ -900,14 +902,14 @@ public class DefaultTileMapProvider implements MapProvider {
 				
 				i_pos +=2;
 				if(ip.length == i_pos){
-					//System.out.println("o_pos is:"+o_pos);
+					//log.info("o_pos is:"+o_pos);
 					return 1;
 				}else{
 					//m_pos -= 0x4000;
 					po = 0x4000;
-					//System.out.println("0x4000 is:"+po);
+					//log.info("0x4000 is:"+po);
 				num+=po;
-				//System.out.println("num is:"+num);
+				//log.info("num is:"+num);
 				int mtemp=0;
 				for(int j=o_pos-num;j<=o_pos-1;j++){
 					ms[mtemp++]=op[j];
@@ -919,7 +921,7 @@ public class DefaultTileMapProvider implements MapProvider {
 				
 			}else{
 				
-				System.out.println("t0-15 is:"+t);
+				log.info("t0-15 is:"+t);
 				
 				byte temp;
 				//m_pos = o_pos-1;
@@ -1015,11 +1017,11 @@ public class DefaultTileMapProvider implements MapProvider {
 				    for(int i=0;i<2;i++){
 				    	if(m_pos<num){
 				    		op[o_pos++]=ms[m_pos++];
-							//System.out.println("ms is:"+ms[m_pos-1]);
+							//log.info("ms is:"+ms[m_pos-1]);
 				    	}else{
 				    		m_pos=0;
 				    		op[o_pos++]=ms[m_pos++];
-					        //System.out.println("ms is:"+ms[m_pos-1]);
+					        //log.info("ms is:"+ms[m_pos-1]);
 				    	}
 				    	
 				    }
@@ -1027,11 +1029,11 @@ public class DefaultTileMapProvider implements MapProvider {
 			        do{
 			        	if(m_pos<num){
 			        	op[o_pos++]=ms[m_pos++];
-			        	//System.out.println("ms is:"+ms[m_pos-1]+" m_pos is:"+m_pos);
+			        	//log.info("ms is:"+ms[m_pos-1]+" m_pos is:"+m_pos);
 			        	}else{
 			        		m_pos=0;
 			        	op[o_pos++]=ms[m_pos++];
-			        	//System.out.println("ms is:"+ms[m_pos-1]+" m_pos is:"+m_pos);
+			        	//log.info("ms is:"+ms[m_pos-1]+" m_pos is:"+m_pos);
 			        	}
 			        	
 			        }while(--t>0);
@@ -1047,7 +1049,7 @@ public class DefaultTileMapProvider implements MapProvider {
 			//match_next:
 				do{
 					op[o_pos++]=ip[i_pos++];
-					//System.out.println("op is:"+op[o_pos]);
+					//log.info("op is:"+op[o_pos]);
 				}while(--t>0);
 			t=constructMask(ip,i_pos++);
 			

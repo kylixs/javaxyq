@@ -14,10 +14,13 @@ import java.util.Map;
 import java.util.Random;
 
 import com.javaxyq.widget.Player;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author dewitt
  * @date 2009-11-11 create
  */
+@Slf4j
 public class CommandManager  {
 	private BattleCanvas canvas;
 	private List cmdlist;
@@ -47,10 +50,10 @@ public class CommandManager  {
 		for (int i = 0; i < results.size(); i++) {
 			Command cmd = results.get(i);
 			try {
-				System.out.println("执行："+cmd);
+				log.info("执行："+cmd);
 				this.interpretor.exec(cmd);
 			}catch(Exception e) {
-				System.out.println("战斗指令执行失败！"+cmd);
+				log.info("战斗指令执行失败！"+cmd);
 				e.printStackTrace();
 			}
 		}

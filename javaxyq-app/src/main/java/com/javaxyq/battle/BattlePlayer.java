@@ -15,6 +15,7 @@ import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.data.ItemInstance;
 import com.javaxyq.widget.Player;
 import com.javaxyq.widget.Sprite;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -23,6 +24,7 @@ import com.javaxyq.widget.Sprite;
  * @author gongdewei
  * @history 2010-5-27 create
  */
+@Slf4j
 public class BattlePlayer {
 	private BattleCanvas canvas;
 	private DataManager dataManager;
@@ -39,7 +41,7 @@ public class BattlePlayer {
 			this.invokeMethod (cmd.getCmd(), cmd);
 			return true;
 		} catch (Exception e) {
-			System.out.println("解析指令失败！");
+			log.info("解析指令失败！");
 			e.printStackTrace();
 		}
 		return false;
@@ -111,7 +113,7 @@ public class BattlePlayer {
 		target.playEffect(magicId, true);
 		delay(100);
 		if(hit) {
-			System.out.printf("%s击中%s，伤害%s点\n",source.getName(),target.getName(),hitpoints);
+			log.info("{}击中{}，伤害{}点",source.getName(),target.getName(),hitpoints);
 			target.playOnce("hit");
 			//target.playEffect("hit");
 			showPoints(target, -hitpoints);
@@ -119,14 +121,14 @@ public class BattlePlayer {
 			source.waitFor();
 			source.setState("stand");
 		}else {
-			System.out.printf("%s 抵御了%s的法术攻击\n",target.getName(),source.getName());
+			log.info("{} 抵御了{}的法术攻击",target.getName(),source.getName());
 		}
 		target.waitForEffect(null);//等待法术施法完毕
 		if(target.getData().hp <=0) {
 			//TODO 改善死亡的计算
 			//target.playOnce("die");
 			target.getData().hp = 0;
-			System.out.printf("%s招架不住，倒在战场上。\n",target.getName());
+			log.info("{}招架不住，倒在战场上。",target.getName());
 			canvas.cleanPlayer(target);
 		}else {
 			target.setState(oldState);
@@ -205,7 +207,7 @@ public class BattlePlayer {
 	 */
 	public void dodge(Command cmd) {
 		backward(cmd.getSource());
-		//System.out.printf("%s 躲开了%s的攻击\n",target.getName(),source.getName());
+//		log.info("{} 躲开了%s的攻击\n",target.getName(),source.getName());
 		
 	}
 	
@@ -227,7 +229,7 @@ public class BattlePlayer {
 		int hpval = cmd.getInt("hp");
 		if(hpval > 0) {
 			showPoints(target, hpval);
-			System.out.printf("%s 恢复了%s点气血\n",target.getName(),hpval);
+			log.info("{} 恢复了{}点气血",target.getName(),hpval);
 		}
 		source.waitFor();
 		source.setState("stand");

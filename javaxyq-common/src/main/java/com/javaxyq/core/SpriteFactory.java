@@ -9,6 +9,7 @@ import com.javaxyq.io.CacheManager;
 import com.javaxyq.util.WASDecoder;
 import com.javaxyq.widget.Animation;
 import com.javaxyq.widget.Sprite;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Sprite 工厂类<br>
@@ -16,6 +17,7 @@ import com.javaxyq.widget.Sprite;
  * @author Langlauf
  * @date
  */
+@Slf4j
 public class SpriteFactory {
 
 	/**
@@ -126,7 +128,7 @@ public class SpriteFactory {
 			decoder.load(file);
 			if(colorations!=null) {
 				String pp = filename.replaceFirst("(\\w)*.tcp", "00.pp");
-				System.out.println("pp: "+pp);//XXX
+				log.info("pp: "+pp);//XXX
 				decoder.loadColorationProfile(pp);
 				decoder.coloration(colorations);
 			}

@@ -24,12 +24,14 @@ import com.javaxyq.model.Task;
 import com.javaxyq.ui.UIHelper;
 import com.javaxyq.util.StringUtils;
 import com.javaxyq.widget.Player;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * "门派任务"处理单元
  * @author dewitt
  * @date 2009-11-23 create
  */
+@Slf4j
 public class SchoolTaskCoolie extends TaskCoolie {
 	
 	/** 每10次为一轮任务 */
@@ -61,7 +63,7 @@ public class SchoolTaskCoolie extends TaskCoolie {
 	 * @return
 	 */
 	public boolean deliver(Task task) {
-		//System.out.println("deliver $task");
+		//log.info("deliver $task");
 		if(!task.isFinished()) {
 			Player player =context.getPlayer();
 			Player target = (Player) task.get("target");
@@ -71,7 +73,7 @@ public class SchoolTaskCoolie extends TaskCoolie {
 			ApplicationHelper.getApplication().doTalk(target,"我已收到你师傅的来信，赶快回去禀报吧。", null);
 			return true;
 		}else {
-			System.out.println("任务已完成？"+task);
+			log.info("任务已完成？"+task);
 		}
 		return false;
 	}
@@ -82,7 +84,7 @@ public class SchoolTaskCoolie extends TaskCoolie {
 	 * @return
 	 */
 	public boolean lookfor(Task task) {
-		//System.out.println("lookfor $task");
+		//log.info("lookfor $task");
 		if(!task.isFinished()) {
 			Player player =context.getPlayer();
 			Player target = (Player) task.get("target");
@@ -110,7 +112,7 @@ public class SchoolTaskCoolie extends TaskCoolie {
 	 * @return
 	 */
 	public boolean patrol(final Task task) {
-		//System.out.println("patrol $task");
+		//log.info("patrol $task");
 		final Player player = context.getPlayer();
 		player.stop(true);
 		//初始化小怪队伍
@@ -133,7 +135,7 @@ public class SchoolTaskCoolie extends TaskCoolie {
 		window.addBattleListener(new BattleListener() {
 			//战斗胜利处理
 			public void battleWin(BattleEvent e) {
-				System.out.println("战斗胜利");
+				log.info("战斗胜利");
 				task.add("battle",1);
 				int exp = player.getData().level*(150 + rand.nextInt(20))*elfCount/10;
 				player.getData().exp += exp;
@@ -152,7 +154,7 @@ public class SchoolTaskCoolie extends TaskCoolie {
 			}
 			//战斗失败处理
 			public void battleDefeated(BattleEvent e) {
-				System.out.println("战斗失败");
+				log.info("战斗失败");
 				//气血为0的人物恢复一点气血
 				if(player.getData().hp ==0) {
 					player.getData().hp = 1;

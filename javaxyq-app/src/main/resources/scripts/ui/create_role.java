@@ -18,7 +18,6 @@ import com.javaxyq.ui.Label;
 import com.javaxyq.ui.Panel;
 import com.javaxyq.ui.TextField;
 import com.javaxyq.widget.Animation;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,6 @@ import java.util.Date;
  * @author gongdewei
  * @date 2011-5-2 create
  */
-@Slf4j
 public class create_role extends PanelHandler {
     Logger log = LoggerFactory.getLogger(this.getClass());
 

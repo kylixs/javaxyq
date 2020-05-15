@@ -32,7 +32,7 @@ public class game_exit extends PanelHandler {
 	}	
 
 	public void dispose(PanelEvent evt) {
-		System.out.println("dispose: system.mainwin ");
+		log.info("dispose: system.mainwin ");
 	}
 	
 	public void exit_game(ActionEvent evt) {
@@ -55,10 +55,10 @@ public class game_exit extends PanelHandler {
 		application.getScriptEngine().setDebug(application.isDebug());
 		Button btn = (Button) panel.findCompByName("debugbtn");
 		if(application.isDebug()) {
-			System.out.println("已打开游戏调试");
+			log.info("已打开游戏调试");
 			btn.setText("关闭调试");
 		}else {
-			System.out.println("已关闭游戏调试");
+			log.info("已关闭游戏调试");
 			btn.setText("打开调试");
 		}
 	}
@@ -68,10 +68,10 @@ public class game_exit extends PanelHandler {
 		Button btn = (Button) panel.findCompByName("musicbtn");
 		if(GameMain.isPlayingMusic()) {
 			btn.setText("关闭音乐");
-			System.out.println("打开游戏背景音乐");
+			log.info("打开游戏背景音乐");
 		}else {
 			btn.setText("打开音乐");
-			System.out.println("关闭游戏背景音乐");
+			log.info("关闭游戏背景音乐");
 		}
 	}
 	

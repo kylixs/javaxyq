@@ -9,6 +9,7 @@ import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.data.ItemInstance;
 import com.javaxyq.widget.Player;
 import com.javaxyq.widget.Sprite;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
@@ -20,6 +21,7 @@ import java.lang.reflect.Method;
  * 战斗指令解释器
  * @author dewitt
  */
+@Slf4j
 public class CommandInterpreter {
     private BattleCanvas canvas;
     private ItemManager itemManager;
@@ -59,7 +61,7 @@ public class CommandInterpreter {
         source.playOnce("attack");
         delay(300);
         if (hit) {
-            System.out.printf("%s 击中 %s，伤害%s点\n", source.getName(), target.getName(), hitpoints);
+            log.info("{} 击中 {}，伤害{}点", source.getName(), target.getName(), hitpoints);
             showPoints(target, -hitpoints);
             target.getData().hp -= hitpoints;
             if (cmd.get("defend") != null) {
@@ -72,7 +74,7 @@ public class CommandInterpreter {
             source.waitFor();
         } else {
             backward(target);
-            System.out.printf("%s 躲开了%s的攻击\n", target.getName(), source.getName());
+            log.info("{} 躲开了{}的攻击", target.getName(), source.getName());
         }
         rushBack(source, p0.x, p0.y);
         source.setState("stand");
@@ -80,7 +82,7 @@ public class CommandInterpreter {
         if (target.getData().hp <= 0) {
             //target.playOnce("die");
             target.getData().hp = 0;
-            System.out.printf("%s招架不住，倒在战场上。\n", target.getName());
+            log.info("{}招架不住，倒在战场上。", target.getName());
             canvas.cleanPlayer(target);
         } else {
             target.setState(oldState);
@@ -106,7 +108,7 @@ public class CommandInterpreter {
         target.playEffect(magicId, true);
         delay(100);
         if (hit) {
-            System.out.printf("%s击中%s，伤害%s点\n", source.getName(), target.getName(), hitpoints);
+            log.info("{}击中{}，伤害{}点", source.getName(), target.getName(), hitpoints);
             target.playOnce("hit");
             //target.playEffect("hit");
             showPoints(target, -hitpoints);
@@ -114,14 +116,14 @@ public class CommandInterpreter {
             source.waitFor();
             source.setState("stand");
         } else {
-            System.out.printf("%s 抵御了%s的法术攻击\n", target.getName(), source.getName());
+            log.info("{} 抵御了{}的法术攻击", target.getName(), source.getName());
         }
         target.waitForEffect(null);//等待法术施法完毕
         if (target.getData().hp <= 0) {
             //TODO 改善死亡的计算
             //target.playOnce("die");
             target.getData().hp = 0;
-            System.out.printf("%s招架不住，倒在战场上。\n", target.getName());
+            log.info("{}招架不住，倒在战场上。", target.getName());
             canvas.cleanPlayer(target);
         } else {
             target.setState(oldState);
@@ -162,7 +164,7 @@ public class CommandInterpreter {
         int hpval = cmd.getInt("hp");
         if (hpval > 0) {
             showPoints(target, hpval);
-            System.out.printf("%s 恢复了%s点气血\n", target.getName(), hpval);
+            log.info("{} 恢复了{}点气血", target.getName(), hpval);
         }
         source.waitFor();
         source.setState("stand");

@@ -3,6 +3,7 @@ package com.javaxyq.tools;
 import javax.swing.*;
 
 import com.javaxyq.util.HashUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -17,6 +18,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class ResourcePathMatchTool extends JFrame {
     private JPanel contentPane;
     private JButton buttonStart;
@@ -98,7 +100,7 @@ public class ResourcePathMatchTool extends JFrame {
             JOptionPane.showMessageDialog(top(), "请输入正确的路径规则！");
             return;
         }
-        System.out.println("path rule: " + pathRule);
+        log.info("path rule: " + pathRule);
 
         List<String> templateFragments = new ArrayList<String>();
         List<RuleUnit> ruleUnits = new ArrayList<RuleUnit>();
@@ -116,7 +118,7 @@ public class ResourcePathMatchTool extends JFrame {
             RuleUnit ruleUnit = parseUnit(express);
             if (ruleUnit != null) {
                 ruleUnits.add(ruleUnit);
-                System.out.println("parse: " + express + " => " + ruleUnit);
+                log.info("parse: " + express + " => " + ruleUnit);
             } else {
                 System.err.println("解析表达式失败：" + express);
                 break;
@@ -135,7 +137,7 @@ public class ResourcePathMatchTool extends JFrame {
             JOptionPane.showMessageDialog(top(), "资源文件不存在！");
             return;
         }
-        System.out.println("wdf: "+filename);
+        log.info("wdf: "+filename);
         try {
             wdfFile = new WdfFile(filename, false);
         } catch (Exception e) {
@@ -161,13 +163,13 @@ public class ResourcePathMatchTool extends JFrame {
             WdfFileNode node = wdfFile.findNode(nodeId);
             if (node != null) {
             	nodeMap.put(path, node.getId());
-                System.out.println(Long.toHexString(nodeId)+"=" + path);
+                log.info(Long.toHexString(nodeId)+"=" + path);
             } else {
-                //System.out.println("not found: " + path);
+                //log.info("not found: " + path);
             }
         } while (expandNext(ruleUnits, ruleExpands));
 
-        System.out.println("match finished, total found: "+nodeMap.size());
+        log.info("match finished, total found: "+nodeMap.size());
         
         try {
 			wdfFile.close();
@@ -182,11 +184,11 @@ public class ResourcePathMatchTool extends JFrame {
                 ruleExpands[i] = 0;
             } else {
                 ruleExpands[i]++;
-                //System.out.println("expand: " + Arrays.toString(ruleExpands));
+                //log.info("expand: " + Arrays.toString(ruleExpands));
                 return true;
             }
         }
-        //System.out.println("finish expand: " + Arrays.toString(ruleExpands));
+        //log.info("finish expand: " + Arrays.toString(ruleExpands));
         return false;
     }
 

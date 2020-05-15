@@ -14,12 +14,14 @@ import java.util.Map;
 
 import com.javaxyq.model.Task;
 import com.javaxyq.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 任务管理器
  * @author dewitt
  * @date 2009-11-23 create
  */
+@Slf4j
 public class TaskManager {
 	private List<Task> tasklist = new ArrayList<Task>();
 	private Map<String,TaskCoolie> coolies = new HashMap<String, TaskCoolie>();
@@ -38,19 +40,13 @@ public class TaskManager {
 				coolie = Class.forName((String) coolie).newInstance();
 			}
 			coolies.put(type, (TaskCoolie) coolie);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	/**
 	 * 读取某个npc处理的任务列表
-	 * @param npc
-	 * @return
 	 */
 	public List<Task> getTasksFor(String npcid) {
 		//return tasklist.findAll{task-> task.receiver==npcid};
@@ -146,7 +142,7 @@ public class TaskManager {
 	public boolean process(Task task) {
 		TaskCoolie coolie = coolies.get(task.getType());
 		if(coolie == null) {
-			System.out.printf("任务类型:%s 未注册，处理失败！\n",task.getType());
+			log.info("任务类型:{} 未注册，处理失败！",task.getType());
 			return false;
 		}
 		return coolie.process(task);
@@ -161,7 +157,7 @@ public class TaskManager {
 	public Task create(String type,String subtype,String sender) {
 		TaskCoolie coolie = coolies.get(type);
 		if(coolie == null) {
-			System.out.printf("任务类型:%s 未注册，处理失败！\n",type);
+			log.info("任务类型:{} 未注册，处理失败！",type);
 			return null;
 		}
 		return coolie.create(subtype,sender);
@@ -175,7 +171,7 @@ public class TaskManager {
 	public String desc(Task task) {
 		TaskCoolie coolie = coolies.get(task.getType());
 		if(coolie == null) {
-			System.out.printf("任务类型:%s 未注册，处理失败！\n",task.getType());
+			log.info("任务类型:{] 未注册，处理失败！",task.getType());
 			return "";
 		}
 		return coolie.desc(task);

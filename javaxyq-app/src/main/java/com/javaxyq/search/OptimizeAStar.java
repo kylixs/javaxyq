@@ -7,6 +7,8 @@
  */
 package com.javaxyq.search;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +20,7 @@ import java.util.List;
  * @author dewitt
  * @date 2009-11-25 create
  */
+@Slf4j
 public class OptimizeAStar implements Searcher {
 
 	private int width;
@@ -106,7 +109,7 @@ public class OptimizeAStar implements Searcher {
 					}
 				}
 			}
-			System.out.println("select: " + tmp);
+			log.info("select: " + tmp);
 			openlist.remove(tmp);
 			openlistV[currX][currY] = 0;
 			tmpCoords = new Point(currX, currY);
@@ -160,7 +163,7 @@ public class OptimizeAStar implements Searcher {
 				tmpY = parentY[tmpCoords.x][tmpCoords.y];
 				tmpCoords = new Point(tmpX, tmpY);
 			} else {
-				System.out.println("不可到达点：" + tmpCoords.x + "," + tmpCoords.y);
+				log.info("不可到达点：" + tmpCoords.x + "," + tmpCoords.y);
 			}
 		}
 

@@ -96,7 +96,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			labels.add(mainskill);
 		}*/
 		for(Label label:labels){
-            System.out.println("label is:"+label);
+            log("label is:"+label);
 			panel.add(label);
 		}
 		for(AbstractButton button:buttons){
@@ -189,7 +189,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 		labels = new ArrayList<Label>();
 		for (Component c : comps) {
 			if (c instanceof Label) {
-				System.out.println("lable"+c);
+				log("lable"+c);
 				labels.add((Label) c);
 			}
 		}
@@ -340,7 +340,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 					String name = label.getName();
 					String text = label.getTextTpl();
 					if(StringUtils.isNotBlank(name) && text!=null) {
-						System.out.println("getTextTpl is:"+text);
+						log("getTextTpl is:"+text);
 						vars.add(name+"#="+ label.getTextTpl());
 					}
 				}
@@ -349,21 +349,21 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 				UnifiedJEXL ujexl = new UnifiedJEXL(jexl);
 				expression = ujexl.parse(tpl);
 			} catch (Exception e) {
-				System.out.println("创建JEXL表达式失败");
+				log("创建JEXL表达式失败");
 				e.printStackTrace();
 			}
 		}
 		if(expression != null) {
 			Map<String, Object> properties = dataManager.getProperties(context.getPlayer());
-	        System.out.println("proerties is:"+properties);
+	        log("proerties is:"+properties);
 			JexlContext jexlcontext = new MapContext(properties);
 	        String result = expression.evaluate(jexlcontext).toString();
-			System.out.println("result is:"+result);
+			log("result is:"+result);
 	        String[] items = result.split("#;");
 			for (String item : items) {
 				String[] values = item.split("#=");
 				if(values.length>1){
-					System.out.println("item is:"+item);
+					log("item is:"+item);
 					Label label = (Label) panel.findCompByName(values[0]);
 					label.setText(values[1]);
 				}

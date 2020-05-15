@@ -24,7 +24,7 @@ public class n1006 extends PlayerAdapter {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
     public void talk(PlayerEvent evt) {
-    	System.out.println("talk: "+this.getClass().getName());
+    	log.info("talk: "+this.getClass().getName());
     	Option[] options = new Option[] {
 	    	new Option("购买","open","buy"),
 	    	new Option("告辞","close")};

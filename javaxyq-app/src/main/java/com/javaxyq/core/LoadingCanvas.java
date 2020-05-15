@@ -14,11 +14,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.javaxyq.util.UIUtils;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author dewitt
  *
  */
+@Slf4j
 public class LoadingCanvas extends Canvas {
 	private static final long serialVersionUID = -2718674869979598034L;
 	private String loadingText = "";
@@ -80,7 +82,7 @@ public class LoadingCanvas extends Canvas {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("华文新魏", Font.PLAIN, 20));
 		g.drawString(loadingText, 250, 420);
-		//System.out.println("draw loading ...");
+		//log.info("draw loading ...");
 		
 		super.draw(g, elapsedTime);
 	}

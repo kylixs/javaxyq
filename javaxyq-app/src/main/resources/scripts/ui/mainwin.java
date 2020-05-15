@@ -40,7 +40,7 @@ public class mainwin extends PanelHandler implements ActionListener{
 
 	public void initial(PanelEvent evt) {
 		super.initial(evt);
-		System.out.println("initial：system.mainwin ");
+		log.info("initial：system.mainwin ");
 		String charactorId = context.getPlayer().getCharacter();
 		Sprite sprite = SpriteFactory.loadSprite("wzife/photo/facesmall/"+charactorId+".tcp");
 		Button btnHeader = (Button) panel.findCompByName("btn_player_header");
@@ -59,7 +59,7 @@ public class mainwin extends PanelHandler implements ActionListener{
 	}
 
 	public void dispose(PanelEvent evt) {
-		System.out.println("dispose: ui.mainwin ");
+		log.info("dispose: ui.mainwin ");
 	}
 	
 	public void update(PanelEvent evt) {
@@ -122,12 +122,12 @@ public class mainwin extends PanelHandler implements ActionListener{
 		for (int i = 0; i < items.length; i++) {
 			ItemInstance item = items[i];
 			while(reqHp > 0 && item.getLevel() <3 && item.getAmount() > 0) {
-				System.out.println("使用一个药品："+item.getName());
+				log.info("使用一个药品："+item.getName());
 				application.getItemManager().useItem(player, item);
 				reqHp = data.maxHp - data.hp;
 			}
 			if(reqHp == 0) {
-				System.out.println("气血补充完毕！");
+				log.info("气血补充完毕！");
 				break;
 			}
 		}
@@ -152,12 +152,12 @@ public class mainwin extends PanelHandler implements ActionListener{
 		for (int i = 0; i < items.length; i++) {
 			ItemInstance item = items[i];
 			while(reqMp > 0 && item.getLevel() <3 && item.getAmount() > 0) {
-				System.out.println("使用一个药品："+item.getName());
+				log.info("使用一个药品："+item.getName());
 				application.getItemManager().useItem(player, item);
 				reqMp = data.maxMp - data.mp;
 			}
 			if(reqMp == 0) {
-				System.out.println("法力补充完毕！");
+				log.info("法力补充完毕！");
 				break;
 			}
 		}
@@ -167,7 +167,7 @@ public class mainwin extends PanelHandler implements ActionListener{
 	 * 补充summon气血
 	 */
 	public void eke_summon_hp(ActionEvent evt) {
-		System.out.println("补充summon气血");
+		log.info("补充summon气血");
 	}
 	
 	/**
@@ -175,7 +175,7 @@ public class mainwin extends PanelHandler implements ActionListener{
 	 * @param evt
 	 */
 	public void eke_summoned_mp(ActionEvent evt) {
-		System.out.println("补充summon魔法");
+		log.info("补充summon魔法");
 	}
 
 	/**

@@ -223,8 +223,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
             drawDebug(g);
             drawDownloading(g);
         } catch (Exception e) {
-            System.out.printf("更新Canvas时失败！\n");
-            e.printStackTrace();
+           log.error("更新Canvas时失败！", e);
         }
     }
 
@@ -580,12 +579,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
         if (GameMain.isPlayingMusic()) {
             final String filename = getMusic();
             if (filename != null) {
-                Thread th = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MP3Player.loop(filename);
-                    }
-                });
+                Thread th = new Thread(() -> MP3Player.loop(filename));
                 th.start();
             }
         }

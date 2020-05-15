@@ -215,7 +215,7 @@ public abstract class BaseApplication implements Application {
      *
      * @param source
      *            触发Action的源对象
-     * @param cmd动作的actiomCommand
+     * @param args 动作的actiomCommand
      *            ,而非类名
      */
     public void doAction(Object source, String actionId, Object[] args) {
@@ -250,8 +250,6 @@ public abstract class BaseApplication implements Application {
 
     /**
      * 触发与npc的对话
-     *
-     * @param npc
      */
     public void doTalk(Player p, String chat) {
         doTalk(p, chat, null);
@@ -259,8 +257,6 @@ public abstract class BaseApplication implements Application {
 
     /**
      * 触发与npc的对话
-     * @param options TODO
-     * @param npc
      */
     public Option doTalk(Player talker, String chat, Option[] options) {
         context.setTalker(talker);
@@ -380,7 +376,7 @@ public abstract class BaseApplication implements Application {
         if (item != null) {
             if (ItemTypes.isWeapon(item.getItem())) {
                 player.takeupWeapon((WeaponItem) item.getItem());
-                System.out.println("takeup weapon: " + item.getItem());
+                log.info("takeup weapon: " + item.getItem());
             }
         }
 

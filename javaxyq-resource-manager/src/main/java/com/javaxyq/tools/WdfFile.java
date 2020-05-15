@@ -22,6 +22,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
 import com.javaxyq.core.Toolkit;
@@ -29,32 +30,46 @@ import com.javaxyq.util.Utils;
 
 /**
  * .WDF文件类
- * 
+ *
  * @author 龚德伟
- * @history 2008-6-10 龚德伟 新建
  */
+@Slf4j
 public class WdfFile implements FileSystem {
 
-    /** 文件句柄 */
+    /**
+     * 文件句柄
+     */
     private RandomAccessFile fileHandler;
 
-    /** 大话西游2/梦幻西游/富甲西游 WDF文件标记 */
+    /**
+     * 大话西游2/梦幻西游/富甲西游 WDF文件标记
+     */
     private static final String WDFP_FILE = "PFDW";
 
-    /** 大话3/大话外传 */
+    /**
+     * 大话3/大话外传
+     */
     private static final String WDFX_FILE = "XFDW";
 
-    /** 大话3/大话外传 */
+    /**
+     * 大话3/大话外传
+     */
     private static final String WDFH_FILE = "HFDW";
 
-    /** 包内结点个数 */
+    /**
+     * 包内结点个数
+     */
     private int fileNodeCount;
 
-    /** 文件全名 */
+    /**
+     * 文件全名
+     */
     private String filename;
 
-    /** 结点映射表 */
-    private Map<Long, WdfFileNode> fileNodeMap = new HashMap<Long, WdfFileNode>();
+    /**
+     * 结点映射表
+     */
+    private final Map<Long, WdfFileNode> fileNodeMap = new HashMap<>();
 
     private FileObject rootNode;
 
@@ -68,17 +83,16 @@ public class WdfFile implements FileSystem {
     }
 
     public WdfFile(String filename) throws Exception {
-    	loadWdf(filename, true);
+        loadWdf(filename, true);
     }
-    
-	private void loadWdf(String filename, boolean resovePath) throws Exception {
-		try {
+
+    private void loadWdf(String filename, boolean resovePath) throws Exception {
+        try {
             filename = StringUtils.replaceChars(filename, '\\', '/');
             this.filename = filename;
             fileHandler = new RandomAccessFile(filename, "r");
             if (!isWdfFile(fileHandler)) {
-                throw new IllegalArgumentException("这个不是WDF格式的文件！path=" + filename + ",tag="
-                        + fileTag);
+                throw new IllegalArgumentException("这个不是WDF格式的文件！path=" + filename + ",tag=" + fileTag);
             }
             //init key
             if (WDFX_FILE.equals(fileTag) || WDFH_FILE.equals(fileTag)) {
@@ -86,8 +100,8 @@ public class WdfFile implements FileSystem {
             }
             //read
             fileNodeCount = readInt(fileHandler);
-            if(fileNodeCount==0) {//可能是【精灵牧场】格式(四字节00) 
-            	fileNodeCount = readInt(fileHandler);
+            if (fileNodeCount == 0) {//可能是【精灵牧场】格式(四字节00)
+                fileNodeCount = readInt(fileHandler);
             }
             int headerSize = readInt(fileHandler);
             fileHandler.seek(headerSize);
@@ -112,27 +126,22 @@ public class WdfFile implements FileSystem {
                 fileNodeMap.put(node.getId(), node);
             }
             rootNode = new WdfDirectoryObject(this);
-            if(resovePath) {
-	            //load description
-	            load(null);
-	            //restore path
-	            String name = StringUtils.substringAfterLast(filename, "/");
-	            restorePaths(name);
+            if (resovePath) {
+                //load description
+                load(null);
+                //restore path
+                String name = StringUtils.substringAfterLast(filename, "/");
+                restorePaths(name);
             }
         } catch (Exception e) {
-            System.err.println("打开WDF文件出错：" + filename);
-            e.printStackTrace();
+            log.error("打开WDF文件出错：" + filename, e);
             throw new Exception("打开WDF文件出错：" + filename, e);
         }
-        System.out.printf("nodeCount=%s, total find:%s\n", fileNodeCount, fileNodes().size());
-	}
-    
+        log.info("nodeCount={}, total find:{}", fileNodeCount, fileNodes().size());
+    }
+
     /**
      * 判断打开的文件是否为WDF文件
-     * 
-     * @param raf
-     * @return
-     * @throws IOException
      */
     private boolean isWdfFile(RandomAccessFile raf) throws IOException {
         byte[] buf = new byte[4];
@@ -141,46 +150,44 @@ public class WdfFile implements FileSystem {
         fileTag = new String(buf);
         return fileTag.equals(WDFP_FILE) || fileTag.equals(WDFX_FILE) || fileTag.equals(WDFH_FILE);
     }
-    
+
     private Map<Long, String> buildPaths(String filename) {
-    	String cmtfile ="resources/names/"+ filename.replaceAll("\\.wd.*", ".cmt");
-    	Map<Long, String> map = new HashMap<Long, String>();
+        String cmtfile = "resources/names/" + filename.replaceAll("\\.wd.*", ".cmt");
+        Map<Long, String> map = new HashMap<>();
         InputStream is = Utils.getResourceAsStream(cmtfile);
         if (is != null) {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String strPath = null;
             try {
                 while ((strPath = br.readLine()) != null) {
-                	try {
-						strPath = strPath.trim();
-						if(strPath.length()>0) {
-							String[] strs = strPath.split("=");
-							if(strs!=null && strs.length>1) {
-								map.put(Long.parseLong(strs[0],16), strs[1]);
-							}
-						}
-					} catch (Exception e) {
-						System.out.println("解析资源映射失败："+strPath);
-						//e.printStackTrace();
-					}
+                    try {
+                        strPath = strPath.trim();
+                        if (strPath.length() > 0) {
+                            String[] strs = strPath.split("=");
+                            if (strs.length > 1) {
+                                map.put(Long.parseLong(strs[0], 16), strs[1]);
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.error("解析资源映射失败：" + strPath);
+                    }
                 }
             } catch (Throwable e) {
-            	System.err.println("还原文件名列表失败: " + cmtfile);
-            	e.printStackTrace();
+                log.error("还原文件名列表失败: " + cmtfile, e);
             }
         } else {
-            System.err.println("读取资源失败: " + cmtfile);
+            log.error("读取资源失败: " + cmtfile);
         }
-    	
-		return map;
+
+        return map;
     }
 
     private void restorePaths(String name) {
-    	Map<Long, String> id2PathMap = buildPaths(name);
+        Map<Long, String> id2PathMap = buildPaths(name);
 //        Map<Long, String> id2PathMap = HashUtil.createId2PathMap("resources/names/"
 //                + name.replaceAll("\\.wd.*", ".lst"));
         Set<Entry<Long, WdfFileNode>> entryset = fileNodeMap.entrySet();
-        int iCount =0;
+        int iCount = 0;
         for (Entry<Long, WdfFileNode> entry : entryset) {
             WdfFileNode node = entry.getValue();
             String path = id2PathMap.get(entry.getKey());
@@ -193,14 +200,14 @@ public class WdfFile implements FileSystem {
                 }
                 node.setPath(path);
                 node.setName(StringUtils.substringAfterLast(path, "/"));
-                iCount ++;
+                iCount++;
             } else {//找不到path
-            	String strId = Long.toHexString(entry.getKey());
+                String strId = Long.toHexString(entry.getKey());
                 node.setPath("/" + strId);
                 //System.err.printf("不匹配结点: id=%s\n", strId);
             }
         }
-        System.out.printf("共有文件%d个，匹配文件%d个，无匹配文件%d个\n",fileNodeCount,iCount,(fileNodeCount-iCount));
+        log.info("共有文件{}个，匹配文件%{}个，无匹配文件{}个", fileNodeCount, iCount, (fileNodeCount - iCount));
     }
 
     private void loadDH3Key(String file) {
@@ -213,8 +220,7 @@ public class WdfFile implements FileSystem {
                 dh3Keys[i] = readUnsignInt(dis);
             }
         } catch (IOException e) {
-            System.err.println("loadDH3Key error!");
-            e.printStackTrace();
+            log.error("loadDH3Key error!", e);
         }
     }
 
@@ -231,9 +237,7 @@ public class WdfFile implements FileSystem {
         ch2 = di.readUnsignedByte();
         ch3 = di.readUnsignedByte();
         ch4 = di.readUnsignedByte();
-        if ((ch1 | ch2 | ch3 | ch4) < 0)
-            throw new EOFException();
-        return ((ch4 << 24) + (ch3 << 16) + (ch2 << 8) + (ch1 << 0));
+        return ((ch4 << 24) + (ch3 << 16) + (ch2 << 8) + (ch1));
     }
 
     private long readUnsignInt(DataInput di) throws IOException {
@@ -242,14 +246,12 @@ public class WdfFile implements FileSystem {
         ch2 = di.readUnsignedByte();
         ch3 = di.readUnsignedByte();
         ch4 = di.readUnsignedByte();
-        if ((ch1 | ch2 | ch3 | ch4) < 0)
-            throw new EOFException();
-        return ((ch4 << 24) + (ch3 << 16) + (ch2 << 8) + (ch1 << 0));
+        return ((ch4 << 24) + (ch3 << 16) + (ch2 << 8) + (ch1));
     }
 
     /**
      * 获取WdfFile包含的文件结点集合
-     * 
+     *
      * @return
      */
     public Collection<WdfFileNode> fileNodes() {
@@ -262,9 +264,7 @@ public class WdfFile implements FileSystem {
 
     /**
      * 根据id获取对应的数据
-     * 
-     * @param nid 结点id
-     * @return 返回一个输入流
+     *
      * @throws IOException
      */
     public InputStream getNodeAsStream(long nodeId) throws IOException {
@@ -273,9 +273,7 @@ public class WdfFile implements FileSystem {
 
     /**
      * 根据id获取对应的数据
-     * 
-     * @param nid
-     * @return
+     *
      * @throws IOException
      */
     public byte[] getNodeData(long nodeId) throws IOException {
@@ -311,9 +309,6 @@ public class WdfFile implements FileSystem {
 
     /**
      * 加载描述文件
-     * 
-     * @param filename
-     * @throws Exception
      */
     public void loadDescription(InputStream is) {
         if (is != null) {
@@ -321,39 +316,39 @@ public class WdfFile implements FileSystem {
             scanner.useDelimiter("(\r\n)|(\n\r)|[\n\r=]");
             String tag = scanner.next();
             long uid;
-            String str=null, alias = null;
+            String str = null, alias = null;
             int iCount = 0;
             if (tag.startsWith("[Resource]")) {
                 while (scanner.hasNext()) {
                     WdfFileNode node = null;
-					try {
-						scanner.skip("(\r\n)|(\n\r)|[\n\r=]");
-						str = scanner.next();
-						uid = Long.parseLong(str, 16);
-						scanner.skip("(\r\n)|(\n\r)|[\n\r=]");
-						alias = scanner.next().trim();
-						node = fileNodeMap.get(uid);
-					} catch (NumberFormatException e) {
-						e.printStackTrace();
-					}
+                    try {
+                        scanner.skip("(\r\n)|(\n\r)|[\n\r=]");
+                        str = scanner.next();
+                        uid = Long.parseLong(str, 16);
+                        scanner.skip("(\r\n)|(\n\r)|[\n\r=]");
+                        alias = scanner.next().trim();
+                        node = fileNodeMap.get(uid);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                     if (node != null) {
                         node.setDescription(alias.replace('\\', '/'));
                         //System.out.println("资源:" + Long.toHexString(uid) + "=" + alias);
                     } else {
-                        System.out.println("找不到对于的资源:" + str + "=" + alias);
+                        log.info("找不到对于的资源:" + str + "=" + alias);
                     }
                     iCount++;
                 }
             }
-            System.out.println("total : " + iCount);
+            log.info("total : " + iCount);
             scanner.close();
         }
     }
 
     /**
      * 取path下面的结点列表
-     * 
-     * @param path 路径
+     *
+     * @param path    路径
      * @param subpath 是否包含子目录
      * @return
      */
@@ -363,8 +358,6 @@ public class WdfFile implements FileSystem {
 
     /**
      * 保存资源描述文件
-     * 
-     * @param filename
      */
     public void saveDescription(FileOutputStream os) {
         BufferedWriter writer = null;
@@ -409,9 +402,9 @@ public class WdfFile implements FileSystem {
     }
 
     public void load(String descfile) {
-    	if(descfile==null) {
-    		descfile = "resources/desc/" + new File(this.filename).getName() + ".ini";
-    	}
+        if (descfile == null) {
+            descfile = "resources/desc/" + new File(this.filename).getName() + ".ini";
+        }
         this.loadDescription(Utils.getResourceAsStream(descfile));
     }
 
@@ -419,14 +412,13 @@ public class WdfFile implements FileSystem {
         try {
             this.saveDescription(new FileOutputStream(filename));
         } catch (FileNotFoundException e) {
-            System.out.println("save description failed! filename=" + filename);
-            e.printStackTrace();
+            log.error("save description failed! filename=" + filename, e);
         }
     }
 
     /**
      * 从offset开始读取长度为len的数据块
-     * 
+     *
      * @param data
      * @param offset
      * @param len

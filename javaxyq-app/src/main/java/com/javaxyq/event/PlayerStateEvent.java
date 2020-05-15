@@ -16,9 +16,6 @@ public class PlayerStateEvent extends EventObject {
 	private Object newValue;
 	private Player player;
 
-	/**
-	 * @param source
-	 */
 	public PlayerStateEvent(Player player, String property, Object oldValue, Object newValue) {
 		super(player);
 		this.player = player;

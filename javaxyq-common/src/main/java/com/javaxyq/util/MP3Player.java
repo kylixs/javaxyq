@@ -28,7 +28,9 @@ import java.util.Map;
 import javazoom.jl.player.Player;
 
 import com.javaxyq.core.Toolkit;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MP3Player {
 
 	private static Map<String, Player> playersMap = new HashMap<String, Player>();
@@ -62,13 +64,13 @@ public class MP3Player {
 					try {
 						player.play();
 					} catch (Exception e) {
-						System.out.println(e);
+						log.warn("", e);
 					}
 				}
 			}.start();
 		} catch (Exception e) {
-			System.out.println("Problem playing file " + filename);
-			System.out.println(e);
+			log.info("Problem playing file " + filename);
+			log.warn("", e);
 		}
 
 	}
@@ -99,15 +101,15 @@ public class MP3Player {
 								Thread.sleep(500);
 							}
 						} catch (Exception e) {
-							System.out.println(e);
+							log.info("" ,e);
 						}
 					}
 				};
 				loopThread.start();
 			}
 		} catch (Exception e) {
-			System.out.println("Problem playing file " + filename);
-			System.out.println(e);
+			log.info("Problem playing file " + filename);
+			log.info("", e);
 		}
 
 	}
@@ -126,7 +128,7 @@ public class MP3Player {
 				sum += Math.sin(i + j);
 			}
 		}
-		System.out.println(sum);
+		log.info("" + sum);
 
 		// when the computation is done, stop playing it
 		mp3.stopAll();

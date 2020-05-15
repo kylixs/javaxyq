@@ -68,7 +68,7 @@ public class BattlePlayerApplication extends BaseApplication {
 	}
 	@Override
 	public void quitBattle() {
-		System.out.println("quitBattle");
+		log.info("quitBattle");
 	}
 
 	private void initCanvas() {
@@ -106,7 +106,7 @@ public class BattlePlayerApplication extends BaseApplication {
 			String str = null;
 			while((str=br.readLine())!=null) {
 				String uifile = "ui/"+str;
-				System.out.println("find ui: "+uifile);
+				log.info("find ui: "+uifile);
 				loader.loadUI(uifile);
 			}
 		} catch (IOException e) {

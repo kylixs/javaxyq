@@ -1,5 +1,7 @@
 package com.javaxyq.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -11,13 +13,14 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
+@Slf4j
 public class AudioPlayer {
 	/** Plays audio from given file names. */
 	public static void main(String[] args) {
 		// Check for given sound file names.
 		if (args.length < 1) {
-			System.out.println("Play usage:");
-			System.out.println("\tjava Play <sound file names>*");
+			log.info("Play usage:");
+			log.info("\tjava Play <sound file names>*");
 			System.exit(0);
 		}
 
@@ -40,7 +43,7 @@ public class AudioPlayer {
 			// audio stream from inputstream
 			playAudioStream(audioInputStream);
 		} catch (Exception e) {
-			System.out.println("Problem with file " + fileName + ":");
+			log.info("Problem with file " + fileName + ":");
 			e.printStackTrace();
 		}
 	} // playAudioFile
@@ -49,7 +52,7 @@ public class AudioPlayer {
 	public static void playAudioStream(AudioInputStream audioInputStream) {
 		// Audio format provides information like sample rate, size, channels.
 		AudioFormat audioFormat = audioInputStream.getFormat();
-		System.out.println("Play input audio format=" + audioFormat);
+		log.info("Play input audio format=" + audioFormat);
 
 		// Open a data line to play our type of sampled audio.
 		// Use SourceDataLine for play and TargetDataLine for record.
@@ -64,7 +67,7 @@ public class AudioPlayer {
 			// Create a SourceDataLine for play back (throws
 			// LineUnavailableException).
 			SourceDataLine dataLine = (SourceDataLine) AudioSystem.getLine(info);
-			// System.out.println( "SourceDataLine class=" + dataLine.getClass()
+			// log.info( "SourceDataLine class=" + dataLine.getClass()
 			// );
 
 			// The line acquires system resources (throws
@@ -92,7 +95,7 @@ public class AudioPlayer {
 				while (bytesRead >= 0) {
 					bytesRead = audioInputStream.read(buffer, 0, buffer.length);
 					if (bytesRead >= 0) {
-						// System.out.println(
+						// log.info(
 						// "Play.playAudioStream bytes read=" + bytesRead +
 						// ", frame size=" + audioFormat.getFrameSize() +
 						// ", frames read=" + bytesRead /
@@ -106,11 +109,11 @@ public class AudioPlayer {
 				e.printStackTrace();
 			}
 
-			System.out.println("Play.playAudioStream draining line.");
+			log.info("Play.playAudioStream draining line.");
 			// Continues data line I/O until its buffer is drained.
 			dataLine.drain();
 
-			System.out.println("Play.playAudioStream closing line.");
+			log.info("Play.playAudioStream closing line.");
 			// Closes the data line, freeing any resources such as the audio
 			// device.
 			dataLine.close();

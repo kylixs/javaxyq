@@ -77,14 +77,10 @@ public class XmlDialogBuilder implements DialogBuilder {
                 processComponents(dialog, dlgNode);
                 return dialog;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            log.error("", e);
         }
-        System.out.printf("创建Panel失败：%s in %s \n", id, res);
+        log.error("创建Panel失败：{} in {}", id, res);
         return null;
     }
 
@@ -103,21 +99,17 @@ public class XmlDialogBuilder implements DialogBuilder {
                 processComponents(dialog, dlgEl);
                 return dialog;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            log.error("", e);
         }
-        System.out.println("创建Panel失败！");
+        log.info("创建Panel失败！");
         return null;
     }
 
     public Panel processDialog(Node dlgEl) {
         Panel dialog = null;
-        int width = Integer.valueOf((String) dlgEl.get("@width"));
-        int height = Integer.valueOf((String) dlgEl.get("@height"));
+        int width = Integer.parseInt((String) dlgEl.get("@width"));
+        int height = Integer.parseInt((String) dlgEl.get("@height"));
         boolean isTalk = StringUtils.equals((String) dlgEl.get("@talk"), "true");
         if (isTalk) {
             dialog = new TalkPanel(width, height);
@@ -126,8 +118,8 @@ public class XmlDialogBuilder implements DialogBuilder {
         }
         dialog.setName((String) dlgEl.get("@id"));
         try {
-            int x = Integer.valueOf((String) dlgEl.get("@x"));
-            int y = Integer.valueOf((String) dlgEl.get("@y"));
+            int x = Integer.parseInt((String) dlgEl.get("@x"));
+            int y = Integer.parseInt((String) dlgEl.get("@y"));
             dialog.setLocation(x, y);
         } catch (Exception e) {
             try {
@@ -145,7 +137,7 @@ public class XmlDialogBuilder implements DialogBuilder {
         try {
             String strClosable = (String) dlgEl.get("@closable");
             if (StringUtils.isNotBlank(strClosable)) {
-                boolean closable = Boolean.valueOf(strClosable);
+                boolean closable = Boolean.parseBoolean(strClosable);
                 dialog.setClosable(closable);
             }
         } catch (Exception e) {
@@ -153,7 +145,7 @@ public class XmlDialogBuilder implements DialogBuilder {
         try {
             String strMovable = (String) dlgEl.get("@movable");
             if (StringUtils.isNotBlank(strMovable)) {
-                boolean movable = Boolean.valueOf(strMovable);
+                boolean movable = Boolean.parseBoolean(strMovable);
                 dialog.setMovable(movable);
             }
         } catch (Exception e) {
@@ -197,7 +189,7 @@ public class XmlDialogBuilder implements DialogBuilder {
 
 
     public AbstractButton processButton(Panel dialog, Node el) {
-        boolean toggle = Boolean.valueOf((String) el.get("@toggle"));
+        boolean toggle = Boolean.parseBoolean((String) el.get("@toggle"));
         String actionId = (String) el.get("@actionId");
         AbstractButton btn = null;
         if (toggle) {
@@ -214,7 +206,7 @@ public class XmlDialogBuilder implements DialogBuilder {
 //				}catch(e) {}
 //			}
 //			if (!action) {
-//				System.out.println("Warning: Action not found, actionId=$actionId");;
+//				log.info("Warning: Action not found, actionId=$actionId");;
 //			}else {
 //				btn.setAction(action);
 //			}
@@ -225,13 +217,13 @@ public class XmlDialogBuilder implements DialogBuilder {
         try {
             String strEnable = (String) el.get("@enable");
             if (StringUtils.isNotBlank(strEnable)) {
-                btn.setEnabled(Boolean.valueOf(strEnable));
+                btn.setEnabled(Boolean.parseBoolean(strEnable));
             }
         } catch (Exception e) {
         }
         try {
-            int x = Integer.valueOf((String) el.get("@x"));
-            int y = Integer.valueOf((String) el.get("@y"));
+            int x = Integer.parseInt((String) el.get("@x"));
+            int y = Integer.parseInt((String) el.get("@y"));
             btn.setLocation(x, y);
         } catch (Exception e) {
         }
@@ -245,7 +237,7 @@ public class XmlDialogBuilder implements DialogBuilder {
                 button.setTooltipTpl(tooltip);
                 button.setTemplate(tooltipTemplate);
             }
-        } else if (btn instanceof ToggleButton) {
+        } else {
             ToggleButton tbtn = (ToggleButton) btn;
             tbtn.init(SpriteFactory.loadSprite((String) el.get("@was")));
             //btn.setToolTipText(el.get("@tooltip"));
@@ -262,14 +254,14 @@ public class XmlDialogBuilder implements DialogBuilder {
         Label label = new Label((String) el.get("@text"));
         label.setName((String) el.get("@name"));
         try {
-            int x = Integer.valueOf((String) el.get("@x"));
-            int y = Integer.valueOf((String) el.get("@y"));
+            int x = Integer.parseInt((String) el.get("@x"));
+            int y = Integer.parseInt((String) el.get("@y"));
             label.setLocation(x, y);
         } catch (Exception e) {
         }
         try {
-            int width = Integer.valueOf((String) el.get("@width"));
-            int height = Integer.valueOf((String) el.get("@height"));
+            int width = Integer.parseInt((String) el.get("@width"));
+            int height = Integer.parseInt((String) el.get("@height"));
             label.setSize(width, height);
         } catch (Exception e) {
             label.setSize(100, 20);
@@ -300,14 +292,14 @@ public class XmlDialogBuilder implements DialogBuilder {
         ItemLabel label = new ItemLabel();
         label.setName((String) el.get("@name"));
         try {
-            int x = Integer.valueOf((String) el.get("@x"));
-            int y = Integer.valueOf((String) el.get("@y"));
+            int x = Integer.parseInt((String) el.get("@x"));
+            int y = Integer.parseInt((String) el.get("@y"));
             label.setLocation(x, y);
         } catch (Exception e) {
         }
         try {
-            int width = Integer.valueOf((String) el.get("@width"));
-            int height = Integer.valueOf((String) el.get("@height"));
+            int width = Integer.parseInt((String) el.get("@width"));
+            int height = Integer.parseInt((String) el.get("@height"));
             label.setSize(width, height);
         } catch (Exception e) {
             label.setSize(100, 20);
@@ -326,14 +318,14 @@ public class XmlDialogBuilder implements DialogBuilder {
         RichLabel label = new RichLabel((String) el.get("@text"));
         label.setName((String) el.get("@name"));
         try {
-            int x = Integer.valueOf((String) el.get("@x"));
-            int y = Integer.valueOf((String) el.get("@y"));
+            int x = Integer.parseInt((String) el.get("@x"));
+            int y = Integer.parseInt((String) el.get("@y"));
             label.setLocation(x, y);
         } catch (Exception e) {
         }
         try {
-            int width = Integer.valueOf((String) el.get("@width"));
-            int height = Integer.valueOf((String) el.get("@height"));
+            int width = Integer.parseInt((String) el.get("@width"));
+            int height = Integer.parseInt((String) el.get("@height"));
             label.setSize(width, height);
         } catch (Exception e) {
             label.setSize(100, 20);
@@ -347,20 +339,20 @@ public class XmlDialogBuilder implements DialogBuilder {
     public Label processSprite(Panel dialog, Node el) {
         int index = 0;
         try {
-            index = Integer.valueOf((String) el.get("@index"));
+            index = Integer.parseInt((String) el.get("@index"));
         } catch (Exception e) {
         }
 
         Label label = new Label(SpriteFactory.loadAnimation((String) el.get("@path"), index));
         try {
-            int x = Integer.valueOf((String) el.get("@x"));
-            int y = Integer.valueOf((String) el.get("@y"));
+            int x = Integer.parseInt((String) el.get("@x"));
+            int y = Integer.parseInt((String) el.get("@y"));
             label.setLocation(x, y);
         } catch (Exception e) {
         }
         try {
-            int width = Integer.valueOf((String) el.get("@width"));
-            int height = Integer.valueOf((String) el.get("@height"));
+            int width = Integer.parseInt((String) el.get("@width"));
+            int height = Integer.parseInt((String) el.get("@height"));
             label.setSize(width, height);
         } catch (Exception e) {
             //label.setSize(100,20);
@@ -379,13 +371,13 @@ public class XmlDialogBuilder implements DialogBuilder {
         ImageConfig cfg = new ImageConfig((String) el.get("@path"));
         cfg.setId((String) el.get("@id"));
         try {
-            cfg.setX(Integer.valueOf((String) el.get("@x")));
-            cfg.setY(Integer.valueOf((String) el.get("@y")));
+            cfg.setX(Integer.parseInt((String) el.get("@x")));
+            cfg.setY(Integer.parseInt((String) el.get("@y")));
         } catch (Exception e) {
         }
         try {
-            cfg.setWidth(Integer.valueOf((String) el.get("@width")));
-            cfg.setHeight(Integer.valueOf((String) el.get("@height")));
+            cfg.setWidth(Integer.parseInt((String) el.get("@width")));
+            cfg.setHeight(Integer.parseInt((String) el.get("@height")));
         } catch (Exception e) {
         }
         dialog.addImage(cfg);
@@ -396,14 +388,14 @@ public class XmlDialogBuilder implements DialogBuilder {
         editor.setName((String) el.get("@name"));
         String actionId = (String) el.get("@actionId");
         try {
-            int x = Integer.valueOf((String) el.get("@x"));
-            int y = Integer.valueOf((String) el.get("@y"));
+            int x = Integer.parseInt((String) el.get("@x"));
+            int y = Integer.parseInt((String) el.get("@y"));
             editor.setLocation(x, y);
         } catch (Exception e) {
         }
         try {
-            int width = Integer.valueOf((String) el.get("@width"));
-            int height = Integer.valueOf((String) el.get("@height"));
+            int width = Integer.parseInt((String) el.get("@width"));
+            int height = Integer.parseInt((String) el.get("@height"));
             editor.setSize(width, height);
         } catch (Exception e) {
             editor.setSize(100, 20);

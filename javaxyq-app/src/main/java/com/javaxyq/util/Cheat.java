@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 
 import com.javaxyq.core.ApplicationHelper;
@@ -26,6 +27,7 @@ import com.javaxyq.widget.Player;
  * @author dewitt
  *
  */
+@Slf4j
 public class Cheat {
 	
 	public static boolean process(String cmdLine) {
@@ -36,7 +38,7 @@ public class Cheat {
 		if(args.length < 3) {
 			return false;
 		}
-		System.out.println("cheat: "+cmdLine);
+		log.info("cheat: "+cmdLine);
 		try {
 			String cmd = args[1];
 			Player player = ApplicationHelper.getApplication().getContext().getPlayer();

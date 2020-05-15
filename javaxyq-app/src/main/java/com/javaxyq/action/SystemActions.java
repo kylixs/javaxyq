@@ -5,17 +5,19 @@ import com.javaxyq.core.GameCanvas;
 import com.javaxyq.core.GameWindow;
 import com.javaxyq.core.SceneCanvas;
 import com.javaxyq.event.ActionEvent;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 系统事件处理代码
  */
+@Slf4j
 public class SystemActions extends BaseAction {
 
 	private int dlgIdIndex = "com.javaxyq.action.dialog.".length();
     public void doAction(ActionEvent e) {
         String cmd = e.getCommand();
         Object source = e.getSource();
-        System.out.println("action: "+cmd);
+        log.info("action: "+cmd);
         if (cmd.startsWith("com.javaxyq.action.dialog.")) {
     		GameWindow window = ApplicationHelper.getApplication().getContext().getWindow();
     		window.getHelper().showHideDialog(cmd.substring(dlgIdIndex));
