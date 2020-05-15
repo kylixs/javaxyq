@@ -56,7 +56,7 @@ project(":javaxyq-common") {
         compile "com.zaxxer:HikariCP:3.4.3"
 
         compile 'org.clojars.automata:jl:1.0.0'
-        compile 'org.codehaus.groovy:groovy-all:1.6.9'
+        compile 'org.codehaus.groovy:groovy-all:2.5.11'
         compile 'org.xerial:sqlite-jdbc:3.30.1'
 
         compile 'com.jidesoft:jide-components:3.5.15'
@@ -68,9 +68,12 @@ project(":javaxyq-common") {
 }
 
 project(":javaxyq-maker") {
+    apply plugin: 'groovy'
+
     dependencies {
         compile fileTree(dir: 'lib', include: '*.jar')
         compile project(":javaxyq-common")
+        compile project(":javaxyq-app")
 
         compile "ch.qos.logback:logback-classic:$logback_version"
 

@@ -1,0 +1,25 @@
+/*
+ * JavaXYQ NPC Scripts
+ * home page: http://javaxyq.googlecode.com
+ */
+
+package npc;
+
+import com.javaxyq.core.ApplicationHelper;
+import com.javaxyq.event.PlayerAdapter;
+import com.javaxyq.event.PlayerEvent;
+
+
+/**
+ * @author yourname
+ * @date %2$tF create
+ */
+public class n%1$s extends PlayerAdapter {
+	
+    public void talk(PlayerEvent evt) {
+    	String chat="少侠找我有什么事？#55";
+    	ApplicationHelper.getApplication().doTalk(evt.getPlayer(), chat);
+    	//add your code here
+    }
+	
+}
