@@ -19,6 +19,10 @@ subprojects {
         options.encoding = "UTF8"
     }
 
+    tasks.withType(GroovyCompile) {
+        options.encoding = "UTF8"
+    }
+
     compileJava {
         options.compilerArgs << '-parameters'
     }
