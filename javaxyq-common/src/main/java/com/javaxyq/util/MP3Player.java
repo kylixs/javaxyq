@@ -59,15 +59,13 @@ public class MP3Player {
 			final Player player = new Player(bis);
 			playersMap.put(filename, player);
 			// run in new thread to play in background
-			new Thread() {
-				public void run() {
-					try {
-						player.play();
-					} catch (Exception e) {
-						log.warn("", e);
-					}
+			new Thread(() -> {
+				try {
+					player.play();
+				} catch (Exception e) {
+					log.warn("", e);
 				}
-			}.start();
+			}).start();
 		} catch (Exception e) {
 			log.info("Problem playing file " + filename);
 			log.warn("", e);

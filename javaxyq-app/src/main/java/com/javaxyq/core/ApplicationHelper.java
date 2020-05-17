@@ -13,7 +13,7 @@ public class ApplicationHelper {
 
 	private static Application application;
 
-	static void setApplication(Application app) {
+	public static void setApplication(Application app) {
 		ApplicationHelper.application = app;
 	}
 

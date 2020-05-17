@@ -1,7 +1,7 @@
 /*
- * JavaXYQ Engine 
- * 
- * javaxyq@2008 all rights. 
+ * JavaXYQ Engine
+ *
+ * javaxyq@2008 all rights.
  * http://www.javaxyq.com
  */
 
@@ -15,11 +15,13 @@ import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.core.Toolkit;
 import com.javaxyq.widget.Animation;
 import com.javaxyq.widget.Sprite;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 龚德伟
  * @history 2009-10-16 龚德伟 新建
  */
+@Slf4j
 public class ColorationUtil {
 
     public static WASDecoder getDecoder(String resId, String profile) throws IllegalStateException, IOException {
@@ -34,7 +36,7 @@ public class ColorationUtil {
         try {
             WASDecoder decoder = getDecoder(sprite.getResId(), profile);
             //设置染色方式
-            int partCount = decoder.getSectionCount()-1;
+            int partCount = decoder.getSectionCount() - 1;
             for (int i = 0; i < partCount; i++) {
                 decoder.coloration(i, sprite.getColoration(i));
             }
@@ -47,7 +49,7 @@ public class ColorationUtil {
             sprite.clearAnimations();
             for (int i = 0; i < s; i++) {
                 Animation anim = new Animation();
-                for (int j = 0; j < f;) {
+                for (int j = 0; j < f; ) {
                     try {
                         int index = i * f + j;
                         BufferedImage frame = decoder.getFrameImage(index);
@@ -55,20 +57,15 @@ public class ColorationUtil {
                         int duration = delay * SpriteFactory.ANIMATION_INTERVAL;
                         anim.addFrame(frame, duration, centerX, centerY);
                     } catch (Exception e) {
-                        //e.printStackTrace();
-                        System.out.printf("create anima error: i=%s,j=%s,spriteCount=%s,frameCount=%s,total=%s\n", i,
-                            j, s, f, decoder.getFrames().size());
+                        log.error("create anima error: i={},j={},spriteCount={},frameCount={},total={}", i, j, s, f,
+                                decoder.getFrames().size());
                     }
-//                    j += delay;
                     j++;
                 }
                 sprite.addAnimation(anim);
             }
             sprite.setDirection(sprite.getDirection());
-        } catch (IllegalStateException e) {
-            System.err.println("Re-Create 精灵失败！");
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IllegalStateException | IOException e) {
             System.err.println("Re-Create 精灵失败！");
             e.printStackTrace();
         }

@@ -511,15 +511,6 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 		return context;
 	}
 	
-	public java.net.URL getResource(String name){
-		;
-		return null;
-	}
-	public InputStream getResourceAsStream(String name) {
-		;
-		return null;
-	}
-	
 	protected void createContext() {
 		if(context == null) {
 			context = new Context();

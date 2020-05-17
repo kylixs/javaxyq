@@ -10,8 +10,7 @@ package com.javaxyq.action;
  */
 public interface Actions {
 
-    String QUIT_BATTLE = "action_quit_battle";
-
     String ENTER_BATTLE = "action_enter_battle";
 
+    String QUIT_BATTLE = "action_quit_battle";
 }

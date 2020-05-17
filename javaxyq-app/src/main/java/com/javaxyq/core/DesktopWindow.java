@@ -52,7 +52,7 @@ public class DesktopWindow extends JFrame implements GameWindow {
 	private UIHelper helper;
 	private ActionMap actionMap = null;
 	private InputMap inputMap = null;
-	private List<Listener> listeners = new ArrayList<Listener>();
+	private List<Listener> listeners = new ArrayList<>();
 	private int contentWidth ;
 
 	private int contentHeight;

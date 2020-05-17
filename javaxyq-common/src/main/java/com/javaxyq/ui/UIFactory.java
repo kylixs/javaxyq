@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.javaxyq.ui;
 
@@ -12,19 +12,18 @@ import java.util.Map;
  */
 public class UIFactory {
 
-	public static final String TOOLTIP_TEMPLATE= "tooltipTemplate";
-	
-	private static final Map<String, Object>uiDefaults = new HashMap<String, Object>();
-	/**
-	 * 注册UI相关组件
-	 * @param key
-	 * @param value
-	 */
-	public static void put(String key, Object value) {
-		uiDefaults.put(key, value);
-	}
-	
-	public static Object get(String key) {
-		return uiDefaults.get(key);
-	}
+    public static final String TOOLTIP_TEMPLATE = "tooltipTemplate";
+
+    private static final Map<String, Object> uiDefaults = new HashMap<>();
+
+    /**
+     * 注册UI相关组件
+     */
+    public static void put(String key, Object value) {
+        uiDefaults.put(key, value);
+    }
+
+    public static Object get(String key) {
+        return uiDefaults.get(key);
+    }
 }

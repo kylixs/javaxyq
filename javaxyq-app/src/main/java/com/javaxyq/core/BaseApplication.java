@@ -37,7 +37,6 @@ import java.util.List;
 public abstract class BaseApplication implements Application {
     private boolean debug = false;
 
-    protected Context context;
     private DataManager dataManager;
     private ItemManager itemManager;
     private ProfileManager profileManager;
@@ -47,6 +46,7 @@ public abstract class BaseApplication implements Application {
     private int state = STATE_NORMAL;
     private ScriptEngine scriptEngine;
 
+    protected Context context;
     protected SceneCanvas sceneCanvas;
     private GameWindow window;
     private Thread dataLoadingThread;
@@ -101,8 +101,6 @@ public abstract class BaseApplication implements Application {
     }
 
     protected void prepareShow() {
-        // TODO Auto-generated method stub
-
     }
 
     /**
@@ -110,7 +108,6 @@ public abstract class BaseApplication implements Application {
      */
     protected void finish() {
         log.warn("starting game ...");
-
     }
 
     protected void prepareStartup() {
@@ -150,24 +147,12 @@ public abstract class BaseApplication implements Application {
 
     protected abstract GameWindow createWindow();
 
-    public java.net.URL getResource(String name) {
-        ;
-        return null;
-    }
-
-    public InputStream getResourceAsStream(String name) {
-        ;
-        return null;
-    }
-
     protected Context createContext() {
-        Context context = new Context();
-        return context;
+        return new Context();
     }
 
     protected void loadResources() {
         log.warn("loading resources ...");
-
     }
 
     protected void loadData() {
@@ -212,18 +197,17 @@ public abstract class BaseApplication implements Application {
     /**
      * 执行指定ActionCommand的Action
      *
-     * @param source
-     *            触发Action的源对象
-     * @param args 动作的actiomCommand
-     *            ,而非类名
+     * @param source 触发 Action 的源对象
+     * @param actionId 动作的 actionCommand 而非类名
      */
     public void doAction(Object source, String actionId, Object[] args) {
-        if (Actions.ENTER_BATTLE.equals(actionId)) {
-            enterBattle((List) args[0], (List) args[1]);
-            return;
-        } else if (Actions.QUIT_BATTLE.equals(actionId)) {
-            quitBattle();
-            return;
+        switch (actionId) {
+            case Actions.ENTER_BATTLE:
+                enterBattle((List) args[0], (List) args[1]);
+                return;
+            case Actions.QUIT_BATTLE:
+                quitBattle();
+                return;
         }
 
         ActionMap actionMap = context.getWindow().getActionMap();

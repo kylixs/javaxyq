@@ -1,8 +1,10 @@
 package com.javaxyq.util;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * MD5 Generator<br>
@@ -12,11 +14,16 @@ import java.security.MessageDigest;
 @Slf4j
 public class MD5 {
 
-	/**
-	 * Constructs the MD5 object and sets the string whose MD5 is to be computed.
-	 */
-	public MD5() {
+	private final static MessageDigest md5;
+
+	static {
+		try {
+			md5 = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
 	}
+
 
 	/**
 	 * Computes the MD5 fingerprint of a string.
@@ -27,6 +34,7 @@ public class MD5 {
 		return compute(inStr.getBytes());
 	}
 
+	@SneakyThrows
 	public static String compute(byte[] byteArray) {
 		// convert input String to a char[]
 		// convert that char[] to byte[]
@@ -35,16 +43,7 @@ public class MD5 {
 		// prepend "0" to the output StringBuffer to make sure that we don't end
 		// up with
 		// something like "e21ff" instead of "e201ff"
-		MessageDigest md5 = null;
-		try {
-			md5 = MessageDigest.getInstance("MD5");
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			e.printStackTrace();
-			return "";
-		}
 		byte[] md5Bytes = md5.digest(byteArray);
-
 		StringBuilder hexValue = new StringBuilder();
 
 		for (byte md5Byte : md5Bytes) {

@@ -26,7 +26,6 @@ import com.javaxyq.widget.Player;
  * @history 2008-6-15 龚德伟 新建
  */
 public class PlayerAdapter implements PlayerListener {
-
 	
 	protected Context context;
 	protected DataManager dataManager;

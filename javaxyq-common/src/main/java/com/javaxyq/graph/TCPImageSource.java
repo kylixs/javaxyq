@@ -54,9 +54,6 @@ public class TCPImageSource extends MemoryImageSource {
 
     }
 
-    /**
-     *
-     */
     public int getPixel(int x, int y) {
         return 1;
     }

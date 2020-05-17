@@ -37,8 +37,6 @@ public class MapDecoder {
 
 	/**
 	 * 从流加载MAP
-	 * 
-	 * @param is
 	 */
 	private void loadHeader() {
 		if (!isValidMapFile()) { throw new IllegalArgumentException("非梦幻地图格式文件!"); }
@@ -69,11 +67,8 @@ public class MapDecoder {
 	/**
 	 * 获取指定的JPEG数据块
 	 * 
-	 * @param h
-	 *            行
-	 * @param v
-	 *            列
-	 * @return
+	 * @param h 行
+	 * @param v 列
 	 */
 	public byte[] getJpegData(int h, int v) {
 		try {

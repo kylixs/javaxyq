@@ -37,10 +37,6 @@ public interface Application {
 
     Context getContext();
 
-    URL getResource(String name);
-
-    InputStream getResourceAsStream(String name);
-
     DataManager getDataManager();
 
     ItemManager getItemManager();
