@@ -1,7 +1,7 @@
 /*
- * JavaXYQ Engine 
- * 
- * javaxyq@2008 all rights. 
+ * JavaXYQ Engine
+ *
+ * javaxyq@2008 all rights.
  * http://www.javaxyq.com
  */
 
@@ -26,15 +26,17 @@ import com.javaxyq.model.Option;
 import com.javaxyq.ui.Label;
 import com.javaxyq.ui.OptionLabel;
 import com.javaxyq.ui.RichLabel;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 龚德伟
  * @history 2008-5-22 龚德伟 新建
  */
+@Slf4j
 public class Toolkit {
-    private static Toolkit instance = new Toolkit();
+    private static final Toolkit instance = new Toolkit();
 
-    private Map<String, Color> colorMap = new HashMap<String, Color>();
+    private final Map<String, Color> colorMap = new HashMap<>();
 
     private Toolkit() {
         colorMap.put("white", Color.WHITE);
@@ -51,10 +53,10 @@ public class Toolkit {
     }
 
     public OptionLabel createOptionLabel(int x, int y, int width, int height, Option option) {
-    	OptionLabel label = new OptionLabel(option);
-    	label.setLocation(x, y);
-    	label.setSize(width, height);
-    	return label;
+        OptionLabel label = new OptionLabel(option);
+        label.setLocation(x, y);
+        label.setSize(width, height);
+        return label;
     }
 //    public LinkLabel createLinkLabel(int x, int y, int width, int height, String text,
 //            String action, String arguments) {
@@ -110,19 +112,17 @@ public class Toolkit {
                 if (filename.charAt(0) == '/') {
                     filename = filename.substring(1);
                 }
-                File file = new File(filename); 
-                if(file.exists()) {
-                	is = new FileInputStream(filename);
-                }else {
-                	is = CacheManager.getInstance().getResourceAsStream(filename);
+                File file = new File(filename);
+                if (file.exists()) {
+                    is = new FileInputStream(filename);
+                } else {
+                    is = CacheManager.getInstance().getResourceAsStream(filename);
                 }
             } catch (FileNotFoundException e) {
-            	System.out.println("找不到文件: "+filename);
-                //e.printStackTrace();
+                log.error("找不到文件: {}", filename);
             } catch (IOException e) {
-            	System.out.println("找不到文件: "+filename);
-				e.printStackTrace();
-			}
+                log.error("找不到文件: {}", filename, e);
+            }
         }
         return is;
     }
@@ -145,17 +145,11 @@ public class Toolkit {
         try {
             data = getResourceData(filename);
         } catch (IOException e) {
-            System.err.println("create image error!");
-            e.printStackTrace();
+            log.error("create image error!", e);
         }
         if (data == null) {
             return null;
         }
         return java.awt.Toolkit.getDefaultToolkit().createImage(data);
-    }
-
-    public static InputStream getInputStream(Class clazz, String filename) {
-        // TODO Toolkit: getInputStream
-        return null;
     }
 }

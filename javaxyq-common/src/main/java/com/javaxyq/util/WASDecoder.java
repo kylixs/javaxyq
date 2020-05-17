@@ -11,13 +11,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 
 import com.javaxyq.core.Toolkit;
-import com.javaxyq.io.RandomAcessInputStream;
+import com.javaxyq.io.RandomAccessInputStream;
 
 /**
  * was(tcp/tca)解码器
@@ -77,7 +76,7 @@ public class WASDecoder {
 
 	private List<WASFrame> frames;
 
-	private RandomAcessInputStream randomIn;
+	private RandomAccessInputStream randomIn;
 
 	public WASDecoder() {
 		palette = new short[256];
@@ -416,9 +415,9 @@ public class WASDecoder {
 	
 	
 
-	private RandomAcessInputStream prepareInputStream(InputStream in) throws IOException, IllegalStateException {
+	private RandomAccessInputStream prepareInputStream(InputStream in) throws IOException, IllegalStateException {
 		byte[] buf;
-		RandomAcessInputStream randomIn;
+		RandomAccessInputStream randomIn;
 		buf = new byte[2];
 		in.mark(10);
 		in.read(buf, 0, 2);
@@ -426,9 +425,9 @@ public class WASDecoder {
 		if (!WAS_FILE_TAG.equals(flag)) {
 			throw new IllegalStateException("文件头标志错误:" + print(buf));
 		}
-		if (in instanceof RandomAcessInputStream) {
+		if (in instanceof RandomAccessInputStream) {
 			in.reset();
-			randomIn = (RandomAcessInputStream) in;
+			randomIn = (RandomAccessInputStream) in;
 		} else {
 			byte[] buf2 = new byte[in.available() + buf.length];
 			System.arraycopy(buf, 0, buf2, 0, buf.length);
@@ -438,7 +437,7 @@ public class WASDecoder {
 				count += a;
 			}
 			// construct a new seekable stream
-			randomIn = new RandomAcessInputStream(buf2);
+			randomIn = new RandomAccessInputStream(buf2);
 		}
 		// skip header
 		randomIn.seek(2);
@@ -466,7 +465,7 @@ public class WASDecoder {
 		load(new FileInputStream(file));
 	}
 	
-	private int[] parse(RandomAcessInputStream in, int frameOffset, int[] lineOffsets, int frameWidth, int frameHeight)
+	private int[] parse(RandomAccessInputStream in, int frameOffset, int[] lineOffsets, int frameWidth, int frameHeight)
 			throws IOException {
 		int[] pixels = new int[frameHeight*frameWidth];
 		int b, x, c;

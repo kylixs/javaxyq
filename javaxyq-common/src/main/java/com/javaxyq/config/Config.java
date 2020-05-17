@@ -13,5 +13,4 @@ package com.javaxyq.config;
  */
 public interface Config {
     String getType();
-    
 }

@@ -36,21 +36,19 @@ public class Utilities {
         } catch (InterruptedException ie) {
             return false;
         }
-        if (sTracker.isErrorID(id))
-            return false;
-        return true;
+        return !sTracker.isErrorID(id);
     }
 
     public static Image blockingLoad(String path) {
         Image image = Toolkit.getDefaultToolkit().getImage(path);
-        if (waitForImage(image) == false)
+        if (!waitForImage(image))
             return null;
         return image;
     }
 
     public static Image blockingLoad(URL url) {
         Image image = Toolkit.getDefaultToolkit().getImage(url);
-        if (waitForImage(image) == false)
+        if (!waitForImage(image))
             return null;
         return image;
     }
@@ -60,7 +58,7 @@ public class Utilities {
     }
 
     public static BufferedImage makeBufferedImage(Image image, int imageType) {
-        if (waitForImage(image) == false)
+        if (!waitForImage(image))
             return null;
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null),
             image.getHeight(null), imageType);
@@ -88,7 +86,7 @@ public class Utilities {
     }
 
     public static void sizeContainerToComponent(Container container, Component component) {
-        if (container.isDisplayable() == false)
+        if (!container.isDisplayable())
             container.addNotify();
         Insets insets = container.getInsets();
         Dimension size = component.getPreferredSize();

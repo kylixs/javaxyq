@@ -6,18 +6,18 @@ import java.util.List;
 
 public interface SceneDAO {
 
-	public abstract void create(Scene scene) throws PreexistingEntityException, Exception;
+	void create(Scene scene) throws Exception;
 
-	public abstract void edit(Scene scene) throws NonexistentEntityException, Exception;
+	void edit(Scene scene) throws Exception;
 
-	public abstract void destroy(Integer id) throws NonexistentEntityException;
+	void destroy(Integer id) throws NonexistentEntityException;
 
-	public abstract List<Scene> findSceneEntities()throws SQLException;
+	List<Scene> findSceneEntities()throws SQLException;
 
-	public abstract List<Scene> findSceneEntities(int maxResults, int firstResult)throws SQLException;
+	List<Scene> findSceneEntities(int maxResults, int firstResult)throws SQLException;
 
-	public abstract Scene findScene(Integer id) throws SQLException;
+	Scene findScene(Integer id) throws SQLException;
 
-	public abstract int getSceneCount()throws SQLException;
+	int getSceneCount()throws SQLException;
 
 }

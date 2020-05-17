@@ -35,6 +35,7 @@ import java.util.List;
 
 @Slf4j
 public abstract class BaseApplication implements Application {
+    private boolean debug = false;
 
     protected Context context;
     private DataManager dataManager;
@@ -46,11 +47,9 @@ public abstract class BaseApplication implements Application {
     private int state = STATE_NORMAL;
     private ScriptEngine scriptEngine;
 
-    private boolean debug = false;
-
     protected SceneCanvas sceneCanvas;
     private GameWindow window;
-    private Thread dataloadingThread;
+    private Thread dataLoadingThread;
     private Profile profile;
 
     public BaseApplication() {
@@ -73,8 +72,8 @@ public abstract class BaseApplication implements Application {
         }).start();
         //创建上下文
         context = createContext();
-        dataloadingThread = new Thread(() -> loadData());
-        dataloadingThread.start();
+        dataLoadingThread = new Thread(() -> loadData());
+        dataLoadingThread.start();
         //创建窗口
         window = createWindow();
         window.installWindowListeners();
@@ -90,7 +89,7 @@ public abstract class BaseApplication implements Application {
         log.info("loadResources");
 
         try {
-            dataloadingThread.join();
+            dataLoadingThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -422,9 +421,9 @@ public abstract class BaseApplication implements Application {
         }
     }
 
-    public void saveProfileAs(String newname) throws ProfileException {
+    public void saveProfileAs(String newName) throws ProfileException {
         profile = new Profile();
-        profile.setName(newname);
+        profile.setName(newName);
         saveProfile();
     }
 

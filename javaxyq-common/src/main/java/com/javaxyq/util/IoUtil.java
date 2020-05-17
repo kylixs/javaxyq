@@ -15,6 +15,22 @@ public class IoUtil {
 
     public static PathMatchingResourcePatternResolver RESOURCE_RESOLVER = new PathMatchingResourcePatternResolver();
 
+    @SneakyThrows
+    public static String readTextFromLocalFs(String path) {
+        return readText(new FileInputStream(path));
+    }
+
+    public static String readTextFromClasspath(String path) {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader == null)
+            classLoader = IoUtil.class.getClassLoader();
+        return readText(classLoader.getResourceAsStream(path));
+    }
+
+    public static String readText(InputStream is) {
+        return new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining(DEL));
+    }
+
     // Support pattern:
     //     file:/absolute_path/filename.ext
     //     file:relative_path/filename.ext

@@ -736,7 +736,7 @@ public class AppletApplication extends JApplet implements Application,GameWindow
 	}
 
 	@Override
-	public void saveProfileAs(String newname) throws ProfileException {
+	public void saveProfileAs(String newName) throws ProfileException {
 		// TODO Auto-generated method stub
 		
 	}

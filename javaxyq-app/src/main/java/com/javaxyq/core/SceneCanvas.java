@@ -139,8 +139,8 @@ public class SceneCanvas extends Canvas {
         if (triggerList == null) {
             return;
         }
-        for (int i = 0; i < triggerList.size(); i++) {
-            JumpTrigger t = (JumpTrigger) triggerList.get(i);
+        for (Trigger trigger : triggerList) {
+            JumpTrigger t = (JumpTrigger) trigger;
             Sprite s = t.getSprite();
             s.update(elapsedTime);
             Point p = t.getLocation();
@@ -172,10 +172,6 @@ public class SceneCanvas extends Canvas {
 
     /**
      * 判断某点是否可以通行
-     *
-     * @param x
-     * @param y
-     * @return
      */
     public boolean pass(int x, int y) {
         return searcher.pass(x, y);
@@ -210,10 +206,6 @@ public class SceneCanvas extends Canvas {
 
     /**
      * 搜索行走路径
-     *
-     * @param x
-     * @param y
-     * @return
      */
     public List<Point> findPath(int x, int y) {
         Point source = getPlayerSceneLocation();
@@ -262,7 +254,7 @@ public class SceneCanvas extends Canvas {
         this.setSceneName(cfg.getName());
         //场景跳转点
         this.triggerList = new ArrayList<Trigger>();
-        Integer _sceneId = Integer.valueOf(sceneId);
+        int _sceneId = Integer.parseInt(sceneId);
         List<SceneTeleporter> teleporters = getDataManager().findTeleportersBySceneId(_sceneId);
         for (int i = 0; i < teleporters.size(); i++) {
             triggerList.add(new JumpTrigger(teleporters.get(i)));
@@ -281,37 +273,32 @@ public class SceneCanvas extends Canvas {
         //this.mapMask = new ImageIcon(cfg.getPath().replace(".map", "_bar.png")).getImage();
         //maskdata = loadMask(cfg.getPath().replace(".map", ".msk"));
 
-        byte[] celldata = loadCellData();
-        searcher.init(sceneWidth, sceneHeight, celldata);
+        byte[] cellData = loadCellData();
+        searcher.init(sceneWidth, sceneHeight, cellData);
         //play music
-        String musicfile = cfg.getPath().replaceAll("\\.map", ".mp3").replaceAll("scene", "music");
+        String musicFile = cfg.getPath().replaceAll("\\.map", ".mp3").replaceAll("scene", "music");
         try {
-            File file = CacheManager.getInstance().getFile(musicfile);
-            if (file != null && file.exists() && !musicfile.equals(this.musicfile)) {
-                this.musicfile = musicfile;
+            File file = CacheManager.getInstance().getFile(musicFile);
+            if (file != null && file.exists() && !musicFile.equals(this.musicfile)) {
+                this.musicfile = musicFile;
                 //playMusic();
             }
         } catch (Exception e) {
-            log.error("切换场景音乐失败：" + musicfile + ", error=" + e.getMessage());
-            //e.printStackTrace();
+            log.error("切换场景音乐失败：" + musicFile + ", error=" + e.getMessage());
         }
     }
 
     /**
      * 加载地图的阻挡信息
-     *
-     * @param filename
-     * @return
      */
     private byte[] loadCellData() {
         byte[][] mapCellData = map.getCellData();
-        byte[] celldata = new byte[sceneWidth * sceneHeight];
+        byte[] cellData = new byte[sceneWidth * sceneHeight];
         for (int ch = 0; ch < sceneHeight; ch++) {
-            for (int cw = 0; cw < sceneWidth; cw++) {
-                celldata[ch * sceneWidth + cw] = mapCellData[ch][cw];
-            }
+            if (sceneWidth >= 0)
+                System.arraycopy(mapCellData[ch], 0, cellData, ch * sceneWidth, sceneWidth);
         }
-        return celldata;
+        return cellData;
     }
 
     /** 默认人物对话事件 */
@@ -333,8 +320,7 @@ public class SceneCanvas extends Canvas {
     @Override
     protected void clearNPCs() {
         List<Player> npcs = getNpcs();
-        for (int i = 0; i < npcs.size(); i++) {
-            Player npc = npcs.get(i);
+        for (Player npc : npcs) {
             npc.removePlayerListener(defaultTalkAction);
         }
         super.clearNPCs();
@@ -349,11 +335,9 @@ public class SceneCanvas extends Canvas {
 
         player.stop(false);
         super.setPlayer(player);
-        if (player != null) {
-            player.addPlayerListener(scenePlayerHandler);
-            setPlayerSceneLocation(player.getSceneLocation());
-            player.setSearcher(searcher);
-        }
+        player.addPlayerListener(scenePlayerHandler);
+        setPlayerSceneLocation(player.getSceneLocation());
+        player.setSearcher(searcher);
     }
 
     public void setPlayer(Player player, int x, int y) {
@@ -383,8 +367,6 @@ public class SceneCanvas extends Canvas {
 
     /**
      * 根据人物的屏幕坐标和地图的viewport位置计算人物在场景中的坐标
-     *
-     * @param player
      */
     public void revisePlayerSceneLocation() {
         Point p = getPlayer().getLocation();
@@ -910,10 +892,8 @@ public class SceneCanvas extends Canvas {
      *
      * 修正地图显示的区域
      *
-     * @param canvas
      * @param map
-     * @param p
-     *            player's scene coordinate
+     * @param p  player's scene coordinate
      * @param canvasWidth
      * @param canvasHeight
      */

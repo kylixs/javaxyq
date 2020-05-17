@@ -19,8 +19,6 @@ import com.javaxyq.ui.UIHelper;
  */
 public class MainMenuCanvas extends Canvas {
 
-    private static final long serialVersionUID = -8251534211862320637L;
-
     public MainMenuCanvas(Image content, int width, int height) {
         super(width, height);
         JLabel label = new JLabel(new ImageIcon(content));

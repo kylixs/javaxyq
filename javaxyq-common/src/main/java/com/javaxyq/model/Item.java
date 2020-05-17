@@ -17,16 +17,15 @@ import java.io.Serializable;
  */
 public interface Item extends Serializable {
 
-	public abstract Long getId();
+	Long getId();
 
-	public abstract String getName();
+	String getName();
 
-	public abstract String getType();
+	String getType();
 
-	public abstract String getDescription();
+	String getDescription();
 
-	public abstract short getLevel();
+	short getLevel();
 
-	public abstract long getPrice();
-
+	long getPrice();
 }

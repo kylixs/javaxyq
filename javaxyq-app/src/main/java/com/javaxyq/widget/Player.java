@@ -89,7 +89,7 @@ public class Player extends AbstractWidget implements EventTarget {
 
 	private Color highlightColor = UIUtils.COLOR_NAME_HIGHLIGHT;
 
-	private List<String> chatHistory = new ArrayList<String>();
+	private List<String> chatHistory = new ArrayList<>();
 
 	private Font nameFont;
 
@@ -215,19 +215,19 @@ public class Player extends AbstractWidget implements EventTarget {
 		log.info("angle is:"+angle);
         if(angle>337 || angle<=22){
         	dir = Sprite.DIR_RIGHT;
-		}else if(angle>22 && angle<=67){
+		}else if(angle <= 67){
 			dir = Sprite.DIR_DOWN_RIGHT;
-		}else if(angle>67 && angle<=112){
+		}else if(angle <= 112){
 			dir = Sprite.DIR_DOWN;
-		}else if(angle>112 && angle<=157){
+		}else if(angle <= 157){
 			dir = Sprite.DIR_DOWN_LEFT;
-		}else if(angle>157 && angle<=202){
+		}else if(angle <= 202){
 			dir = Sprite.DIR_LEFT;
-		}else if(angle>202 && angle<=247){
+		}else if(angle <= 247){
 			dir = Sprite.DIR_UP_LEFT;
-		}else if(angle>247 && angle<=292){
+		}else if(angle <= 292){
 			dir = Sprite.DIR_UP;
-		}else if(angle>292 && angle<=337){
+		}else {
 			dir = Sprite.DIR_UP_RIGHT;
 		}
 		
@@ -548,7 +548,7 @@ public class Player extends AbstractWidget implements EventTarget {
 			// default:
 			// break;
 			// }
-		} else if (!this.directionMoving) {// 遇到障碍物时，松开方向键(没有继续移动)
+		} else {// 遇到障碍物时，松开方向键(没有继续移动)
 			stopAction();
 		}
 		return new Point(dx, dy);
@@ -663,7 +663,7 @@ public class Player extends AbstractWidget implements EventTarget {
 	public void setPath(Collection<Point> path) {
 		this.path.clear();
 		this.path.addAll(path);
-		if (path == null || path.isEmpty()) {
+		if (path.isEmpty()) {
 			log.info("path is empty.");
 		} else {
 			// System.out.println("new path:");
@@ -719,7 +719,7 @@ public class Player extends AbstractWidget implements EventTarget {
 	}
 
 	private boolean shouldDisplay(FloatPanel chatPanel) {
-		return System.currentTimeMillis() - chatPanel.getCreateTime() < Application.CHAT_REMAIND_TIME;
+		return System.currentTimeMillis() - chatPanel.getCreateTime() < Application.CHAT_REMIND_MS;
 	}
 
 	@Override

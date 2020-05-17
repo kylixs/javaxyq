@@ -29,7 +29,7 @@ public class SearchUtils {
 	 * @return
 	 */
 	public static List<Point> getLinePath(int x1, int y1, int x2, int y2) {
-		List<Point> path = new ArrayList<Point>();
+		List<Point> path = new ArrayList<>();
 		int x, y;
 		int dx, dy;
 		int incx, incy;
@@ -87,10 +87,6 @@ public class SearchUtils {
 
 	/**
 	 * 获取两点间的二次曲线
-	 * 
-	 * @param path
-	 * @param p
-	 * @return
 	 */
 	public static List<Point> getBezierPath(Point source, Point target) {
 		Point[] vertexs = new Point[4];
@@ -136,12 +132,6 @@ public class SearchUtils {
 	 *            设置线型的虚线的间隔，为0则画实线。 　　
 	 * @param lineWidth
 	 *            设置线宽。 　　
-	 * @param x1
-	 *            　　
-	 * @param y1
-	 * @param x2
-	 *            　　
-	 * @param y2
 	 *            　　
 	 */
 	public static void bresenhamLine(java.awt.Graphics g, int dashedMask, int lineWidth, int x1, int y1, int x2, int y2) {

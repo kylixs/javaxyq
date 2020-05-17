@@ -18,12 +18,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.locks.LockSupport;
 
 //DONE 添加动画的播放次数，如使用技能动画（只播放１次），鼠标点击地面效果
 @Slf4j
 public class Canvas extends JPanel implements GameCanvas, DownloadListener {
-
-    private static final long serialVersionUID = -4190257004358562807L;
 
     private class AnimatorThread extends Thread {
         /**
@@ -41,9 +40,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
         private long passTime;
 
         /**
-         * @param duration
-         * @param interval
-         * @param increased true是增加alpha,false 则是减少alpha
+         * @param increased true是增加alpha, false 则是减少alpha
          */
         public AnimatorThread(long duration, long interval, boolean increased) {
             this.duration = duration;
@@ -69,10 +66,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
                             alpha = 255;
                         }
                     }
-                    try {
-                        Thread.sleep(interval);
-                    } catch (InterruptedException e) {
-                    }
+                    LockSupport.parkNanos(interval * 1000);
                 }
                 Canvas.this.fading = false;
                 // System.out.println("faded");
@@ -223,7 +217,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
             drawDebug(g);
             drawDownloading(g);
         } catch (Exception e) {
-           log.error("更新Canvas时失败！", e);
+            log.error("更新Canvas时失败！", e);
         }
     }
 
@@ -409,8 +403,8 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
         this.gameCursor = UIHelper.getCursor(type);
     }
 
-    public void setMovingObject(Animation anim, Point offset) {
-        this.movingObject = anim;
+    public void setMovingObject(Animation animation, Point offset) {
+        this.movingObject = animation;
         this.movingOffset = offset;
     }
 
@@ -635,8 +629,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
             return false;
         }
         Point vp = localToView(player.getLocation());
-        boolean hover = player.contains(p.x - vp.x, p.y - vp.y);
-        return hover;
+        return player.contains(p.x - vp.x, p.y - vp.y);
     }
 
     public Point localToView(Point p) {

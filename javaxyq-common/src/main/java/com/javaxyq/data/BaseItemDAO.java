@@ -14,10 +14,6 @@ public interface BaseItemDAO {
 
 	void destroy(Long id) throws NonexistentEntityException, SQLException;
 
-	//List<Item> findItemEntities() throws SQLException;
-
-	//List<Item> findItemEntities(int maxResults, int firstResult) throws SQLException;
-
 	Item findItem(Long id) throws SQLException;
 
 	int getItemCount() throws SQLException;
@@ -26,7 +22,4 @@ public interface BaseItemDAO {
 	String findTypeByName(String name)throws SQLException;
 	
 	Item findItemByName(String name) throws SQLException;
-
-	//List<Item> findItemsByType(int type) throws SQLException;
-
 }

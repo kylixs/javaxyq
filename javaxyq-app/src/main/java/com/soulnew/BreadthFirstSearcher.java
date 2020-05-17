@@ -61,7 +61,7 @@ public class BreadthFirstSearcher implements Searcher {
 		return null;
 	}
 
-	public void init(int width, int height, byte[] maskdata) {
+	public void init(int width, int height, byte[] maskData) {
 		this.width = width;
 		this.height = height;
 		nodes = new AStarNode[width * height];
@@ -69,7 +69,7 @@ public class BreadthFirstSearcher implements Searcher {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				// 坐标系转换
-				if (maskdata[x + y * width] > 0) {
+				if (maskData[x + y * width] > 0) {
 					nodes[x + (height - y - 1) * width] = new AStarNode(x, height - y - 1);
 					// 判断8方向的点是否到达
 

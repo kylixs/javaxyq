@@ -31,59 +31,64 @@ public class DataStore implements DataManager {
     /**
      * 人物升级经验表
      */
-    private static final int[] levelExpTable =
-            {40, 110, 237, 450, 779, 1252, 1898, 2745, 3822, 5159, 6784, 8726, 11013, 13674, 16739, 20236, 24194, 28641, 330606, 39119,
-                    45208, 51902, 59229, 67218, 75899, 85300, 95450, 106377, 118110, 130679, 144112, 158438, 173685, 189882, 207059,
-                    225244, 244466, 264753, 286134, 308639, 332296, 357134, 383181, 410466, 439019, 468868, 500042, 532569, 566478,
-                    601799, 638560, 676790, 716517, 757770, 800579, 844972, 890978, 938625, 987942, 1038959, 1091704, 1146206, 1202493,
-                    1260594, 1320539, 1382356, 1446074, 1511721, 1579326, 1648919, 1720528, 1794182, 1869909, 1947738, 2027699,
-                    2109820, 2194130, 2280657, 2369430, 2460479, 2553832, 2649518, 2747565, 2848002, 2950859, 3056164, 3163946,
-                    3274233, 3387054, 3502439, 3620416, 3741014, 3864261, 3990186, 4118819, 4250188, 4384322, 4521249, 4660998, 4803599};
-    private static final int[] mskillslevelExpTable =
-            {16, 32, 52, 75, 103, 136, 179, 231, 295, 372, 466, 578, 711, 867, 1049, 1260, 1503, 1780, 2096, 2452, 2854, 3304, 3807, 4364, 4983, 5664,
-                    6415, 7238, 8138, 9120, 10188, 11347, 12602, 13959, 15423, 16998, 18692, 20508, 22452, 24532, 26753, 29121, 31642, 34323, 37169, 40188,
-                    43388, 46773, 50352, 54132, 58120, 62324, 66750, 71407, 76303, 81444, 86840, 92500, 98430, 104640, 111136, 117931, 125031, 132444,
-                    140183, 148253, 156666, 165430, 174556, 184052, 193930, 204198, 214868, 225948, 237449, 249383, 261760, 274589, 287884, 301652,
-                    315908, 330662, 345924, 361708, 378023, 394882, 412297, 430280, 448844, 468000, 487760, 508137, 529145, 550796, 573103, 596078,
-                    619735, 644088, 669149, 694932, 721452, 748722, 776755, 805566, 835169, 865579, 896809, 928876, 961792, 995572, 1030234, 1065190,
-                    1102256, 1139649, 1177983, 1217273, 1256104, 1298787, 1341043, 1384320, 1428632, 1473999, 1520435, 1567957, 1616583, 1666328,
-                    1717211, 1769248, 1822456, 1876852, 1932456, 1989284, 2047353, 2106682, 2167289, 2229192, 2292410, 2356960, 2422861, 2490132,
-                    2558792, 2628860, 2700356, 2773296, 2847703, 2923593, 3000989, 3079908, 3160372, 3242400, 6652022, 6822452, 6996132, 7173104,
-                    7353406, 11305620, 11586254, 11872072, 12163140, 12459518, 15033471, 15315219, 15600468, 15889236, 16181550, 16477425, 16776885,
-                    17079954, 17386650, 17697000, 24014692, 24438308, 24866880, 25300432, 25739000, 32728255, 33289095, 33856310, 34492930, 40842000
-            };
-    private static final int[] mskillslevelSpendTable =
-            {6, 12, 19, 28, 38, 51, 67, 86, 110, 139, 174, 216, 266, 325, 393, 472, 563, 667, 786, 919, 1070, 1238, 1426, 1636, 1868, 2124, 2404, 2714, 3050,
-                    3420, 3820, 4255, 4725, 5234, 5783, 6374, 7009, 7690, 8419, 9199, 10032, 10920, 11865, 12871, 13938, 15070, 16270, 17540, 18882, 20299,
-                    21795, 23371, 25031, 26777, 28613, 30541, 32565, 34687, 36911, 39240, 41676, 44224, 46886, 49666, 52568, 55595, 58749, 62036, 65458,
-                    69019, 72723, 76574, 80575, 84730, 89043, 93518, 98160, 102971, 107956, 113119, 118465, 123998, 129721, 135640, 141758, 148080, 154611,
-                    161355, 168316, 175500, 182910, 190551, 198429, 206548, 214913, 223529, 232400, 241533, 250931, 260599, 270544, 280770, 291283, 302087,
-                    313188, 324592, 336303, 348328, 360672, 373339, 386337, 399671, 413346, 427368, 441743, 456477, 471576, 487045, 502891, 519120, 535737,
-                    552749, 570163, 587984, 606218, 624873, 643954, 663468, 683421, 703819, 724671, 745981, 767757, 790005, 812733, 835947, 859653, 883860,
-                    908573, 933799, 959547, 985822, 1012633, 1039986, 1067888, 1096347, 1125371, 1154965, 1185139, 1215900, 2494508, 2558419, 2623549,
-                    2689914, 2757527, 4239607, 4344845, 4452027, 4561177, 4672319, 4510041, 4594563, 4680138, 4766769, 4854465, 4943226, 5033064, 5123985,
-                    5215995, 5309100, 7204407, 7331490, 7460064, 7590129, 7721700, 9818475, 9986727, 10156893, 10328979, 12252600
-            };
+    private static final int[] levelExpTable = {
+            40, 110, 237, 450, 779, 1252, 1898, 2745, 3822, 5159, 6784, 8726, 11013, 13674, 16739, 20236, 24194, 28641, 330606, 39119,
+            45208, 51902, 59229, 67218, 75899, 85300, 95450, 106377, 118110, 130679, 144112, 158438, 173685, 189882, 207059,
+            225244, 244466, 264753, 286134, 308639, 332296, 357134, 383181, 410466, 439019, 468868, 500042, 532569, 566478,
+            601799, 638560, 676790, 716517, 757770, 800579, 844972, 890978, 938625, 987942, 1038959, 1091704, 1146206, 1202493,
+            1260594, 1320539, 1382356, 1446074, 1511721, 1579326, 1648919, 1720528, 1794182, 1869909, 1947738, 2027699,
+            2109820, 2194130, 2280657, 2369430, 2460479, 2553832, 2649518, 2747565, 2848002, 2950859, 3056164, 3163946,
+            3274233, 3387054, 3502439, 3620416, 3741014, 3864261, 3990186, 4118819, 4250188, 4384322, 4521249, 4660998, 4803599
+    };
+    private static final int[] mSkillsLevelExpTable = {
+            16, 32, 52, 75, 103, 136, 179, 231, 295, 372, 466, 578, 711, 867, 1049, 1260, 1503, 1780, 2096, 2452, 2854, 3304, 3807, 4364, 4983, 5664,
+            6415, 7238, 8138, 9120, 10188, 11347, 12602, 13959, 15423, 16998, 18692, 20508, 22452, 24532, 26753, 29121, 31642, 34323, 37169, 40188,
+            43388, 46773, 50352, 54132, 58120, 62324, 66750, 71407, 76303, 81444, 86840, 92500, 98430, 104640, 111136, 117931, 125031, 132444,
+            140183, 148253, 156666, 165430, 174556, 184052, 193930, 204198, 214868, 225948, 237449, 249383, 261760, 274589, 287884, 301652,
+            315908, 330662, 345924, 361708, 378023, 394882, 412297, 430280, 448844, 468000, 487760, 508137, 529145, 550796, 573103, 596078,
+            619735, 644088, 669149, 694932, 721452, 748722, 776755, 805566, 835169, 865579, 896809, 928876, 961792, 995572, 1030234, 1065190,
+            1102256, 1139649, 1177983, 1217273, 1256104, 1298787, 1341043, 1384320, 1428632, 1473999, 1520435, 1567957, 1616583, 1666328,
+            1717211, 1769248, 1822456, 1876852, 1932456, 1989284, 2047353, 2106682, 2167289, 2229192, 2292410, 2356960, 2422861, 2490132,
+            2558792, 2628860, 2700356, 2773296, 2847703, 2923593, 3000989, 3079908, 3160372, 3242400, 6652022, 6822452, 6996132, 7173104,
+            7353406, 11305620, 11586254, 11872072, 12163140, 12459518, 15033471, 15315219, 15600468, 15889236, 16181550, 16477425, 16776885,
+            17079954, 17386650, 17697000, 24014692, 24438308, 24866880, 25300432, 25739000, 32728255, 33289095, 33856310, 34492930, 40842000
+    };
+    private static final int[] mSkillsLevelSpendTable = {
+            6, 12, 19, 28, 38, 51, 67, 86, 110, 139, 174, 216, 266, 325, 393, 472, 563, 667, 786, 919, 1070, 1238, 1426, 1636, 1868, 2124, 2404, 2714, 3050,
+            3420, 3820, 4255, 4725, 5234, 5783, 6374, 7009, 7690, 8419, 9199, 10032, 10920, 11865, 12871, 13938, 15070, 16270, 17540, 18882, 20299,
+            21795, 23371, 25031, 26777, 28613, 30541, 32565, 34687, 36911, 39240, 41676, 44224, 46886, 49666, 52568, 55595, 58749, 62036, 65458,
+            69019, 72723, 76574, 80575, 84730, 89043, 93518, 98160, 102971, 107956, 113119, 118465, 123998, 129721, 135640, 141758, 148080, 154611,
+            161355, 168316, 175500, 182910, 190551, 198429, 206548, 214913, 223529, 232400, 241533, 250931, 260599, 270544, 280770, 291283, 302087,
+            313188, 324592, 336303, 348328, 360672, 373339, 386337, 399671, 413346, 427368, 441743, 456477, 471576, 487045, 502891, 519120, 535737,
+            552749, 570163, 587984, 606218, 624873, 643954, 663468, 683421, 703819, 724671, 745981, 767757, 790005, 812733, 835947, 859653, 883860,
+            908573, 933799, 959547, 985822, 1012633, 1039986, 1067888, 1096347, 1125371, 1154965, 1185139, 1215900, 2494508, 2558419, 2623549,
+            2689914, 2757527, 4239607, 4344845, 4452027, 4561177, 4672319, 4510041, 4594563, 4680138, 4766769, 4854465, 4943226, 5033064, 5123985,
+            5215995, 5309100, 7204407, 7331490, 7460064, 7590129, 7721700, 9818475, 9986727, 10156893, 10328979, 12252600
+    };
 
-    public static String[] 门派列表 = {"大唐官府", "方寸山", "化生寺", "女儿村", "阴曹地府", "魔王寨", "狮驼岭", "盘丝洞", "天宫",
-            "龙宫", "五庄观", "普陀山"};
-    public static String[] basic_skill = {"为官之道", "黄庭经", "小乘佛法", "毒经", "灵通术", "牛逼神功", "魔兽神功", "蛛丝阵法",
-            "天罡气", "九龙诀", "周易学", "灵性"};
-
-    public static final String[] 魔族门派 = {"阴曹地府", "魔王寨", "狮驼岭", "盘丝洞 "};
+    public static String[] 门派列表 = {
+            "大唐官府", "方寸山", "化生寺", "女儿村",
+            "阴曹地府", "魔王寨", "狮驼岭", "盘丝洞",
+            "天宫", "龙宫", "五庄观", "普陀山"
+    };
+    public static String[] basic_skill = {
+            "为官之道", "黄庭经", "小乘佛法", "毒经",
+            "灵通术", "牛逼神功", "魔兽神功", "蛛丝阵法",
+            "天罡气", "九龙诀", "周易学", "灵性"
+    };
 
     public static final String[] 人族门派 = {"大唐官府", "方寸山", "化生寺", "女儿村"};
+
+    public static final String[] 魔族门派 = {"阴曹地府", "魔王寨", "狮驼岭", "盘丝洞 "};
 
     public static final String[] 仙族门派 = {"天宫", "龙宫", "五庄观", "普陀山"};
 
     /**
      * 判断数组array是否包含值value
-     *
-     * @return
      */
     private static boolean inArray(String[] array, String value) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(value)) return true;
+        for (String s : array) {
+            if (s.equals(value)) return true;
         }
         return false;
     }
@@ -92,10 +97,10 @@ public class DataStore implements DataManager {
         Properties configs = new Properties();
         try {
             if (str != null) {
-                String[] entrys = str.split(";");
-                for (int i = 0; i < entrys.length; i++) {
-                    String[] keyvalue = entrys[i].split("=");
-                    configs.setProperty(keyvalue[0], keyvalue[1]);
+                String[] entries = str.split(";");
+                for (String entry : entries) {
+                    String[] kv = entry.split("=");
+                    configs.setProperty(kv[0], kv[1]);
                 }
             }
         } catch (Exception e) {
@@ -121,7 +126,7 @@ public class DataStore implements DataManager {
     private Map<Player, ItemInstance[]> itemsMap = new HashMap<Player, ItemInstance[]>();
 
     private List<BaseItemDAO> itemDAOs = new ArrayList<BaseItemDAO>();
-    private String lastchat = "";
+    private String lastChat = "";
     private MedicineItemDAOImpl medicineDAO;
     private Random rand = new Random();
     private SceneDAO sceneDAO;
@@ -261,10 +266,6 @@ public class DataStore implements DataManager {
 
     /**
      * 增加某属性的值
-     *
-     * @param player
-     * @param prop
-     * @param val
      */
     public void addProp(Player player, String prop, int val) {
         PlayerVO vo = player.getData();
@@ -275,11 +276,6 @@ public class DataStore implements DataManager {
 
     /**
      * 创建普通的小怪（场景练级）
-     *
-     * @param type
-     * @param name
-     * @param level
-     * @return
      */
     public Player createElf(String type, String name, int level) {
         Player player = createPlayer(type, (int[]) null);
@@ -327,9 +323,6 @@ public class DataStore implements DataManager {
 
     /**
      * 创建NPC实例
-     *
-     * @param cfg
-     * @return
      */
     public Player createNPC(PlayerConfig cfg) {
         Player p = this.createPlayer(cfg);
@@ -339,9 +332,6 @@ public class DataStore implements DataManager {
 
     /**
      * 创建NPC实例
-     *
-     * @param _npc
-     * @return
      */
     public Player createNPC(SceneNpc _npc) {
         Player player = new Player(String.valueOf(_npc.getId()), _npc.getName(), _npc.getCharacterId());
@@ -410,7 +400,7 @@ public class DataStore implements DataManager {
             BeanUtils.populate(player, cfg);
             BeanUtils.populate(data, cfg);
         } catch (IllegalAccessException | InvocationTargetException e) {
-           log.error("", e);
+            log.error("", e);
         }
         //FIXME 初始化属性
         //data.level = cfg.level;
@@ -427,9 +417,6 @@ public class DataStore implements DataManager {
 
     /**
      * 查找NPC闲聊内容
-     *
-     * @param npcId
-     * @return
      */
     public String findChat(String npcId) {
         File file = CacheManager.getInstance().getFile("chat/" + npcId + ".txt");
@@ -447,13 +434,13 @@ public class DataStore implements DataManager {
                 log.error("", e);
             }
             int index = rand.nextInt(chats.size());
-            if (lastchat != null && lastchat.startsWith(npcId)) {
-                int lastindex = Integer.parseInt(lastchat.substring(npcId.length() + 1));
+            if (lastChat != null && lastChat.startsWith(npcId)) {
+                int lastindex = Integer.parseInt(lastChat.substring(npcId.length() + 1));
                 index = (lastindex + 1) % chats.size();
             }
             if (chats.size() > index) {
                 String chat = chats.get(index);
-                lastchat = npcId + "_" + index;
+                lastChat = npcId + "_" + index;
                 return chat;
             }
         }
@@ -462,21 +449,16 @@ public class DataStore implements DataManager {
 
     /**
      * 查找某类型的物品
-     *
-     * @param player
-     * @param type   物品类型，参考ItemTypes
-     * @return
      */
     public ItemInstance[] findItems(Player player, int type) {
-        ItemInstance[] allitems = getItems(player);
-        List<ItemInstance> results = new ArrayList<ItemInstance>();
-        for (int i = 0; i < allitems.length; i++) {
-            ItemInstance item = allitems[i];
+        ItemInstance[] allItems = getItems(player);
+        List<ItemInstance> results = new ArrayList<>();
+        for (ItemInstance item : allItems) {
             if (item != null && ItemTypes.isType(item.getItem(), type)) {
                 results.add(item);
             }
         }
-        return results.toArray(new ItemInstance[results.size()]);
+        return results.toArray(new ItemInstance[0]);
     }
 
     public List<SceneNpc> findNpcsBySceneId(int sceneId) {
@@ -488,9 +470,6 @@ public class DataStore implements DataManager {
         return null;
     }
 
-    /**
-     * @return
-     */
     public Scene findScene(int sceneId) {
         try {
             return sceneDAO.findScene(sceneId);
@@ -523,19 +502,16 @@ public class DataStore implements DataManager {
         try {
             return skillMain.findSkillBySchool(school);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error("", e);
         }
         return null;
     }
 
     public Skill findSkillByName(String name) {
         try {
-            Skill magic = skillMagic.findSkillByName(name);
-            return magic;
+            return skillMagic.findSkillByName(name);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error("", e);
         }
         return null;
     }
@@ -558,13 +534,7 @@ public class DataStore implements DataManager {
      * 读取游戏人物道具列表
      */
     public ItemInstance[] getItems(Player player) {
-
-        ItemInstance[] items = itemsMap.get(player);
-        if (items == null) {
-            items = new ItemInstance[26];
-            itemsMap.put(player, items);
-        }
-        return items;
+        return itemsMap.computeIfAbsent(player, k -> new ItemInstance[26]);
     }
 
     public String getBasicSkillName(String school) {
@@ -583,21 +553,18 @@ public class DataStore implements DataManager {
 
     public long getMSkillsLevelExp(int level) {
 
-        return mskillslevelExpTable[level];
+        return mSkillsLevelExpTable[level];
 
     }
 
     public long getMSkillsLevelSpend(int level) {
 
-        return mskillslevelSpendTable[level];
+        return mSkillsLevelSpendTable[level];
 
     }
 
     /**
      * 物品可以叠加的最大数量
-     *
-     * @param item
-     * @return
      */
     public int getOverlayAmount(Item item) {
         int amount = 1;
@@ -624,13 +591,10 @@ public class DataStore implements DataManager {
 
     /**
      * 获取玩家数据键值表
-     *
-     * @param player
-     * @return
      */
     public Map<String, Object> getProperties(Player player) {
         try {
-            Map props = PropertyUtils.describe(player.getData());
+            Map<String, Object> props = ((Map<String, Object>) PropertyUtils.describe(player.getData()));
             props.put("levelExp", getLevelExp(player.getData().level));
             return props;
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -666,7 +630,7 @@ public class DataStore implements DataManager {
 			e.printStackTrace();
 		}*/
 
-       log.info("initialized datastore");
+        log.info("initialized datastore");
     }
 
     /**
@@ -678,7 +642,7 @@ public class DataStore implements DataManager {
         colorations[0] = 2;
         colorations[1] = 4;
         colorations[2] = 3;
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<>();
         data.put("name", "逍遥葫芦");
         data.put("level", 5);
         data.put("school", "五庄观");
@@ -960,16 +924,16 @@ public class DataStore implements DataManager {
             //物品数据
             ItemInstance[] items = getItems(player);
             oos.writeInt(items.length);
-            for (int i = 0; i < items.length; i++) {
-                oos.writeObject(items[i]);
+            for (ItemInstance item : items) {
+                oos.writeObject(item);
             }
 
             //任务数据
             TaskManager taskManager = ApplicationHelper.getApplication().getTaskManager();
-            List tasks = taskManager.getTaskList();
+            List<Task> tasks = taskManager.getTaskList();
             oos.writeInt(tasks.size());
-            for (int i = 0; i < tasks.size(); i++) {
-                oos.writeObject(tasks.get(i));
+            for (Task task : tasks) {
+                oos.writeObject(task);
             }
             oos.close();
 
@@ -985,14 +949,11 @@ public class DataStore implements DataManager {
             file.renameTo(defaultfile);
             log.info("游戏存档完毕");
         } catch (FileNotFoundException e) {
-            log.warn("游戏存档失败,找不到文件！");
-            e.printStackTrace();
+            log.error("游戏存档失败,找不到文件！", e);
         } catch (IOException e) {
-            log.warn("游戏存档失败，IO错误！" + e.getMessage());
-            e.printStackTrace();
+            log.error("游戏存档失败，IO错误！", e);
         } catch (Exception e) {
-            log.warn("游戏存档失败！" + e.getMessage());
-            e.printStackTrace();
+            log.error("游戏存档失败！", e);
         }
     }
 
@@ -1039,11 +1000,10 @@ public class DataStore implements DataManager {
                                 _items[i] = null;
                             }
                         }
-
                     }
                 } catch (Exception e) {
                     _items[i] = null;
-                    e.printStackTrace();
+                    log.error("", e);
                 }
             }
         }

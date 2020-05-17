@@ -9,6 +9,6 @@ public interface EventTarget {
 	// public void removeEventListener(String type, EventListener listener,
 	// boolean useCapture);
 
-	public boolean handleEvent(EventObject evt) throws EventException;
+	boolean handleEvent(EventObject evt) throws EventException;
 
 }

@@ -1,7 +1,7 @@
 /*
- * JavaXYQ Engine 
- * 
- * javaxyq@2008 all rights. 
+ * JavaXYQ Engine
+ *
+ * javaxyq@2008 all rights.
  * http://www.javaxyq.com
  */
 
@@ -13,11 +13,12 @@ import java.io.Serializable;
 
 /**
  * 游戏中使用的UI构件接口
- * 
+ *
  * @author 龚德伟
  * @history 2008-5-29 龚德伟 新建
  */
 public interface Widget extends Serializable {
+
     void draw(Graphics g, int x, int y);
 
     void draw(Graphics g, int x, int y, int width, int height);
@@ -33,7 +34,7 @@ public interface Widget extends Serializable {
     int getWidth();
 
     int getHeight();
-    
+
     boolean contains(int x, int y);
 
 }

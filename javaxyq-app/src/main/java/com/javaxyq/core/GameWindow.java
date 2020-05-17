@@ -65,14 +65,8 @@ public interface GameWindow {
 
     void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
 
-    /**
-     * @return
-     */
     Point getMousePosition();
 
-    /**
-     * @return
-     */
     JLayeredPane getLayeredPane();
 
     UIHelper getHelper();

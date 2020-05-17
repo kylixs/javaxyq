@@ -158,8 +158,8 @@ public class DesktopApplication extends BaseApplication {
     private void loadUIs(XmlDataLoader loader) {
         File dir = CacheManager.getInstance().getFile("ui");
         String[] files = dir.list(new SuffixFilenameFilter(".xml"));
-        for (int i = 0; i < files.length; i++) {
-            loader.loadUI("ui/" + files[i]);
+        for (String file : files) {
+            loader.loadUI("ui/" + file);
         }
         window.prepareUI();
 
@@ -183,9 +183,6 @@ public class DesktopApplication extends BaseApplication {
         showMainMenuCanvas();
     }
 
-    /**
-     * @param args
-     */
     public static void main(String[] args) {
         DesktopApplication app = new DesktopApplication();
         app.startup();

@@ -27,11 +27,7 @@ public class ItemInstance implements Serializable{
 	private long itemId = -1;
 	private String name;
 	private String type;
-	
-	/**
-	 * @param itemVO
-	 * @param i
-	 */
+
 	public ItemInstance(Item item, int amount) {
 		this.setItem(item);
 		this.setAmount(amount);

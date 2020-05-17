@@ -193,9 +193,6 @@ public class Label extends JLabel {
 		return super.getToolTipLocation(evt);
 	}
 
-	/**
-	 * @return
-	 */
 	private Component getWindow() {
 		Container parent = this.getParent();
 		while(parent!=null && !(parent instanceof RootPaneContainer)) {

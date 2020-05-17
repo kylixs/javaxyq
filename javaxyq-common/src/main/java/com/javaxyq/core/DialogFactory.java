@@ -33,9 +33,7 @@ public class DialogFactory {
 	}
 	/**
 	 * 获得对话框实例
-	 * @param id
 	 * @param create 是否自动创建
-	 * @return
 	 */
 	public static Panel getDialog(String id, boolean create) {
 		Panel dialog = null;
@@ -71,8 +69,6 @@ public class DialogFactory {
 
 	/**
 	 * 改变Dialog生成器
-	 * 
-	 * @param builder
 	 */
 	public static void init(DialogBuilder builder) {
 		DialogFactory.builder = builder;
@@ -80,18 +76,12 @@ public class DialogFactory {
 
 	/**
 	 * 添加dialog关联到索引表
-	 * 
-	 * @param id
-	 * @param filename
 	 */
 	public static void addDialog(String id, String filename) {
 		if (id != null && filename != null)
 			dialogIndexTable.put(id, filename);
 	}
-	
-	/**
-	 * @param dlg
-	 */
+
 	public static void dispose(String id,Panel dlg) {
 		if(id==null && dlg!=null) {
 			Set<Entry<String, Panel>> entres =  dialogs.entrySet();

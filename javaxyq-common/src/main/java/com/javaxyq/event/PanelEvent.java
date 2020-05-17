@@ -17,9 +17,7 @@ import com.javaxyq.ui.Panel;
 public class PanelEvent extends ActionEvent{
 	
 	public static final String INITIAL = "initial";
-	
 	public static final String UPDATE= "update";
-	
 	public static final String DISPOSE = "dispose";
 	public static final String TALK = "talk";
 

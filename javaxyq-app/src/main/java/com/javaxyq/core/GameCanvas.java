@@ -25,6 +25,7 @@ public interface GameCanvas {
 	JComponent getComponent();
 	
 	void setWindow(GameWindow window);
+
 	GameWindow getWindow();
 
 	Point localToView(Point p);
@@ -41,11 +42,15 @@ public interface GameCanvas {
 	
 	boolean isHover(Player player);
 	
-	void setMovingObject(Animation anim, Point offset);
+	void setMovingObject(Animation animation, Point offset);
+
 	void removeMovingObject();
+
 	void setGameCursor(Cursor cursor);
+
 	Cursor getGameCursor();
 	
 	void playMusic();
+
 	void stopMusic();
 }

@@ -59,10 +59,10 @@ public class DBToolkit {
             ScriptRunner runner = new ScriptRunner(_conn, true, false);
             File[] files = IoUtil.loadFiles("classpath:sql/*.sql");
             log.info("length is:" + files.length);
-            for (int i = 0; i < files.length; i++) {
-                log.info("[db]导入: " + files[i].getName() + " ..");
+            for (File value : files) {
+                log.info("[db]导入: " + value.getName() + " ..");
                 //importSQL(_conn, new FileInputStream(files[i]));
-                runner.runScript(new FileReader(files[i]));
+                runner.runScript(new FileReader(value));
             }
 
             // 导入初始数据
@@ -137,29 +137,6 @@ public class DBToolkit {
     public static void setForceInit(boolean forceInit) {
         DBToolkit.forceInit = forceInit;
     }
-
-//	public static void importSQL(Connection conn, InputStream in) throws SQLException {
-//		Scanner s = new Scanner(in);
-//		s.useDelimiter("(;(\r)?\n)|(--\n)");
-//		Statement st = null;
-//		try {
-//			st = conn.createStatement();
-//			while (s.hasNext()) {
-//				String line = s.next();
-//				if (line.startsWith("/*!") && line.endsWith("*/")) {
-//					int i = line.indexOf(' ');
-//					line = line.substring(i + 1, line.length() - " */".length());
-//				}
-//
-//				if (line.trim().length() > 0) {
-//					st.execute(line);
-//				}
-//			}
-//		} finally {
-//			if (st != null)
-//				st.close();
-//		}
-//	}
 
 }
 

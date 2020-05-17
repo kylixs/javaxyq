@@ -25,15 +25,12 @@ import java.util.List;
 @Slf4j
 public class DefaultScript implements ScriptEngine {
 
-    private static DefaultScript instance = new DefaultScript();
+    private static final DefaultScript instance = new DefaultScript();
 
     public static DefaultScript getInstance() {
         return instance;
     }
 
-    /**
-     * @param args
-     */
 //	public static void main(String[] args) {
 //		DefaultScript.getInstance().compileAndLoadClass("ui.mainwin");
 //	}
@@ -45,8 +42,8 @@ public class DefaultScript implements ScriptEngine {
     private DefaultScript() {
     }
 
-    private String classToJava(String classname) {
-        return sourceDir + classname.replace('.', '/') + ".java";
+    private String classToJava(String className) {
+        return sourceDir + className.replace('.', '/') + ".java";
     }
 
     public boolean compile(String filename) {
@@ -98,11 +95,11 @@ public class DefaultScript implements ScriptEngine {
         return debug;
     }
 
-    public Object loadClass(String classname) {
+    public Object loadClass(String className) {
         try {
             URLClassLoader classLoader = new URLClassLoader(new URL[]{new File(
                     classesDir).toURI().toURL()});
-            return classLoader.loadClass(classname).newInstance();
+            return classLoader.loadClass(className).newInstance();
         } catch (MalformedURLException | InstantiationException | IllegalAccessException e) {
             log.error("", e);
         } catch (ClassNotFoundException e) {
@@ -112,10 +109,10 @@ public class DefaultScript implements ScriptEngine {
     }
 
     @Override
-    public <T> T loadClass(String classname, Class<T> clazz) {
+    public <T> T loadClass(String className, Class<T> clazz) {
         try {
-            Object classobj = loadClass(classname);
-            return (T) classobj;
+            Object classObj = loadClass(className);
+            return (T) classObj;
         } catch (ClassCastException e) {
             log.error("加载脚本失败，类型转换错误：" + e.getMessage());
         } catch (Exception e) {

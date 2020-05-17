@@ -41,8 +41,6 @@ public interface DataManager {
 
 	/**
 	 * 查找NPC闲聊内容
-	 * @param npcId
-	 * @return
 	 */
 	String findChat(String npcId);
 
@@ -99,14 +97,11 @@ public interface DataManager {
 
 	/**
 	 * 计算怪物的属性值
-	 * 
-	 * @param vo
 	 */
 	void recalcElfProps(PlayerVO vo);
 
 	/**
 	 * 计算人物的属性值
-	 * @param vo
 	 */
 	void recalcProperties(PlayerVO vo);
 
@@ -144,6 +139,4 @@ public interface DataManager {
 	Player createPlayer(PlayerVO playerData);
 
 	void setItems(Player player, ItemInstance[] items);
-
-
 }

@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2009-11-26 create
  */
 @Slf4j
-public abstract class PanelHandler implements PanelListener{
+public abstract class PanelHandler implements PanelListener {
 	
 	protected Panel panel;
 	private boolean autoUpdate; 

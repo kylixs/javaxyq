@@ -27,122 +27,118 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 缓存管理器
- * 
+ *
  * @author gongdewei
  * @date 2010-3-4 create
  */
 @Slf4j
 public class CacheManager {
-	private static CacheManager instance = new CacheManager();
-	private ArrayList<DownloadListener> listeners = new ArrayList<DownloadListener>();
-	private String cacheBase;
-	private URL documentBase;
+    private static final CacheManager instance = new CacheManager();
+    private final ArrayList<DownloadListener> listeners = new ArrayList<>();
+    private String cacheBase;
+    private URL documentBase;
 
-	private CacheManager() {// single-ton
-	}
+    private CacheManager() {// single-ton
+    }
 
-	public static CacheManager getInstance() {
-		return instance;
-	}
+    public static CacheManager getInstance() {
+        return instance;
+    }
 
-	public String getCacheBase() {
-		if(cacheBase == null) {
-			if(documentBase == null) {
-				cacheBase = new File(".").getAbsolutePath();
-			}else {
-				cacheBase = System.getProperty("user.home") + "/javaxyq";
-			}
-		}
-		return cacheBase;
-	}
+    public String getCacheBase() {
+        if (cacheBase == null) {
+            if (documentBase == null) {
+                cacheBase = new File(".").getAbsolutePath();
+            } else {
+                cacheBase = System.getProperty("user.home") + "/javaxyq";
+            }
+        }
+        return cacheBase;
+    }
 
-	public void setCacheBase(String cacheBase) {
-		this.cacheBase = cacheBase;
-	}
+    public void setCacheBase(String cacheBase) {
+        this.cacheBase = cacheBase;
+    }
 
-	public URL getDocumentBase() {
-		return documentBase;
-	}
+    public URL getDocumentBase() {
+        return documentBase;
+    }
 
-	public void setDocumentBase(URL documentBase) {
-		this.documentBase = documentBase;
-	}
+    public void setDocumentBase(URL documentBase) {
+        this.documentBase = documentBase;
+    }
 
-	/**
-	 * 下载文件
-	 * 
-	 * @param filename
-	 * @param url
-	 * @return
-	 */
-	private File download(String filename, URL url) {
-		int size = -1;
-		int received = 0;
-		try {
-			fireDownloadStarted(filename);
-			File file = createFile(filename);
-			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-			log.info("下载资源：" + filename + ", url=" + url);
-			// BufferedInputStream bis = new
-			// BufferedInputStream(url.openStream());
-			InputStream bis = url.openStream();
-			byte[] buf = new byte[1024];
-			int count = 0;
-			long lastUpdate = 0;
-			size = bis.available();
-			while ((count = bis.read(buf)) != -1) {
-				bos.write(buf, 0, count);
-				received += count;
-				long now = System.currentTimeMillis();
-				if (now - lastUpdate > 500) {
-					fireDownloadUpdate(filename, size, received);
-					lastUpdate = now;
-				}
-			}
-			bos.close();
-			log.info("资源下载完毕：" + filename);
-			fireDownloadCompleted(filename);
-			return file;
-		} catch (IOException e) {
-			log.info("下载资源失败：" + filename + ", error=" + e.getMessage());
-			fireDownloadInterrupted(filename);
-			if (!(e instanceof FileNotFoundException)) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
+    /**
+     * 下载文件
+     *
+     * @param filename
+     * @param url
+     * @return
+     */
+    private File download(String filename, URL url) {
+        int size = -1;
+        int received = 0;
+        try {
+            fireDownloadStarted(filename);
+            File file = createFile(filename);
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            log.info("下载资源：" + filename + ", url=" + url);
+            // BufferedInputStream bis = new
+            // BufferedInputStream(url.openStream());
+            InputStream bis = url.openStream();
+            byte[] buf = new byte[1024];
+            int count = 0;
+            long lastUpdate = 0;
+            size = bis.available();
+            while ((count = bis.read(buf)) != -1) {
+                bos.write(buf, 0, count);
+                received += count;
+                long now = System.currentTimeMillis();
+                if (now - lastUpdate > 500) {
+                    fireDownloadUpdate(filename, size, received);
+                    lastUpdate = now;
+                }
+            }
+            bos.close();
+            log.info("资源下载完毕：" + filename);
+            fireDownloadCompleted(filename);
+            return file;
+        } catch (IOException e) {
+            log.info("下载资源失败：" + filename + ", error=" + e.getMessage());
+            fireDownloadInterrupted(filename);
+            if (!(e instanceof FileNotFoundException)) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * 创建文件 如果文件已存在，则删除旧的并重新创建一个
-	 * 
-	 * @param filename
-	 * @return
-	 * @throws IOException
-	 */
-	public File createFile(String filename) throws IOException {
-		File file = null;
-		if (documentBase == null) {
-			file = new File(".", filename);
-		}else {
-			file = new File(cacheBase, filename);
-		}
-		if (file.exists()) {
-			file.delete();
-		}
-		file.getParentFile().mkdirs();
-		file.createNewFile();
-		log.info("createFile: "+file.getAbsolutePath());
-		return file;
-	}
+    /**
+     * 创建文件 如果文件已存在，则删除旧的并重新创建一个
+     */
+    public File createFile(String filename) throws IOException {
+        File file = null;
+        if (documentBase == null) {
+            file = new File(".", filename);
+        } else {
+            file = new File(cacheBase, filename);
+        }
+        if (file.exists()) {
+            file.delete();
+        }
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        log.info("createFile: " + file.getAbsolutePath());
+        return file;
+    }
 
-	public File getFile(String filename) {
-		File file = null;
-		if (filename.charAt(0) == '/') {
-			filename = filename.substring(1);
-		}
+    public File getFile(String filename) {
+        File file = null;
+        if (filename.charAt(0) == '/') {
+            filename = filename.substring(1);
+        }
 
-		return IoUtil.loadFile(filename);
+        return IoUtil.loadFile(filename);
 //		if (documentBase == null) {
 //			file = new File(filename);
 //			return file;
@@ -161,83 +157,77 @@ public class CacheManager {
 //			e.printStackTrace();
 //		}
 //		return file;
-	}
+    }
 
-	public InputStream getResourceAsStream(String path) throws IOException {
-		File file = getFile(path);
-		if (file != null) {
-			return new FileInputStream(file);
-		}
-		return null;
-	}
+    public InputStream getResourceAsStream(String path) throws IOException {
+        File file = getFile(path);
+        if (file != null) {
+            return new FileInputStream(file);
+        }
+        return null;
+    }
 
-	public void addDownloadListener(DownloadListener listener) {
-		listeners.add(listener);
-	}
+    public void addDownloadListener(DownloadListener listener) {
+        listeners.add(listener);
+    }
 
-	public void removeDownloadListener(DownloadListener listener) {
-		listeners.remove(listener);
-	}
-	public void removeAllDownloadListeners() {
-		listeners.clear();
-	}
+    public void removeDownloadListener(DownloadListener listener) {
+        listeners.remove(listener);
+    }
 
-	private void fireDownloadStarted(String resource) {
-		DownloadEvent e = new DownloadEvent(this, DownloadEvent.DOWNLOAD_STARTED, resource);
-		for (int i = 0; i < listeners.size(); i++) {
-			DownloadListener listener = listeners.get(i);
-			listener.downloadStarted(e);
-		}
-	}
+    public void removeAllDownloadListeners() {
+        listeners.clear();
+    }
 
-	private void fireDownloadCompleted(String resource) {
-		DownloadEvent e = new DownloadEvent(this, DownloadEvent.DOWNLOAD_COMPLETED, resource);
-		for (int i = 0; i < listeners.size(); i++) {
-			DownloadListener listener = listeners.get(i);
-			listener.downloadCompleted(e);
-		}
-	}
+    private void fireDownloadStarted(String resource) {
+        DownloadEvent e = new DownloadEvent(this, DownloadEvent.DOWNLOAD_STARTED, resource);
+        for (DownloadListener listener : listeners) {
+            listener.downloadStarted(e);
+        }
+    }
 
-	private void fireDownloadInterrupted(String resource) {
-		DownloadEvent e = new DownloadEvent(this, DownloadEvent.DOWNLOAD_INTERRUPTED, resource);
-		for (int i = 0; i < listeners.size(); i++) {
-			DownloadListener listener = listeners.get(i);
-			listener.downloadInterrupted(e);
-		}
-	}
+    private void fireDownloadCompleted(String resource) {
+        DownloadEvent e = new DownloadEvent(this, DownloadEvent.DOWNLOAD_COMPLETED, resource);
+        for (DownloadListener listener : listeners) {
+            listener.downloadCompleted(e);
+        }
+    }
 
-	private void fireDownloadUpdate(String resource, int size, int received) {
-		final DownloadEvent event = new DownloadEvent(this, DownloadEvent.DOWNLOAD_UPDATE, resource, size, received);
-		Runnable updateAction = new Runnable() {
-			@Override
-			public void run() {
-				for (int i = 0; i < listeners.size(); i++) {
-					DownloadListener listener = listeners.get(i);
-					listener.downloadUpdate(event);
-				}
-			}
-		};
-		SwingUtilities.invokeLater(updateAction);
-	}
+    private void fireDownloadInterrupted(String resource) {
+        DownloadEvent e = new DownloadEvent(this, DownloadEvent.DOWNLOAD_INTERRUPTED, resource);
+        for (DownloadListener listener : listeners) {
+            listener.downloadInterrupted(e);
+        }
+    }
 
-	public void deleteFile(String filename) {
-		File file = null;
-		if (filename.charAt(0) == '/') {
-			filename = filename.substring(1);
-		}
-		if (documentBase == null) {
-			file = new File(filename);
-		}else {			
-			file = new File(cacheBase, filename);
-		}
-		try {
-			if (file.exists()) {
-				file.delete();
-				log.info("删除文件："+filename);
-			}
-		} catch (Exception e) {
-			log.info("删除文件失败：" + filename);
-			e.printStackTrace();
-		}
-	}
+    private void fireDownloadUpdate(String resource, int size, int received) {
+        final DownloadEvent event = new DownloadEvent(this, DownloadEvent.DOWNLOAD_UPDATE, resource, size, received);
+        Runnable updateAction = () -> {
+            for (DownloadListener listener : listeners) {
+                listener.downloadUpdate(event);
+            }
+        };
+        SwingUtilities.invokeLater(updateAction);
+    }
+
+    public void deleteFile(String filename) {
+        File file = null;
+        if (filename.charAt(0) == '/') {
+            filename = filename.substring(1);
+        }
+        if (documentBase == null) {
+            file = new File(filename);
+        } else {
+            file = new File(cacheBase, filename);
+        }
+        try {
+            if (file.exists()) {
+                file.delete();
+                log.info("删除文件：" + filename);
+            }
+        } catch (Exception e) {
+            log.info("删除文件失败：" + filename);
+            e.printStackTrace();
+        }
+    }
 }

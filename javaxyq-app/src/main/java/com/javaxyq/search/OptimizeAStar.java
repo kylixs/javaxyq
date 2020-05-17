@@ -27,10 +27,10 @@ public class OptimizeAStar implements Searcher {
 	private int height;
 	private byte[] maskdata;
 
-	public void init(int width, int height, byte[] maskdata) {
+	public void init(int width, int height, byte[] maskData) {
 		this.width = width;
 		this.height = height;
-		this.maskdata = convertData(maskdata);
+		this.maskdata = convertData(maskData);
 	}
 
 	public boolean pass(int x, int y) {
@@ -39,25 +39,20 @@ public class OptimizeAStar implements Searcher {
 
 	/**
 	 * 坐标系变换
-	 * 
-	 * @param maskdata
-	 * @return
 	 */
 	private byte[] convertData(byte[] maskdata) {
 		byte[] data = new byte[maskdata.length];
 		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				data[x + y * width] = maskdata[x + (height - 1 - y) * width];
-			}
+			if (width >= 0) System.arraycopy(maskdata, (height - 1 - y) * width, data, y * width, width);
 		}
 		return data;
 	}
 
 	public List<Point> findPath(int x1, int y1, int x2, int y2) {
-		List<Point> openlist = new ArrayList<Point>();
-		List<Point> closelist = new ArrayList<Point>();
+		List<Point> openlist = new ArrayList<>();
+		List<Point> closelist = new ArrayList<>();
 		// 结果
-		List<Point> path = new ArrayList<Point>();
+		List<Point> path = new ArrayList<>();
 		// 开放列表_值
 		byte[][] openlistV = new byte[width][height];
 		// 开放列表_父坐标_x
@@ -89,7 +84,7 @@ public class OptimizeAStar implements Searcher {
 		while (openlistG[x2][y2] == 0) {
 			if (openlist.isEmpty()) {
 				// 出现错误
-				System.err.println("出现错误，开放列表为空");
+				log.error("出现错误，开放列表为空");
 				return null;
 			}
 			for (int i = 0; i < openlist.size(); i++) {

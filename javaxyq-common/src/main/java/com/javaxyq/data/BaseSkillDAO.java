@@ -15,17 +15,8 @@ public interface BaseSkillDAO {
 
 	void destroy(Long id) throws NonexistentEntityException, SQLException;
 
-	//List<Item> findItemEntities() throws SQLException;
-
-	//List<Item> findItemEntities(int maxResults, int firstResult) throws SQLException;
-
-	//List<SkillMain> findSkillBySchool(String school) throws SQLException;
-
-
 	//************* custom *********************//
 	
 	Skill findSkillByName(String name) throws SQLException;
-	
-	//public String findMagicSkillByName(String name) throws SQLException;
 
 }

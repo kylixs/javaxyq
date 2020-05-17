@@ -19,32 +19,26 @@ public interface PanelListener extends EventListener {
 
 	/**
 	 * 初始化（每次显示时调用）
-	 * 
-	 * @param evt
 	 */
 	void initial(PanelEvent evt);
 
 	/**
 	 * 注销（关闭时调用）
-	 * 
-	 * @param evt
 	 */
 	void dispose(PanelEvent evt);
 
 	/**
 	 * 更新面板的数据
-	 * 
-	 * @param evt
 	 */
 	void update(PanelEvent evt);
+
 	/**
 	 * 关闭窗口
-	 * @param evt
 	 */
 	void close(ActionEvent evt);
+
 	/**
 	 * 显示帮助信息
-	 * @param evt
 	 */
 	void help(ActionEvent evt);
 

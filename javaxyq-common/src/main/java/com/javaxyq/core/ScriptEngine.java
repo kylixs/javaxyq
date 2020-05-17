@@ -6,26 +6,20 @@ import com.javaxyq.event.PanelListener;
 import com.javaxyq.event.SceneListener;
 
 public interface ScriptEngine {
-	public boolean isDebug();
 
-	public void setDebug(boolean debug);
-	
-	/**
-	 * 清除缓存
-	 */
-	public void clearCache();
+	boolean isDebug();
 
-	public <T> T loadClass(String classname, Class<T> clazz);
+	void setDebug(boolean debug);
 
-	public Object loadClass(String classname);
+	void clearCache();
 
-	/**
-	 * 加载UI脚本
-	 * @param id
-	 * @return
-	 */
-	public PanelListener loadUIScript(String id);
+	<T> T loadClass(String className, Class<T> clazz);
 
-	public EventListener loadNPCScript(String npcId);
-	public SceneListener loadSceneScript(String sceneId);
+	Object loadClass(String className);
+
+	PanelListener loadUIScript(String id);
+
+	EventListener loadNPCScript(String npcId);
+
+	SceneListener loadSceneScript(String sceneId);
 }

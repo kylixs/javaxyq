@@ -20,29 +20,34 @@ import org.slf4j.LoggerFactory;
  * @date 2009-11-27 create
  */
 public class battle_role_cmd extends PanelHandler {
-	Logger log = LoggerFactory.getLogger(this.getClass());
-	private BattleCanvas canvas;
-	@Override
-	public void initial(PanelEvent evt) {
-		super.initial(evt);
-		if (super.canvas instanceof BattleCanvas) {
-			this.canvas = (BattleCanvas) super.canvas;
-		}
-	}
-	
-	public void warmagic(ActionEvent evt) {
-		canvas.selectMagic();
-	}
-	public void waritem(ActionEvent evt) {
-		canvas.selectItem();
-	}
-	public void wardefend(ActionEvent evt) {
-		canvas.defendCmd();
-	}
-	public void warcatch(ActionEvent evt) {
-		
-	}
-	public void warrunaway(ActionEvent evt) {
-		canvas.runawayCmd();
-	}
+    Logger log = LoggerFactory.getLogger(this.getClass());
+    private BattleCanvas canvas;
+
+    @Override
+    public void initial(PanelEvent evt) {
+        super.initial(evt);
+        if (super.canvas instanceof BattleCanvas) {
+            this.canvas = (BattleCanvas) super.canvas;
+        }
+    }
+
+    public void warmagic(ActionEvent evt) {
+        canvas.selectMagic();
+    }
+
+    public void waritem(ActionEvent evt) {
+        canvas.selectItem();
+    }
+
+    public void wardefend(ActionEvent evt) {
+        canvas.defendCmd();
+    }
+
+    public void warcatch(ActionEvent evt) {
+
+    }
+
+    public void warrunaway(ActionEvent evt) {
+        canvas.runawayCmd();
+    }
 }

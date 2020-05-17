@@ -10,10 +10,9 @@ import java.io.Serializable;
 import com.javaxyq.model.Item;
 
 /**
- *
  * @author Administrator
  */
-public class MedicineItem implements Item ,Serializable {
+public class MedicineItem implements Item, Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
     private String name;
@@ -138,40 +137,37 @@ public class MedicineItem implements Item ,Serializable {
             return false;
         }
         MedicineItem other = (MedicineItem) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     //******************** custom *********************/
-	@Override
-	public String toString() {
-		return String
-			.format(
-				"MedicineItem [id=%s, name=%s, type=%s, level=%s, price=%s, hp=%s, description=%s, efficacy=%s, injury=%s, mp=%s]",
-				id, name, type, level, price, hp, description, efficacy, injury, mp);
-	}
+    @Override
+    public String toString() {
+        return String
+                .format(
+                        "MedicineItem [id=%s, name=%s, type=%s, level=%s, price=%s, hp=%s, description=%s, efficacy=%s, injury=%s, mp=%s]",
+                        id, name, type, level, price, hp, description, efficacy, injury, mp);
+    }
 
-	/**
-	 * 功效
-	 */
-	public String actualEfficacy() {
-		boolean first = true;
-		StringBuilder buf = new StringBuilder(32);
-		if(hp != 0) {
-			buf.append("恢复气血");
-			buf.append(hp);
-			buf.append("点");
-			first = false;
-		}
-		if(mp != 0) {
-			if(!first)buf.append("，");
-			buf.append("恢复法力");
-			buf.append(mp);
-			buf.append("点");
-			first = false;
-		}
+    /**
+     * 功效
+     */
+    public String actualEfficacy() {
+        boolean first = true;
+        StringBuilder buf = new StringBuilder(32);
+        if (hp != 0) {
+            buf.append("恢复气血");
+            buf.append(hp);
+            buf.append("点");
+            first = false;
+        }
+        if (mp != 0) {
+            if (!first) buf.append("，");
+            buf.append("恢复法力");
+            buf.append(mp);
+            buf.append("点");
+            first = false;
+        }
 //		if(sp != 0) {
 //			if(!first)buf.append("，");
 //			buf.append("回复愤怒");
@@ -179,14 +175,14 @@ public class MedicineItem implements Item ,Serializable {
 //			buf.append("点");
 //			first = false;
 //		}
-		if(injury != 0) {//治疗伤势
-			if(!first)buf.append("，");
-			buf.append("治疗伤势");
-			buf.append(injury);
-			buf.append("点");
-			first = false;
-		}
-		return buf.toString();
-	}
-	
+        if (injury != 0) {//治疗伤势
+            if (!first) buf.append("，");
+            buf.append("治疗伤势");
+            buf.append(injury);
+            buf.append("点");
+            first = false;
+        }
+        return buf.toString();
+    }
+
 }

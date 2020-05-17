@@ -27,32 +27,34 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.FontUIResource;
 
 import com.javaxyq.tools.OpenDialog;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Utils {
 
     public static final ExampleFileFilter WTC_FILTER = new ExampleFileFilter("wtc",
-        "WasTools Canvas 文件");
+            "WasTools Canvas 文件");
 
     public static final ExampleFileFilter GIF_FILTER = new ExampleFileFilter("gif", "GIF 文件");
 
     public static final ExampleFileFilter BMP_FILTER = new ExampleFileFilter("bmp", "BMP 文件");
 
-    public static final ExampleFileFilter IMAGE_FILTER = new ExampleFileFilter(new String[] {
-            "jpg", "png", "gif" }, "All Images");
+    public static final ExampleFileFilter IMAGE_FILTER = new ExampleFileFilter(
+            new String[]{"jpg", "png", "gif"}, "All Images");
 
-    public static final ExampleFileFilter SUPPORT_FILTER = new ExampleFileFilter(new String[] {
-            "wtc", "was", "wdf", "wd1", "wd2", "wd3", "wd4", "jpg", "png", "gif" },
-        "All Support Files");
+    public static final ExampleFileFilter SUPPORT_FILTER = new ExampleFileFilter(
+            new String[]{"wtc", "was", "wdf", "wd1", "wd2", "wd3", "wd4", "jpg", "png", "gif"},
+            "All Support Files");
 
     public static final ExampleFileFilter PNG_FILTER = new ExampleFileFilter("png", "PNG 文件");
 
     public static final ExampleFileFilter WAS_FILTER = new ExampleFileFilter("was", "WAS 文件");
 
-    public static final ExampleFileFilter WDF_FILTER = new ExampleFileFilter(new String[] { "wdf",
-            "wd1", "wd2", "wd3", "wd4" }, "WDF 文件");
+    public static final ExampleFileFilter WDF_FILTER = new ExampleFileFilter(
+            new String[]{"wdf", "wd1", "wd2", "wd3", "wd4"}, "WDF 文件");
 
     public static final FileFilter JPEG_FILTER = new ExampleFileFilter(
-        new String[] { "jpg", "jpeg" }, "JPEG 文件");
+            new String[]{"jpg", "jpeg"}, "JPEG 文件");
 
     public static final FileFilter MAP_FILTER = new ExampleFileFilter("map", "地图文件");
 
@@ -87,10 +89,9 @@ public class Utils {
     /**
      * 初始化全部字体
      */
-    @SuppressWarnings("unchecked")
-	public static void iniGlobalFont() {
+    public static void iniGlobalFont() {
         FontUIResource fontRes = new FontUIResource(DEFAULT_FONT);
-        for (Enumeration keys = UIManager.getDefaults().keys(); keys.hasMoreElements();) {
+        for (Enumeration<Object> keys = UIManager.getDefaults().keys(); keys.hasMoreElements(); ) {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
             if (value instanceof FontUIResource)
@@ -120,7 +121,7 @@ public class Utils {
             lastOpenDir = openChooser.getCurrentDirectory();
             return openChooser.getSelectedFiles();
         }
-        return new File[] {};
+        return new File[]{};
     }
 
     public static Image loadImage(String filename) {
@@ -151,9 +152,6 @@ public class Utils {
 
     /**
      * 获得指定的图像写出器
-     * 
-     * @param format
-     * @return
      */
     public static ImageWriter getImageWriter(String format) {
         ImageWriter imgWriter = null;
@@ -166,11 +164,6 @@ public class Utils {
 
     /**
      * 根据指定格式输出图像到文件
-     * 
-     * @param img
-     * @param outputFile
-     * @param format
-     * @return
      */
     public static boolean writeImage(RenderedImage img, File outputFile, String format) {
         ImageWriter imgWriter = getImageWriter(format);
@@ -228,54 +221,47 @@ public class Utils {
     }
 
     public static Icon loadIcon(String filename) {
-        Icon icon = new ImageIcon(Utils.class.getResource(filename));
-        return icon;
+        return new ImageIcon(Utils.class.getResource(filename));
     }
 
     /**
-     * idenfity file type by suffix: "was","wdf","jpg","png","gif"
-     * 
-     * @param file
-     * @return
+     * identify file type by suffix: "was","wdf","jpg","png","gif"
      */
     public static int getFileType(File file) {
         return getFileType(file.getName());
     }
 
     /**
-     * idenfity file type by suffix: "was","wdf","jpg","png","gif"
-     * 
-     * @param filename
-     * @return
+     * identify file type by suffix: "was","wdf","jpg","png","gif"
      */
     public static int getFileType(String filename) {
         filename = filename.toLowerCase();
         int type = FILE_TYPE_UNKNOW;
-        if (filename.endsWith(".was") || filename.endsWith(".WAS")) {
+        if (filename.endsWith(".was")) {
             type = FILE_TYPE_WAS;
-        } else if (filename.endsWith(".wdf") || filename.endsWith(".WDF")) {
+        } else if (filename.endsWith(".wdf")) {
             type = FILE_TYPE_WDF;
-        } else if (filename.endsWith(".wd1") || filename.endsWith(".WD1")) {
+        } else if (filename.endsWith(".wd1")) {
             type = FILE_TYPE_WDF;
-        } else if (filename.endsWith(".wd2") || filename.endsWith(".WD2")) {
+        } else if (filename.endsWith(".wd2")) {
             type = FILE_TYPE_WDF;
-        } else if (filename.endsWith(".wd3") || filename.endsWith(".WD3")) {
+        } else if (filename.endsWith(".wd3")) {
             type = FILE_TYPE_WDF;
-        } else if (filename.endsWith(".wd4") || filename.endsWith(".WD4")) {
+        } else if (filename.endsWith(".wd4")) {
             type = FILE_TYPE_WDF;
-        } else if (filename.endsWith(".jpg") || filename.endsWith(".JPG")) {
+        } else if (filename.endsWith(".jpg")) {
             type = FILE_TYPE_JPG;
-        } else if (filename.endsWith(".jpeg") || filename.endsWith(".JPEG")) {
+        } else if (filename.endsWith(".jpeg")) {
             type = FILE_TYPE_JPG;
-        } else if (filename.endsWith(".png") || filename.endsWith(".PNG")) {
+        } else if (filename.endsWith(".png")) {
             type = FILE_TYPE_PNG;
-        } else if (filename.endsWith(".bmp") || filename.endsWith(".BMP")) {
+        } else if (filename.endsWith(".bmp")) {
             type = FILE_TYPE_BMP;
-        } else if (filename.endsWith(".gif") || filename.endsWith(".GIF")) {
+        } else if (filename.endsWith(".gif")) {
             type = FILE_TYPE_GIF;
-        } else if (filename.endsWith(".wtc") || filename.endsWith(".WTC")) {
+        } else if (filename.endsWith(".wtc")) {
             type = FILE_TYPE_WTC;
-        } else if (filename.endsWith(".ini") || filename.endsWith(".INI")) {
+        } else if (filename.endsWith(".ini")) {
             type = FILE_TYPE_INI;
         }
         return type;
@@ -316,10 +302,6 @@ public class Utils {
     /**
      * 读取文件流。<br>
      * 查找顺序：1.查找本地文件资源 2.Jar文件中的资源
-     * 
-     * @param filename
-     * @return
-     * @throws FileNotFoundException
      */
     public static InputStream getResourceAsStream(String filename) {
         InputStream in = null;
@@ -336,7 +318,7 @@ public class Utils {
             in = Utils.class.getResourceAsStream(filename);
         }
         if (in == null) {
-            System.err.println("load resource failed: " + filename);
+            log.error("load resource failed: " + filename);
         }
         return in;
     }

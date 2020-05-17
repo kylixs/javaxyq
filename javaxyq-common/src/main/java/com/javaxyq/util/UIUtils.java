@@ -35,8 +35,6 @@ public class UIUtils {
 	}
 	/**
 	 * 提示错误信息
-	 * @param msg
-	 * @param e
 	 */
 	public static void showError(String msg, Exception e) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream(1024);
@@ -51,8 +49,6 @@ public class UIUtils {
 	}
 	/**
 	 * 提示普通信息
-	 * @param msg
-	 * @param e
 	 */
 	public static void showMessgge(String msg,String details) {
 		JideOptionPane optionPane = new JideOptionPane("", JOptionPane.INFORMATION_MESSAGE, JideOptionPane.CLOSE_OPTION);
@@ -69,7 +65,7 @@ public class UIUtils {
 	public static final Font TEXT_NAME_FONT = new Font("宋体", Font.PLAIN, 16);
 	public static final Color TEXT_NAME_NPC_COLOR = new Color(219, 197, 63);
 	public static final Color COLOR_NAME_HIGHLIGHT = Color.RED;
-	private static Map<String, Color> colors = new HashMap<String, Color>();
+	private static Map<String, Color> colors = new HashMap<>();
 	static {
 		colors.put("black", Color.black);
 		colors.put("blue", Color.blue);
@@ -85,10 +81,7 @@ public class UIUtils {
 		colors.put("white", Color.white);
 		colors.put("yellow", Color.yellow);
 	}
-	/**
-	 * @param color
-	 * @return
-	 */
+
 	public static Color getColor(String color) {
 		Color c = colors.get(color);
 		if(c == null) {

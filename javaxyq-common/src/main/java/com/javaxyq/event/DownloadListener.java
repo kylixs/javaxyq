@@ -18,22 +18,18 @@ public interface DownloadListener extends EventListener {
 
 	/**
 	 * 下载开始
-	 * @param e
 	 */
 	void downloadStarted(DownloadEvent e);
 	/**
 	 * 下载完成
-	 * @param e
 	 */
 	void downloadCompleted(DownloadEvent e);
 	/**
 	 * 下载中断
-	 * @param e
 	 */
 	void downloadInterrupted(DownloadEvent e);
 	/**
 	 * 下载进度更新
-	 * @param e
 	 */
 	void downloadUpdate(DownloadEvent e);
 }
