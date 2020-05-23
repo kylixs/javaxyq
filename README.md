@@ -47,44 +47,21 @@ JavaXYQ项目已经迁移到github，请移步至：
 
 在线运行JavaXYQ：http://javaxyq.appspot.com/ (更新时间：2010.3.6) link seems broken (2020/05/02)
 
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091202/自动行走1.jpg' />
-<p>自动寻路-傲来国</p>
+### 预览图
 
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091202/自动行走2.jpg' />
-<p>自动寻路-东海湾</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091202/自动行走3.jpg' />
-<p>自动寻路-五庄观</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091117/1.2-鼠标行走.jpg' /> 
-<p>鼠标行走-自动寻找最短路径</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091202/任务提示2.jpg' />
-<p>送信任务</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091202/任务提示.jpg' />
-<p>寻物任务</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091202/任务提示-巡逻.JPG'>
-<p>巡逻任务</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091202/购买药品2.jpg' />
-<p>购买药品</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091202/购买药品3.jpg' />
-<p>购买成功</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091122/贡献者.JPG'>
-<p>贡献者</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091122/战斗1.JPG'> 
-<p>战斗回合开始</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091122/战斗3.JPG'>
-<p>选择施放的法术</p>
-
-<img src='http://p-blog.csdn.net/images/p_blog_csdn_net/Kylixs/EntryImages/20091117/烈火.jpg' /> 
-<p>施放法术-烈火</p>
+![自动寻路-傲来国](doc/image/image001.jpg)
+![自动寻路-东海湾](doc/image/image002.jpg)
+![自动寻路-五庄观](doc/image/image003.jpg)
+![鼠标行走-自动寻找最短路径](doc/image/image004.jpg)
+![送信任务](doc/image/image005.jpg)
+![寻物任务](doc/image/image006.jpg)
+![巡逻任务](doc/image/image007.jpg)
+![购买药品](doc/image/image008.jpg)
+![购买成功](doc/image/image009.jpg)
+![贡献者](doc/image/image010.jpg)
+![战斗回合开始](doc/image/image011.jpg)
+![选择施放的法术](doc/image/image012.jpg)
+![施放法术-烈火](doc/image/image013.jpg)
 
 ### 视频
 
