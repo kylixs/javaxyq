@@ -28,12 +28,13 @@ import java.io.File;
 public class DesktopApplication extends BaseApplication {
 
     public static void main(String[] args) {
-        DesktopApplication app = new DesktopApplication();
+        Application app = new DesktopApplication();
         app.startup();
     }
 
     private GameWindow window;
 
+    @Override
     protected GameWindow createWindow() {
         window = new DesktopWindow();
         window.init(context);
@@ -95,8 +96,8 @@ public class DesktopApplication extends BaseApplication {
 
         //task
         getTaskManager().register("school", "com.javaxyq.task.SchoolTaskCoolie");
-        ApplicationHelper.getApplication().getItemManager().regItem(ItemTypes.TYPE_MEDICINE, new MedicineItemHandler());
-        ApplicationHelper.getApplication().getItemManager().regItem(ItemTypes.TYPE_WEAPON, new WeaponItemHandler());
+        ApplicationHelper.getApplication().getItemManager().registerItem(ItemTypes.TYPE_MEDICINE, new MedicineItemHandler());
+        ApplicationHelper.getApplication().getItemManager().registerItem(ItemTypes.TYPE_WEAPON, new WeaponItemHandler());
 
     }
 

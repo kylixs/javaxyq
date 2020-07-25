@@ -28,7 +28,7 @@ public class n1006 extends PlayerAdapter {
     	Option[] options = new Option[] {
 	    	new Option("购买","open","buy"),
 	    	new Option("告辞","close")};
-    	ApplicationHelper.getApplication().doTalk(evt.getPlayer(), "小店有各种草药，价廉物美，请客官随便挑选。",options);
+    	ApplicationHelper.getApplication().chat(evt.getPlayer(), "小店有各种草药，价廉物美，请客官随便挑选。",options);
     }
 	
 }

@@ -52,11 +52,11 @@ public class PlayerAdapter implements PlayerListener {
 	}
 
 	public Option doTalk(Player talker, String chat, Option[] options) {
-		return application.doTalk(talker, chat, options);
+		return application.chat(talker, chat, options);
 	}
 
 	public void doTalk(Player p, String chat) {
-		application.doTalk(p, chat);
+		application.chat(p, chat);
 	}
 
 	public void move(Player player, Point increment) {

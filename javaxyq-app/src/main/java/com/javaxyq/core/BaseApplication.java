@@ -3,6 +3,7 @@
  */
 package com.javaxyq.core;
 
+import com.javaxyq.Conf;
 import com.javaxyq.action.Actions;
 import com.javaxyq.action.BaseAction;
 import com.javaxyq.battle.BattleCanvas;
@@ -30,12 +31,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @Slf4j
 public abstract class BaseApplication implements Application {
-    private boolean debug = false;
 
     private DataManager dataManager;
     private ItemManager itemManager;
@@ -65,14 +64,14 @@ public abstract class BaseApplication implements Application {
         //初始化DB连接
         new Thread(() -> {
             //DEBUG
-            if (debug) {
+            if (Conf.debug) {
                 DBToolkit.setForceInit(true);
             }
             DBToolkit.prepareDatabase();
         }).start();
         //创建上下文
         context = createContext();
-        dataLoadingThread = new Thread(() -> loadData());
+        dataLoadingThread = new Thread(this::loadData);
         dataLoadingThread.start();
         //创建窗口
         window = createWindow();
@@ -234,14 +233,14 @@ public abstract class BaseApplication implements Application {
     /**
      * 触发与npc的对话
      */
-    public void doTalk(Player p, String chat) {
-        doTalk(p, chat, null);
+    public void chat(Player p, String text) {
+        chat(p, text, null);
     }
 
     /**
      * 触发与npc的对话
      */
-    public Option doTalk(Player talker, String chat, Option[] options) {
+    public Option chat(Player talker, String text, Option[] options) {
         context.setTalker(talker);
         TalkPanel dlg0 = (TalkPanel) DialogFactory.getDialog("npctalk", true);
         //make a copy
@@ -251,7 +250,7 @@ public abstract class BaseApplication implements Application {
         dlg.setClosable(dlg0.isClosable());
         dlg.setMovable(dlg0.isMovable());
         dlg.setName(dlg0.getName());
-        dlg.initTalk(chat, options);
+        dlg.initTalk(text, options);
         dlg.setTalker(talker.getCharacter());
         context.getWindow().getHelper().showModalDialog(dlg);
         return dlg.getResult();
@@ -308,14 +307,6 @@ public abstract class BaseApplication implements Application {
         //TODO
     }
 
-    public boolean isDebug() {
-        return debug;
-    }
-
-    public void setDebug(boolean debug) {
-        this.debug = debug;
-    }
-
     public int getState() {
         return state;
     }
@@ -340,7 +331,6 @@ public abstract class BaseApplication implements Application {
 
     /**
      * 加载存档
-     * @throws ProfileException
      */
     public void loadProfile(String profileName) throws ProfileException {
         if (profileName == null) {
@@ -365,8 +355,8 @@ public abstract class BaseApplication implements Application {
 
         Task[] tasks = profile.getTasks();
         if (tasks != null) {
-            for (int i = 0; i < tasks.length; i++) {
-                getTaskManager().add(tasks[i]);
+            for (Task task : tasks) {
+                getTaskManager().add(task);
             }
         }
         this.profile = profile;
@@ -380,7 +370,6 @@ public abstract class BaseApplication implements Application {
 
     /**
      * 保存存档
-     * @throws ProfileException
      */
     public void saveProfile() throws ProfileException {
         try {
@@ -417,7 +406,6 @@ public abstract class BaseApplication implements Application {
 
     /**
      * 获取当前游戏存档名称
-     * @return
      */
     public String getProfileName() {
         if (profile != null) {

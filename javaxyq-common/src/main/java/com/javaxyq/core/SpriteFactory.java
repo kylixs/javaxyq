@@ -112,7 +112,7 @@ public class SpriteFactory {
      * 加载阴影的精灵
      */
     public static Sprite loadShadow() {
-        return loadSprite("/shape/char/shadow.tcp");
+        return loadSprite("shape/char/shadow.tcp");
     }
 
     public static Sprite loadSprite(String filename, int[] colorations) {

@@ -1,17 +1,7 @@
 package com.javaxyq;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import javax.swing.JFrame;
-
 import com.javaxyq.battle.BattleCanvas;
+import com.javaxyq.core.Application;
 import com.javaxyq.core.BaseApplication;
 import com.javaxyq.core.DesktopWindow;
 import com.javaxyq.core.GameWindow;
@@ -20,6 +10,12 @@ import com.javaxyq.io.CacheManager;
 import com.javaxyq.widget.Cursor;
 import com.javaxyq.widget.Player;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.swing.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * 回合制战斗播放器
@@ -30,7 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 public class BattlePlayerApplication extends BaseApplication {
 
     public static void main(String[] args) {
-        new BattlePlayerApplication().startup();
+        Application app = new BattlePlayerApplication();
+        app.startup();
     }
 
     private DesktopWindow window;

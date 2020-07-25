@@ -67,10 +67,10 @@ public class ItemLabel extends Label {
 
 	protected void paintComponent(java.awt.Graphics g) {
 		super.paintComponent(g);
-		if(item!=null && item.getAmount() >1) {
+		if(item!=null && item.getCount() >1) {
 			g.setColor(Color.BLACK);
 			g.setFont(foregroundFont);
-			String str = String.valueOf(item.getAmount());
+			String str = String.valueOf(item.getCount());
 			g.drawString(str, 5-1, 15);
 			g.drawString(str, 5+1, 15);
 			g.drawString(str, 5, 15-1);

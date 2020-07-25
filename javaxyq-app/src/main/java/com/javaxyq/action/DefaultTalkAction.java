@@ -52,9 +52,9 @@ public class DefaultTalkAction extends PlayerAdapter {
             listener.talk(evt);
         } else {//没有事件触发默认对话
             DataManager dataManager = ApplicationHelper.getApplication().getDataManager();
-            String chat = dataManager.findChat(npcId);
+            String chat = dataManager.findChatText(npcId);
             if (chat != null) {
-                ApplicationHelper.getApplication().doTalk(player, chat);
+                ApplicationHelper.getApplication().chat(player, chat);
             }
         }
     }

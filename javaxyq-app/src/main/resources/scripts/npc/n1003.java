@@ -29,7 +29,7 @@ public class n1003 extends PlayerAdapter {
     	options[0] = new Option("五庄观","transport","1146 12 11");
     	options[1] = new Option("傲来国","transport","1092 163 8");
     	options[2] = new Option("我还想周围看看","close");
-    	ApplicationHelper.getApplication().doTalk(evt.getPlayer(), "客官,你要到哪里去呢?",options);
+    	ApplicationHelper.getApplication().chat(evt.getPlayer(), "客官,你要到哪里去呢?",options);
     }
 	
 }

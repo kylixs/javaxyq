@@ -6,21 +6,21 @@ import java.util.List;
 
 public interface SceneTeleporterDAO {
 
-	public abstract void create(SceneTeleporter sceneTeleporter) throws PreexistingEntityException, Exception;
+	void create(SceneTeleporter sceneTeleporter) throws Exception;
 
-	public abstract void edit(SceneTeleporter sceneTeleporter) throws NonexistentEntityException, Exception;
+	void edit(SceneTeleporter sceneTeleporter) throws Exception;
 
-	public abstract void destroy(Integer id) throws NonexistentEntityException;
+	void destroy(Integer id) throws NonexistentEntityException;
 
-	public abstract List<SceneTeleporter> findSceneTeleporterEntities() throws SQLException;
+	List<SceneTeleporter> findSceneTeleporterEntities() throws SQLException;
 
-	public abstract List<SceneTeleporter> findSceneTeleporterEntities(int maxResults, int firstResult) throws SQLException;
+	List<SceneTeleporter> findSceneTeleporterEntities(int maxResults, int firstResult) throws SQLException;
 
-	public abstract SceneTeleporter findSceneTeleporter(Integer id) throws SQLException;
+	SceneTeleporter findSceneTeleporter(Integer id) throws SQLException;
 
-	public abstract int getSceneTeleporterCount() throws SQLException;
+	int getSceneTeleporterCount() throws SQLException;
 
 	//************************* custom *******************************//
-	public abstract List<SceneTeleporter> findTeleportersBySceneId(int sceneId) throws SQLException;
+	List<SceneTeleporter> findTeleportersBySceneId(int sceneId) throws SQLException;
 
 }

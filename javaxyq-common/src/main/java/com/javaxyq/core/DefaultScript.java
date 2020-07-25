@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.EventListener;
 import java.util.List;
@@ -25,15 +26,12 @@ import java.util.List;
 @Slf4j
 public class DefaultScript implements ScriptEngine {
 
-    private static final DefaultScript instance = new DefaultScript();
+    private static final DefaultScript INSTANCE = new DefaultScript();
 
     public static DefaultScript getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
-//	public static void main(String[] args) {
-//		DefaultScript.getInstance().compileAndLoadClass("ui.mainwin");
-//	}
     private String classesDir = "tmp/script_classes";
 
     private boolean debug;
@@ -47,6 +45,7 @@ public class DefaultScript implements ScriptEngine {
     }
 
     public boolean compile(String filename) {
+
         File dir = new File(classesDir);
         if (!dir.exists()) {
             dir.mkdirs();

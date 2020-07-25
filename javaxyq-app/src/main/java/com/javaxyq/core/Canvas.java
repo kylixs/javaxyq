@@ -177,10 +177,6 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
 
     /**
      * 在(x,y)增加一个NPC
-     *
-     * @param npc
-     * @param x
-     * @param y
      */
     public void addNPC(Player npc, int x, int y) {
         npc.setSceneLocation(x, y);
@@ -198,9 +194,6 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
 
     /**
      * 绘制游戏画面
-     *
-     * @param g
-     * @param elapsedTime
      */
     public void draw(Graphics g, long elapsedTime) {
         if (g == null) {
@@ -284,8 +277,7 @@ public class Canvas extends JPanel implements GameCanvas, DownloadListener {
 
     protected void drawNPC(Graphics g, long elapsedTime) {
         //System.out.println(System.currentTimeMillis()+" update NPC: "+elapsedTime);
-        for (int i = 0; i < npcs.size(); i++) {
-            Player npc = npcs.get(i);
+        for (Player npc : npcs) {
             npc.setHover(isHover(npc));
             npc.update(elapsedTime);
             Point p = npc.getLocation();

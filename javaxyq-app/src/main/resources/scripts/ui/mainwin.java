@@ -4,10 +4,7 @@ import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 
-import javax.swing.SwingUtilities;
-
 import com.javaxyq.core.Application;
-import com.javaxyq.core.DataStore;
 import com.javaxyq.core.GameCanvas;
 import com.javaxyq.core.SceneCanvas;
 import com.javaxyq.core.SpriteFactory;
@@ -121,7 +118,7 @@ public class mainwin extends PanelHandler implements ActionListener{
 		Arrays.sort(items,new MedicineItemComparator(ItemTypes.TYPE_MEDICINE_HP));
 		for (int i = 0; i < items.length; i++) {
 			ItemInstance item = items[i];
-			while(reqHp > 0 && item.getLevel() <3 && item.getAmount() > 0) {
+			while(reqHp > 0 && item.getLevel() <3 && item.getCount() > 0) {
 				log.info("使用一个药品："+item.getName());
 				application.getItemManager().useItem(player, item);
 				reqHp = data.maxHp - data.hp;
@@ -151,7 +148,7 @@ public class mainwin extends PanelHandler implements ActionListener{
 		Arrays.sort(items,new MedicineItemComparator(ItemTypes.TYPE_MEDICINE_MP));
 		for (int i = 0; i < items.length; i++) {
 			ItemInstance item = items[i];
-			while(reqMp > 0 && item.getLevel() <3 && item.getAmount() > 0) {
+			while(reqMp > 0 && item.getLevel() <3 && item.getCount() > 0) {
 				log.info("使用一个药品："+item.getName());
 				application.getItemManager().useItem(player, item);
 				reqMp = data.maxMp - data.mp;

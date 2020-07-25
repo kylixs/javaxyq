@@ -6,8 +6,7 @@ import com.javaxyq.widget.Player;
 
 public interface ItemManager {
 
-	public abstract void regItem(int type, ItemListener l);
+    void registerItem(int type, ItemListener l);
 
-	public abstract boolean useItem(Player player, ItemInstance item);
-
+    boolean useItem(Player player, ItemInstance item);
 }

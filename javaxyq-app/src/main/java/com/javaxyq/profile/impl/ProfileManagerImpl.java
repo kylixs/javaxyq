@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ProfileManagerImpl implements ProfileManager {
 
-    private MedicineItemDAOImpl medicineDAO;
+    private final MedicineItemDAOImpl medicineDAO;
 
     public ProfileManagerImpl() {
         medicineDAO = new MedicineItemDAOImpl();
@@ -149,14 +149,14 @@ public class ProfileManagerImpl implements ProfileManager {
             //物品数据
             ItemInstance[] items = profile.getItems();
             oos.writeInt(items.length);
-            for (int i = 0; i < items.length; i++) {
-                oos.writeObject(items[i]);
+            for (ItemInstance item : items) {
+                oos.writeObject(item);
             }
             //任务数据
             Task[] tasks = profile.getTasks();
             oos.writeInt(tasks.length);
-            for (int i = 0; i < tasks.length; i++) {
-                oos.writeObject(tasks[i]);
+            for (Task task : tasks) {
+                oos.writeObject(task);
             }
             oos.close();
             profile.setFilename(file.getAbsolutePath());

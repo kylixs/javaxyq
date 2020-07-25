@@ -11,15 +11,11 @@ package npc;
 import java.util.List;
 import java.util.Random;
 
-import com.javaxyq.core.BaseApplication;
-import com.javaxyq.core.Context;
-import com.javaxyq.core.GameMain;
 import com.javaxyq.event.PlayerAdapter;
 import com.javaxyq.event.PlayerEvent;
 import com.javaxyq.model.Option;
 import com.javaxyq.model.Task;
 import com.javaxyq.task.TaskManager;
-import com.javaxyq.ui.UIHelper;
 import com.javaxyq.widget.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +55,8 @@ public class n1002 extends PlayerAdapter {
 			if(currTask.isFinished()) {//任务已完成
 				taskManager.remove(currTask);
 				Player player = context.getPlayer();
-				dataManager.addMoney(player,currTask.getMoney());
-				dataManager.addExp(player, currTask.getExp());
+				dataManager.incMoney(player,currTask.getMoney());
+				dataManager.incExp(player, currTask.getExp());
 				String chat = "徒儿辛苦了，为师奖励你#R"+currTask.getExp()+"#n经验和#R"+currTask.getMoney()+"#n金钱，继续努力！";
 				int times = currTask.getInt("times");
 				if(times==10) {
@@ -68,7 +64,7 @@ public class n1002 extends PlayerAdapter {
 					//额外奖励
 					String[] items = {"天不老","六道轮回","仙狐涎","白露为霜","麝香","熊胆"};
 					String item = items[new Random().nextInt(items.length)];
-					dataManager.addItemToPlayerBag(player,dataManager.createItem(item));
+					dataManager.pickItem(player,dataManager.createItem(item));
 					chat += "#r完成了第"+rounds+"轮师门任务，额外奖励你一个#R"+item+"#n！";
 				}
 				doTalk(context.getTalker(),chat);				

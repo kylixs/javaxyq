@@ -12,20 +12,18 @@ public interface Application {
 
     float NORMAL_SPEED = 0.12f;
     float BEVEL_SPEED = 0.071f;
+
     int STEP_DISTANCE = 20;
-    int DOUBLE_STEP_DISTANCE = 2 * STEP_DISTANCE;
-    /**
-     * 冒泡对话显示的时间 (ms)
-     */
+    int DOUBLE_STEP_DISTANCE = STEP_DISTANCE * 2;
+
+    // 冒泡对话显示的时间
     int CHAT_MS = 15 * 1000;
-    /**
-     * 游戏状态
-     */
+
+    // 游戏状态
     int STATE_BATTLE = 0x1;
     int STATE_NORMAL = 0x0;
-    /**
-     * 冒泡对话保留时间(ms)
-     */
+
+    // 冒泡对话保留时间
     long CHAT_REMIND_MS = 15000;
 
     void startup();
@@ -44,26 +42,30 @@ public interface Application {
 
     ScriptEngine getScriptEngine();
 
+    GameWindow getWindow();
+
+    GameCanvas getCanvas();
+
+    SceneCanvas getSceneCanvas();
+
+    UIHelper getUIHelper();
+
     /**
      * 执行指定ActionCommand的Action
      */
     void doAction(Object source, String actionId, Object[] args);
 
-    /**
-     * 触发与npc的对话
-     */
-    void doTalk(Player p, String chat);
-
-    /**
-     * 触发与npc的对话
-     */
-    Option doTalk(Player talker, String chat, Option[] options);
-
     void doAction(Object source, String actionId);
 
-    boolean isDebug();
+    /**
+     * 触发与npc的对话
+     */
+    void chat(Player p, String text);
 
-    void setDebug(boolean debug);
+    /**
+     * 触发与npc的对话
+     */
+    Option chat(Player talker, String text, Option[] options);
 
     int getState();
 
@@ -72,12 +74,6 @@ public interface Application {
     void playMusic();
 
     void stopMusic();
-
-    GameWindow getWindow();
-
-    GameCanvas getCanvas();
-
-    UIHelper getUIHelper();
 
     /**
      * 进入游戏场景
@@ -114,5 +110,4 @@ public interface Application {
      */
     void endGame();
 
-    SceneCanvas getSceneCanvas();
 }

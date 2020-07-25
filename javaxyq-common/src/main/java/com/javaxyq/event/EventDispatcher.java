@@ -25,7 +25,7 @@ public class EventDispatcher<S extends EventTarget, E extends EventObject> exten
     /**
      * 事件调度器实例表
      */
-    private static final Map<Object, EventDispatcher> instances = new HashMap<Object, EventDispatcher>();
+    private static final Map<Object, EventDispatcher> instances = new HashMap<>();
     private static EventDispatcher dispatcher;
 
     private BlockingQueue<E> eventQueue = new LinkedBlockingQueue<E>();

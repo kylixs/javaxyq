@@ -1,6 +1,7 @@
 package com.javaxyq;
 
 import com.javaxyq.battle.BattleCanvas;
+import com.javaxyq.core.Application;
 import com.javaxyq.core.BaseApplication;
 import com.javaxyq.core.DesktopWindow;
 import com.javaxyq.core.GameWindow;
@@ -25,7 +26,8 @@ import java.util.Random;
 public class BattleApplication extends BaseApplication {
 
     public static void main(String[] args) {
-        new BattleApplication().startup();
+        Application app = new BattleApplication();
+        app.startup();
     }
 
     private DesktopWindow window;

@@ -124,7 +124,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 			dataManager.removeItemFromPlayer(player, item);
 			dataManager.setItem(player, targetIndex, item);
 			if(oldItem != null) {
-				dataManager.addItemToPlayerBag(player, oldItem);
+				dataManager.pickItem(player, oldItem);
 			}
 		}
 		
@@ -144,7 +144,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 		}
 
 		dataManager.removeItemFromPlayer(player, item);
-		dataManager.addItemToPlayerBag(player, item);
+		dataManager.pickItem(player, item);
 	}
 	
 	 /* 销毁物品
@@ -367,7 +367,7 @@ public class item extends PanelHandler implements MouseListener,MouseMotionListe
 		if(items[srcIndex]!=null && items[destIndex]!=null) {
 			//如果叠加成功
 			if(dataManager.overlayItems(items[srcIndex],items[destIndex])) {
-				if(items[srcIndex].getAmount()==0) {//如果物品数量为0，则销毁之
+				if(items[srcIndex].getCount()==0) {//如果物品数量为0，则销毁之
 					items[srcIndex] = null;
 				}
 				return true;

@@ -42,16 +42,16 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class UIHelper {
-    /**
-     * 初始化UI参数
-     */
+
+    //初始化UI参数
     static {
         LightweightToolTipManager.sharedInstance().setInitialDelay(100);
         UIManager.put("ToolTip.border", new BorderUIResource(new CompoundBorder(
-                new RoundLineBorder(Color.WHITE, 1, 8, 8), new EmptyBorder(3, 3, 3, 3))));
+                new RoundLineBorder(Color.WHITE, 1, 8, 8),
+                new EmptyBorder(3, 3, 3, 3)
+        )));
         UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
-        //		UIManager.put("ToolTip.background", new ColorUIResource(new Color(255,
-        //				255, 224)));
+        //		UIManager.put("ToolTip.background", new ColorUIResource(new Color(255, 255, 224)));
         UIManager.put("ToolTip.font", new FontUIResource(UIUtils.TEXT_FONT));
         //UIManager.put("ToolTipUI", "com.javaxyq.ui.TranslucentTooltipUI");
 
@@ -59,15 +59,14 @@ public class UIHelper {
         UIManager.put("GameButtonUI", "com.javaxyq.ui.GameButtonUI");
     }
 
-    private List<PromptLabel> prompts = new ArrayList<>();
-    private static Map<String, Cursor> cursors = new HashMap<>();
+    private final List<PromptLabel> prompts = new ArrayList<>();
+    private static final Map<String, Cursor> cursors = new HashMap<>();
 
     private boolean debug = false;
-    private GameWindow window;
-    private ScriptEngine scriptEngine;
+    private final GameWindow window;
+    private final ScriptEngine scriptEngine;
 
     public UIHelper(GameWindow window) {
-        super();
         this.window = window;
         this.scriptEngine = DefaultScript.getInstance();
     }
@@ -110,9 +109,6 @@ public class UIHelper {
 
     /**
      * 显示tooltip
-     * @param c
-     * @param src
-     * @param e
      */
     public void showToolTip(JComponent c, JComponent src, MouseEvent e) {
         final Container canvas = getCanvasComponent();
@@ -126,7 +122,6 @@ public class UIHelper {
 
     /**
      * 隐藏tooltip
-     * @param c
      */
     public void hideToolTip(JComponent c) {
         final Container canvas = getCanvasComponent();
@@ -182,7 +177,6 @@ public class UIHelper {
 
     /**
      * 显示面板
-     * @param dialog
      */
     public void showDialog(Panel dialog) {
         Container canvas = getCanvasComponent();
@@ -219,7 +213,6 @@ public class UIHelper {
 
     /**
      * 隐藏面板
-     * @param dialog
      */
     public void hideDialog(Panel dialog) {
         if (dialog != null) {
@@ -234,7 +227,6 @@ public class UIHelper {
 
     /**
      * 显示面板
-     * @param id
      */
     public void showDialog(String id) {
         Panel dlg = null;
@@ -248,8 +240,6 @@ public class UIHelper {
 
     /**
      * 获取Dialog，如果此Dialog还没有加载则自动加载
-     * @param id
-     * @return
      */
     public Panel getDialog(String id) {
         Panel dlg;
@@ -278,7 +268,6 @@ public class UIHelper {
 
     /**
      * 隐藏面板
-     * @param id
      */
     public void hideDialog(String id) {
         if (id != null) {
@@ -289,7 +278,6 @@ public class UIHelper {
 
     /**
      * 获得当前的talkPanel
-     * @return
      */
     public TalkPanel getTalkPanel() {
         Component comp = getCanvasComponent().getComponent(0);

@@ -78,7 +78,7 @@ public class player_status extends PanelHandler{
 				e.printStackTrace();
 			}
 		}
-		dataManager.recalcProperties(player.getData());
+		dataManager.reCalcProperties(player.getData());
 		updateLabels(panel);
 	}
 
@@ -98,7 +98,7 @@ public class player_status extends PanelHandler{
 			vo.durability += 1;
 			vo.potentiality += 5;
 			vo.exp -= levelExp;
-			dataManager.recalcProperties(vo);
+			dataManager.reCalcProperties(vo);
 			
 			Button button = (Button) evt.getSource();
 			Panel panel = (Panel) button.getParent();

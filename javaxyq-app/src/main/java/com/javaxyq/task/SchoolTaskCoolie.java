@@ -73,7 +73,7 @@ public class SchoolTaskCoolie extends TaskCoolie {
             task.setFinished(true);
             rounds = task.getInt("rounds");
             times = task.getInt("times");
-            ApplicationHelper.getApplication().doTalk(target, "我已收到你师傅的来信，赶快回去禀报吧。", null);
+            ApplicationHelper.getApplication().chat(target, "我已收到你师傅的来信，赶快回去禀报吧。", null);
             return true;
         } else {
             log.info("任务已完成？" + task);
@@ -93,8 +93,8 @@ public class SchoolTaskCoolie extends TaskCoolie {
             ItemInstance[] items = dataManager.getItems(player);
             for (ItemInstance item : items) {
                 if (item != null && StringUtils.equals(required, item.getName())) {
-                    item.alterAmount(-1);
-                    if (item.getAmount() == 0) {//TODO 物品销毁？
+                    item.inc(-1);
+                    if (item.getCount() == 0) {//TODO 物品销毁？
                         dataManager.removeItemFromPlayer(player, item);
                     }
                     task.setFinished(true);

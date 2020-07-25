@@ -215,12 +215,12 @@ public class DataStore implements DataManager {
         growthRateTable.put("2037", 0.8);
     }
 
-    public void addExp(Player player, int exp) {
+    public void incExp(Player player, int exp) {
         PlayerVO vo = player.getData();
         vo.exp += exp;
     }
 
-    public void addHp(Player player, int hp) {
+    public void incHp(Player player, int hp) {
         PlayerVO vo = player.getData();
         vo.hp = Math.min(vo.hp + hp, vo.maxHp);
         if (vo.hp < 0) {
@@ -234,7 +234,7 @@ public class DataStore implements DataManager {
      *
      * @return 给予成功返回true
      */
-    public boolean addItemToPlayerBag(Player player, ItemInstance item) {
+    public boolean pickItem(Player player, ItemInstance item) {
         //TODO 获得物品
         synchronized (player) {
             ItemInstance[] items = getItems(player);
@@ -244,19 +244,19 @@ public class DataStore implements DataManager {
                     items[index] = item;
                     return true;
                 } else if (overlayItems(item, items[index])) {//可以叠加
-                    if (item.getAmount() == 0) return true;//叠加完毕
+                    if (item.getCount() == 0) return true;//叠加完毕
                 }
             }
             return false;
         }
     }
 
-    public void addMoney(Player player, int money) {
+    public void incMoney(Player player, int money) {
         PlayerVO vo = player.getData();
         vo.money += money;
     }
 
-    public void addMp(Player player, int mp) {
+    public void incMp(Player player, int mp) {
         PlayerVO vo = player.getData();
         vo.mp = Math.min(vo.mp + mp, vo.maxMp);
         if (vo.mp < 0) {
@@ -267,7 +267,7 @@ public class DataStore implements DataManager {
     /**
      * 增加某属性的值
      */
-    public void addProp(Player player, String prop, int val) {
+    public void incProp(Player player, String prop, int val) {
         PlayerVO vo = player.getData();
         //可能改属性有上限值
         String maxProp = "max" + prop;
@@ -296,12 +296,12 @@ public class DataStore implements DataManager {
     }
 
     @Override
-    public ItemInstance createItem(String name, int amount) {
+    public ItemInstance createItem(String name, int count) {
         if (name == null || name.isEmpty()) return null;
         name = name.trim();
         Item item = this.findItemByName(name);
         if (item != null) {
-            return new ItemInstance(item, amount);
+            return new ItemInstance(item, count);
         }
         log.error("createItem failed: " + name);
         return null;
@@ -405,20 +405,20 @@ public class DataStore implements DataManager {
         //FIXME 初始化属性
         //data.level = cfg.level;
         this.initPlayerData(data);
-        this.recalcProperties(data);
+        this.reCalcProperties(data);
         log.info("create player: " + data);
         player.setData(data);
         return player;
     }
 
-    public boolean existItem(String name, int amount) {
+    public boolean existItem(String name, int count) {
         return false;
     }
 
     /**
      * 查找NPC闲聊内容
      */
-    public String findChat(String npcId) {
+    public String findChatText(String npcId) {
         File file = CacheManager.getInstance().getFile("chat/" + npcId + ".txt");
         if (file != null && file.exists()) {
             List<String> chats = new ArrayList<String>();
@@ -655,17 +655,17 @@ public class DataStore implements DataManager {
         context.setScene("1146");//五庄观
 
         ItemInstance item = createItem("四叶花");
-        item.setAmount(99);
-        addItemToPlayerBag(p, item);
+        item.setCount(99);
+        pickItem(p, item);
         item = createItem("佛手");
-        item.setAmount(99);
-        addItemToPlayerBag(p, item);
+        item.setCount(99);
+        pickItem(p, item);
         item = createItem("血色茶花");
-        item.setAmount(30);
+        item.setCount(30);
         item = createItem("九香虫");
-        addItemToPlayerBag(p, item);
+        pickItem(p, item);
         int money = 50000;
-        addMoney(p, money);
+        incMoney(p, money);
         log.info("create game data");
     }
 
@@ -689,7 +689,7 @@ public class DataStore implements DataManager {
         //随机门派
         elf.school = 门派列表[random.nextInt(12)];
         //重新计算属性
-        this.recalcElfProps(elf);
+        this.reCalcElfProps(elf);
     }
 
     /**
@@ -820,10 +820,10 @@ public class DataStore implements DataManager {
     public boolean overlayItems(ItemInstance srcItem, ItemInstance destItem) {
         if (srcItem.equals(destItem)) {
             int maxAmount = getOverlayAmount(srcItem.getItem());
-            if (maxAmount > destItem.getAmount()) {
-                int total = srcItem.getAmount() + destItem.getAmount();
-                destItem.setAmount(Math.min(total, maxAmount));
-                srcItem.setAmount(total - destItem.getAmount());
+            if (maxAmount > destItem.getCount()) {
+                int total = srcItem.getCount() + destItem.getCount();
+                destItem.setCount(Math.min(total, maxAmount));
+                srcItem.setCount(total - destItem.getCount());
                 return true;
             }
         }
@@ -835,7 +835,7 @@ public class DataStore implements DataManager {
      *
      * @param vo
      */
-    public void recalcElfProps(PlayerVO vo) {
+    public void reCalcElfProps(PlayerVO vo) {
         //TODO 完善成长率
         Double rate = growthRateTable.get(vo.character);
         if (rate == null) {
@@ -859,7 +859,7 @@ public class DataStore implements DataManager {
      *
      * @param vo
      */
-    public void recalcProperties(PlayerVO vo) {
+    public void reCalcProperties(PlayerVO vo) {
         String[] attrs = {"hitrate", "speed", "wakan", "shun", "harm", "defense", "stamina", "energy"};
         try {
             for (String attr : attrs) {

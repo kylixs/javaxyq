@@ -115,7 +115,7 @@ public class create_role extends PanelHandler {
             } else if (inArray(仙族, playerVo.character)) {
                 init_属性点(playerVo, 仙族初始属性点);
             }
-            dataManager.recalcProperties(playerVo);
+            dataManager.reCalcProperties(playerVo);
 
             ItemInstance[] items = new ItemInstance[26];
             ItemInstance item = dataManager.createItem("四叶花", 99);

@@ -18,13 +18,14 @@ import com.javaxyq.io.CacheManager;
 @Slf4j
 public class GroovyScript implements ScriptEngine {
 
-    private static GroovyScript instance = new GroovyScript();
-    private GroovyClassLoader groovyCl = new GroovyClassLoader(GroovyScript.class.getClassLoader());
+    private static final GroovyScript INSTANCE = new GroovyScript();
+
+    private final GroovyClassLoader groovyCl = new GroovyClassLoader(GroovyScript.class.getClassLoader());
 
     private boolean debug;
 
-    public static GroovyScript getInstance() {
-        return instance;
+    public static GroovyScript getINSTANCE() {
+        return INSTANCE;
     }
 
     private GroovyScript() {
@@ -86,7 +87,7 @@ public class GroovyScript implements ScriptEngine {
     }
 
     public static void main(String[] args) {
-        PanelListener listener = GroovyScript.getInstance().loadClass("scripts/ui/system.mainwin.groovy", PanelListener.class);
+        PanelListener listener = GroovyScript.getINSTANCE().loadClass("scripts/ui/system.mainwin.groovy", PanelListener.class);
         listener.initial(null);
         listener.actionPerformed(new ActionEvent(listener, "autoaddhp"));
         listener.dispose(null);

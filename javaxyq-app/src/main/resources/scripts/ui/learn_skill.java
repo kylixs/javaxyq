@@ -3,11 +3,9 @@ package ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +26,6 @@ import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
 import com.javaxyq.model.PlayerVO;
 import com.javaxyq.model.Skill;
-import com.javaxyq.ui.Button;
 import com.javaxyq.ui.Label;
 import com.javaxyq.ui.Panel;
 import com.javaxyq.util.MP3Player;
@@ -202,7 +199,7 @@ public class learn_skill extends PanelHandler implements MouseListener,MouseMoti
 			properties.put("mskillsLevelExp", dataManager.getMSkillsLevelExp(skillLevelUp));
 			properties.put("mskillsLevelSpend", dataManager.getMSkillsLevelSpend(skillLevelUp));
 			this.updateSchoolSkillLevel();
-			dataManager.recalcProperties(vo);
+			dataManager.reCalcProperties(vo);
 			this.updateLabels(panel);
     	}
 	}

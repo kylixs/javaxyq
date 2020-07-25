@@ -11,7 +11,6 @@ package npc;
 import com.javaxyq.model.Option;
 import com.javaxyq.core.*;
 import com.javaxyq.event.*;
-import com.javaxyq.config.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +31,7 @@ public class n1001 extends PlayerAdapter {
     	options[0] = new Option("傲来国","transport","1092 123 95");
     	options[1] = new Option("东海湾","transport","1506 62 21");
     	options[2] = new Option("哪也不去","close");
-    	Option result = ApplicationHelper.getApplication().doTalk(evt.getPlayer(), chat,options);
+    	Option result = ApplicationHelper.getApplication().chat(evt.getPlayer(), chat,options);
     	
     	log.info("result: "+result);
     }
