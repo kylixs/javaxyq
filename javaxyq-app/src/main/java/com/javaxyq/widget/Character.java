@@ -92,8 +92,8 @@ public interface Character {
 
 	/**
 	 * 设置是否连续移动
-	 * @param moveon
+	 * @param moveOn
 	 */
-	void setMoveon(boolean moveon);
+	void setMoveOn(boolean moveOn);
 
 }

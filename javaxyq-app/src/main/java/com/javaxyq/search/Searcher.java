@@ -10,8 +10,6 @@ package com.javaxyq.search;
 import java.awt.Point;
 import java.util.List;
 
-import com.soulnew.AStarNode;
-
 
 /**
  * @author dewitt

@@ -113,9 +113,6 @@ public class TCPImage extends Image {
     }
 
     public ImageProducer getSource() {
-//		if (source == null) {
-//			source = new TCPImageSource(filename);
-//		}
         return source;
     }
 

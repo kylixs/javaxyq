@@ -71,21 +71,21 @@ public interface GameWindow {
 
     UIHelper getHelper();
 
-    public void prepareUI();
+    void prepareUI();
 
-    public void installUI();
+    void installUI();
 
-    public void installListeners();
+    void installListeners();
 
-    public ActionMap getActionMap();
+    ActionMap getActionMap();
 
-    public InputMap getInputMap();
+    InputMap getInputMap();
 
-    public void addBattleListener(BattleListener listener);
+    void addBattleListener(BattleListener listener);
 
-    public void removeBattleListener(BattleListener listener);
+    void removeBattleListener(BattleListener listener);
 
-    public void addListener(String type, String className);
+    void addListener(String type, String className);
 
-    public void installWindowListeners();
+    void installWindowListeners();
 }

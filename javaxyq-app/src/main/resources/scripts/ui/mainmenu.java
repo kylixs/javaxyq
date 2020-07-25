@@ -6,11 +6,13 @@ package ui;
 import java.awt.Desktop;
 import java.net.URI;
 
+import com.javaxyq.core.GameMain;
 import com.javaxyq.event.ActionEvent;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
 import com.javaxyq.profile.ProfileException;
 import com.javaxyq.ui.Panel;
+import com.javaxyq.util.BrowserLauncher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,11 +59,7 @@ public class mainmenu extends PanelHandler {
 	}
 	
 	public void home(ActionEvent evt) {
-		try {
-			Desktop.getDesktop().browse(new URI("http://javaxyq.googlecode.com"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		BrowserLauncher.openURL(GameMain.getHomeURL());
 	}
 	
 	public void exit(ActionEvent evt) {

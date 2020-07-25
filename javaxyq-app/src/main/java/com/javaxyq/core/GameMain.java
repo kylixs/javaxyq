@@ -23,7 +23,7 @@ public final class GameMain {
 
 	public static String applicationName = "JavaXYQ";
 
-	private static String homeURL = "http://javaxyq.googlecode.com";
+	private static String homeURL = "http://github.com";
 
 	public static final int APP_APPLET = 1;
 	private static final int APP_DESKTOP = 0;

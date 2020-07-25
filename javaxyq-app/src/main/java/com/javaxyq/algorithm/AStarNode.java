@@ -1,0 +1,67 @@
+package com.javaxyq.algorithm;
+
+/**
+ * @author soulnew@soulnew.com
+ */
+
+import java.util.*;
+
+public class AStarNode {
+
+    String name;
+    int costFromStart;
+    int estimatedCostToGoal;
+    public int x, y;
+    AStarNode pathParent;
+    List<AStarNode> neighbors;
+
+    public AStarNode(String name, int x, int y) {
+        neighbors = new LinkedList<>();
+        this.x = x;
+        this.y = y;
+        this.name = name;
+    }
+
+    public AStarNode(int x, int y) {
+        neighbors = new LinkedList<>();
+        this.x = x;
+        this.y = y;
+        this.name = "(" + x + "," + y + ")";
+    }
+
+    public int getEstimatedCost(AStarNode node) {
+        int dx = this.x - node.x;
+        int dy = this.y - node.y;
+        return (int) Math.sqrt(dx * dx + dy * dy);
+    }
+
+    public List<AStarNode> getNeighbors() {
+        return neighbors;
+    }
+
+    public int getCost(AStarNode node) {
+        int dx = this.x - node.x;
+        int dy = this.y - node.y;
+        return (int) Math.sqrt(dx * dx + dy * dy);
+    }
+
+    public int getDistance(AStarNode node) {
+        int dx = 10 * (this.x - node.x);
+        int dy = 10 * (this.y - node.y);
+        return (int) Math.sqrt(dx * dx + dy * dy);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AStarNode) {
+            AStarNode node1 = (AStarNode) obj;
+            return this.x == node1.x && this.y == node1.y;
+        }
+        return super.equals(obj);
+    }
+}

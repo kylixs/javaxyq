@@ -17,6 +17,7 @@ import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
 import com.javaxyq.profile.ProfileException;
 import com.javaxyq.ui.Button;
+import com.javaxyq.util.BrowserLauncher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,11 +41,7 @@ public class game_exit extends PanelHandler {
 		application.endGame();
 	}
 	public void visit_homepage(ActionEvent evt) {
-		try {
-			Desktop.getDesktop().browse(new URI(GameMain.getHomeURL()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		BrowserLauncher.openURL(GameMain.getHomeURL());
 	}
 	public void contributors(ActionEvent evt) {
 		helper.showDialog("contributors");

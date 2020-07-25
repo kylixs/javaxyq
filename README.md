@@ -23,7 +23,7 @@ Notes:
 
 The migration work is partially done, only tested on macOS 10.15 with Java 8.
 
-It seems that `com.javaxyq.core.DesktopApplication` almostly works fine, other runnable classes which has `main` method has not been tested.
+It seems that `com.javaxyq.DesktopApplication` almostly works fine, other runnable classes which has `main` method has not been tested.
 
 ## Below is origin content, fixed images links and formats
 

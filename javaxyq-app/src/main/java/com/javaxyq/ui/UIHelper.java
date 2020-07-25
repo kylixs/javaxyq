@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.javaxyq.ui;
 
@@ -11,12 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -47,305 +42,303 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class UIHelper {
-	/**
-	 * 初始化UI参数
-	 */
-	static {
-		LightweightToolTipManager.sharedInstance().setInitialDelay(100);
-		UIManager.put("ToolTip.border", new BorderUIResource(new CompoundBorder(
-				new RoundLineBorder(Color.WHITE,1, 8, 8),new EmptyBorder(3, 3, 3, 3))));
-		UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
-		//		UIManager.put("ToolTip.background", new ColorUIResource(new Color(255,
-		//				255, 224)));
-		UIManager.put("ToolTip.font", new FontUIResource(UIUtils.TEXT_FONT));
-		//UIManager.put("ToolTipUI", "com.javaxyq.ui.TranslucentTooltipUI");
-		
-		UIManager.put("GameLabelUI", "com.javaxyq.ui.GameLabelUI");
-		UIManager.put("GameButtonUI", "com.javaxyq.ui.GameButtonUI");
-	}	
-	
-	private List<PromptLabel> prompts = new ArrayList<PromptLabel>();
-	private static Map<String, Cursor>cursors = new HashMap<String, Cursor>();
-	
-	private boolean debug = false;
-	private GameWindow window;
-	private ScriptEngine scriptEngine ;
-	public UIHelper(GameWindow window) {
-		super();
-		this.window = window;
-		this.scriptEngine = DefaultScript.getInstance();
-	}
+    /**
+     * 初始化UI参数
+     */
+    static {
+        LightweightToolTipManager.sharedInstance().setInitialDelay(100);
+        UIManager.put("ToolTip.border", new BorderUIResource(new CompoundBorder(
+                new RoundLineBorder(Color.WHITE, 1, 8, 8), new EmptyBorder(3, 3, 3, 3))));
+        UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
+        //		UIManager.put("ToolTip.background", new ColorUIResource(new Color(255,
+        //				255, 224)));
+        UIManager.put("ToolTip.font", new FontUIResource(UIUtils.TEXT_FONT));
+        //UIManager.put("ToolTipUI", "com.javaxyq.ui.TranslucentTooltipUI");
 
-	public boolean isDebug() {
-		return debug;
-	}
+        UIManager.put("GameLabelUI", "com.javaxyq.ui.GameLabelUI");
+        UIManager.put("GameButtonUI", "com.javaxyq.ui.GameButtonUI");
+    }
 
-	public void setDebug(boolean debug) {
-		this.debug = debug;
-	}
+    private List<PromptLabel> prompts = new ArrayList<>();
+    private static Map<String, Cursor> cursors = new HashMap<>();
 
-	/**
-	 * 弹出提示信息
-	 * @param text 提示内容
-	 * @param delay 延时关闭时间(ms)
-	 */
-	public void prompt(String text,long delay) {
-		final PromptLabel label = new PromptLabel(text);
-		int offset = prompts.size()*15;
-		label.setLocation( (640-label.getWidth())/2+offset, 180+offset);
-		final Container container = getCanvasComponent();
-		container.add(label,0);
-		prompts.add(label);
-		
-		TimerTask task = new TimerTask() {
-			@Override
-			public void run() {
-				container.remove(label);
-				prompts.set(prompts.indexOf(label),null);
-				boolean empty = true;
-				for (int i = 0; i < prompts.size(); i++) {
-					if(prompts.get(i)!=null) {
-						empty = false;
-					}
-				}
-				if(empty) {
-					prompts.clear();
-				}
-			}
-		};
-		new Timer().schedule(task, delay);
-	}
-	
-	/**
-	 * 显示tooltip
-	 * @param c
-	 * @param src
-	 * @param e
-	 */
-	public void showToolTip(JComponent c,JComponent src,MouseEvent e) {
-		final Container canvas = getCanvasComponent();
-		Point p = SwingUtilities.convertPoint(src, src.getToolTipLocation(e), canvas);
-		p.translate(20, 30);
-		p.x = (p.x+c.getWidth() < canvas.getWidth()-2)?p.x:(canvas.getWidth()-c.getWidth()-2);
-		p.y = (p.y+c.getHeight() < canvas.getHeight() - 2)?p.y:(canvas.getHeight()-c.getHeight()-2);
-		c.setLocation(p);
-		canvas.add(c,0);
-	}
-	
-	/**
-	 * 隐藏tooltip
-	 * @param c
-	 */
-	public void hideToolTip(JComponent c) {
-		final Container canvas = getCanvasComponent();
-		canvas.remove(c);		
-	}
-	
-	/**
-	 * 设置跟随鼠标一起移动的对象
-	 * @param c
-	 * @param offset 与鼠标的相对位置
-	 */
-	public void setMovingObject(Animation anim,Point offset) {
-		GameCanvas canvas = window.getCanvas();
-		canvas.setMovingObject(anim, offset);
-	}
-	
-	/**
-	 * 删除鼠标随动对象
-	 */
-	public void removeMovingObject() {
-		GameCanvas canvas = window.getCanvas();
-		canvas.removeMovingObject();
-	}
-	
-	/**
-	 * 查找最近的面板
-	 * @param c
-	 * @return
-	 */
-	public Panel findPanel(Component c) {
-		for(;c!=null;) {
-			if (c instanceof Panel) {
-				break;
-			}
-			c=c.getParent();
-		} 
-		return (Panel) c;
-	}
-	/**
-	 * 显示或隐藏指定对话框
-	 *
-	 */
-	public void showHideDialog(Panel dialog) {
-		if (dialog != null) {
-			Container canvas = getCanvasComponent();
-			if (dialog.getParent() == canvas) {
-				hideDialog(dialog);
-			} else {
-				showDialog(dialog);
-			}
-		}
-	}
-	
-	/**
-	 * 显示面板
-	 * @param dialog
-	 */
-	public void showDialog(Panel dialog) {
-		Container canvas = getCanvasComponent();
-		if (dialog != null && dialog.getParent() != canvas) {
-			//阻塞执行初始化事件
-			dialog.handleEvent(new PanelEvent(dialog,"initial"));
-			canvas.add(dialog,0);
-		}
-	}
-	public void showModalDialog(final Panel dialog) {
-		log.info("showModalDialog: "+Thread.currentThread().getName());
-		Container canvas = getCanvasComponent();
-		if (dialog != null && dialog.getParent() != canvas) {
-			PanelListener listener = scriptEngine.loadUIScript(dialog.getName());
-			if(listener!=null) {
-				dialog.removeAllPanelListeners();
-				dialog.addPanelListener(listener);
-			}
-			//阻塞执行初始化事件
-			dialog.handleEvent(new PanelEvent(dialog,"initial"));
-			canvas.add(dialog);
-			canvas.setComponentZOrder(dialog, 0);
-			EventDispatcher.pumpEvents(Thread.currentThread(), new Conditional() {
-				@Override
-				public boolean evaluate() {
-					return (dialog.getParent()!=null && dialog.isVisible());
-				}
-			});
-			//TODO need to interrupt pump after close the panel!
-		}
-		log.info("exit showModalDialog: "+Thread.currentThread().getName());
-	}
-	
-	/**
-	 * 隐藏面板
-	 * @param dialog
-	 */
-	public void hideDialog(Panel dialog) {
-		if (dialog != null) {
-			Container canvas = getCanvasComponent();
-			if (dialog.getParent() == canvas) {
-				canvas.remove(dialog);
-				dialog.fireEvent(new PanelEvent(dialog,"dispose"));
-				DialogFactory.dispose(dialog.getName(),dialog);
-			}
-		}
-	}
-	
-	/**
-	 * 显示面板
-	 * @param id
-	 */
-	public void showDialog(String id) {
-		Panel dlg = null;
-		dlg = getDialog(id);
-		if(dlg!=null) {
-			showDialog(dlg);
-		}else {
-			log.error("获取Dialog失败： "+id);
-		}
-	}
+    private boolean debug = false;
+    private GameWindow window;
+    private ScriptEngine scriptEngine;
 
-	/**
-	 * 获取Dialog，如果此Dialog还没有加载则自动加载
-	 * @param id
-	 * @return
-	 */
-	public Panel getDialog(String id) {
-		Panel dlg;
-		if(isDebug()) {//如果是调试状态，每次动态加载
-			dlg = DialogFactory.createDialog(id);
-			PanelListener listener = scriptEngine.loadUIScript(id);
-			if(listener!=null) {
-				dlg.removeAllPanelListeners();
-				dlg.addPanelListener(listener);
-			}
-		}else {
-			dlg = DialogFactory.getDialog(id,true);
-		}
-		return dlg;
-	}
-	
-	public void showHideDialog(String id) {
-		Panel dlg = DialogFactory.getDialog(id,false);
-		log.info("showHideDialog: "+id+", "+dlg);
-		if(dlg!=null && dlg.isShowing()) {
-			hideDialog(dlg);
-		}else {
-			showDialog(id);
-		}
-	}
-	
-	/**
-	 * 隐藏面板
-	 * @param id
-	 */
-	public void hideDialog(String id) {
-		if(id!=null) {
-			Panel dlg = DialogFactory.getDialog(id,false);
-			if(dlg!=null)hideDialog(dlg);
-		}
-	}
-	
-	/**
-	 * 获得当前的talkPanel
-	 * @return
-	 */
-	public TalkPanel getTalkPanel() {
-		Component comp = getCanvasComponent().getComponent(0);
-		if (comp instanceof TalkPanel) {
-			return (TalkPanel) comp;
-		}
-		return null;
-	}
+    public UIHelper(GameWindow window) {
+        super();
+        this.window = window;
+        this.scriptEngine = DefaultScript.getInstance();
+    }
 
-	private Container getCanvasComponent() {
-		return window.getCanvas().getComponent();
-	}
-	
-	public static Cursor getCursor(String cursorId) {
-		Cursor cursor = cursors.get(cursorId);
-		if(cursor==null) {
-			boolean effect = Cursor.DEFAULT_CURSOR.equals(cursorId);
-			cursor = new Cursor(cursorId, effect);
-			cursors.put(cursorId, cursor);
-		}
-		return cursor;
-	}
-	
-	public static void removeAllMouseListeners(Component comp) {
-		MouseListener[] mouseListeners = comp.getMouseListeners();
-		for (MouseListener mouseListener : mouseListeners) {
-			comp.removeMouseListener(mouseListener);
-		}
-		MouseMotionListener[] motionListeners = comp.getMouseMotionListeners();
-		for (MouseMotionListener motionListener : motionListeners) {
-			comp.removeMouseMotionListener(motionListener);
-		}
-		MouseWheelListener[] wheelListeners = comp.getMouseWheelListeners();
-		for (MouseWheelListener wheelListener : wheelListeners) {
-			comp.removeMouseWheelListener(wheelListener);
-		}
-	}
+    public boolean isDebug() {
+        return debug;
+    }
 
-	/** global action map */
-	//private static ActionMap actionMap = new ActionMap();
-	//private static InputMap inputMap = new InputMap();
-	//private static LoadingCanvas loadingCanvas;
-	//private static SceneCanvas sceneCanvas;
-	//private static BattleCanvas battleCanvas;
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
+    /**
+     * 弹出提示信息
+     * @param text 提示内容
+     * @param delay 延时关闭时间(ms)
+     */
+    public void prompt(String text, long delay) {
+        final PromptLabel label = new PromptLabel(text);
+        int offset = prompts.size() * 15;
+        label.setLocation((640 - label.getWidth()) / 2 + offset, 180 + offset);
+        final Container container = getCanvasComponent();
+        container.add(label, 0);
+        prompts.add(label);
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                container.remove(label);
+                prompts.set(prompts.indexOf(label), null);
+
+                boolean empty = prompts.stream().noneMatch(Objects::nonNull);
+                if (empty) {
+                    prompts.clear();
+                }
+            }
+        };
+        new Timer().schedule(task, delay);
+    }
+
+    /**
+     * 显示tooltip
+     * @param c
+     * @param src
+     * @param e
+     */
+    public void showToolTip(JComponent c, JComponent src, MouseEvent e) {
+        final Container canvas = getCanvasComponent();
+        Point p = SwingUtilities.convertPoint(src, src.getToolTipLocation(e), canvas);
+        p.translate(20, 30);
+        p.x = (p.x + c.getWidth() < canvas.getWidth() - 2) ? p.x : (canvas.getWidth() - c.getWidth() - 2);
+        p.y = (p.y + c.getHeight() < canvas.getHeight() - 2) ? p.y : (canvas.getHeight() - c.getHeight() - 2);
+        c.setLocation(p);
+        canvas.add(c, 0);
+    }
+
+    /**
+     * 隐藏tooltip
+     * @param c
+     */
+    public void hideToolTip(JComponent c) {
+        final Container canvas = getCanvasComponent();
+        canvas.remove(c);
+    }
+
+    /**
+     * 设置跟随鼠标一起移动的对象
+     * @param offset 与鼠标的相对位置
+     */
+    public void setMovingObject(Animation anim, Point offset) {
+        GameCanvas canvas = window.getCanvas();
+        canvas.setMovingObject(anim, offset);
+    }
+
+    /**
+     * 删除鼠标随动对象
+     */
+    public void removeMovingObject() {
+        GameCanvas canvas = window.getCanvas();
+        canvas.removeMovingObject();
+    }
+
+    /**
+     * 查找最近的面板
+     * @param c
+     * @return
+     */
+    public Panel findPanel(Component c) {
+        for (; c != null; ) {
+            if (c instanceof Panel) {
+                break;
+            }
+            c = c.getParent();
+        }
+        return (Panel) c;
+    }
+
+    /**
+     * 显示或隐藏指定对话框
+     *
+     */
+    public void showHideDialog(Panel dialog) {
+        if (dialog != null) {
+            Container canvas = getCanvasComponent();
+            if (dialog.getParent() == canvas) {
+                hideDialog(dialog);
+            } else {
+                showDialog(dialog);
+            }
+        }
+    }
+
+    /**
+     * 显示面板
+     * @param dialog
+     */
+    public void showDialog(Panel dialog) {
+        Container canvas = getCanvasComponent();
+        if (dialog != null && dialog.getParent() != canvas) {
+            //阻塞执行初始化事件
+            dialog.handleEvent(new PanelEvent(dialog, "initial"));
+            canvas.add(dialog, 0);
+        }
+    }
+
+    public void showModalDialog(final Panel dialog) {
+        log.info("showModalDialog: " + Thread.currentThread().getName());
+        Container canvas = getCanvasComponent();
+        if (dialog != null && dialog.getParent() != canvas) {
+            PanelListener listener = scriptEngine.loadUIScript(dialog.getName());
+            if (listener != null) {
+                dialog.removeAllPanelListeners();
+                dialog.addPanelListener(listener);
+            }
+            //阻塞执行初始化事件
+            dialog.handleEvent(new PanelEvent(dialog, "initial"));
+            canvas.add(dialog);
+            canvas.setComponentZOrder(dialog, 0);
+            EventDispatcher.pumpEvents(Thread.currentThread(), new Conditional() {
+                @Override
+                public boolean evaluate() {
+                    return (dialog.getParent() != null && dialog.isVisible());
+                }
+            });
+            //TODO need to interrupt pump after close the panel!
+        }
+        log.info("exit showModalDialog: " + Thread.currentThread().getName());
+    }
+
+    /**
+     * 隐藏面板
+     * @param dialog
+     */
+    public void hideDialog(Panel dialog) {
+        if (dialog != null) {
+            Container canvas = getCanvasComponent();
+            if (dialog.getParent() == canvas) {
+                canvas.remove(dialog);
+                dialog.fireEvent(new PanelEvent(dialog, "dispose"));
+                DialogFactory.dispose(dialog.getName(), dialog);
+            }
+        }
+    }
+
+    /**
+     * 显示面板
+     * @param id
+     */
+    public void showDialog(String id) {
+        Panel dlg = null;
+        dlg = getDialog(id);
+        if (dlg != null) {
+            showDialog(dlg);
+        } else {
+            log.error("获取Dialog失败： " + id);
+        }
+    }
+
+    /**
+     * 获取Dialog，如果此Dialog还没有加载则自动加载
+     * @param id
+     * @return
+     */
+    public Panel getDialog(String id) {
+        Panel dlg;
+        if (isDebug()) {//如果是调试状态，每次动态加载
+            dlg = DialogFactory.createDialog(id);
+            PanelListener listener = scriptEngine.loadUIScript(id);
+            if (listener != null) {
+                dlg.removeAllPanelListeners();
+                dlg.addPanelListener(listener);
+            }
+        } else {
+            dlg = DialogFactory.getDialog(id, true);
+        }
+        return dlg;
+    }
+
+    public void showHideDialog(String id) {
+        Panel dlg = DialogFactory.getDialog(id, false);
+        log.info("showHideDialog: " + id + ", " + dlg);
+        if (dlg != null && dlg.isShowing()) {
+            hideDialog(dlg);
+        } else {
+            showDialog(id);
+        }
+    }
+
+    /**
+     * 隐藏面板
+     * @param id
+     */
+    public void hideDialog(String id) {
+        if (id != null) {
+            Panel dlg = DialogFactory.getDialog(id, false);
+            if (dlg != null) hideDialog(dlg);
+        }
+    }
+
+    /**
+     * 获得当前的talkPanel
+     * @return
+     */
+    public TalkPanel getTalkPanel() {
+        Component comp = getCanvasComponent().getComponent(0);
+        if (comp instanceof TalkPanel) {
+            return (TalkPanel) comp;
+        }
+        return null;
+    }
+
+    private Container getCanvasComponent() {
+        return window.getCanvas().getComponent();
+    }
+
+    public static Cursor getCursor(String cursorId) {
+        Cursor cursor = cursors.get(cursorId);
+        if (cursor == null) {
+            boolean effect = Cursor.DEFAULT_CURSOR.equals(cursorId);
+            cursor = new Cursor(cursorId, effect);
+            cursors.put(cursorId, cursor);
+        }
+        return cursor;
+    }
+
+    public static void removeAllMouseListeners(Component comp) {
+        MouseListener[] mouseListeners = comp.getMouseListeners();
+        for (MouseListener mouseListener : mouseListeners) {
+            comp.removeMouseListener(mouseListener);
+        }
+        MouseMotionListener[] motionListeners = comp.getMouseMotionListeners();
+        for (MouseMotionListener motionListener : motionListeners) {
+            comp.removeMouseMotionListener(motionListener);
+        }
+        MouseWheelListener[] wheelListeners = comp.getMouseWheelListeners();
+        for (MouseWheelListener wheelListener : wheelListeners) {
+            comp.removeMouseWheelListener(wheelListener);
+        }
+    }
+
+    /** global action map */
+    //private static ActionMap actionMap = new ActionMap();
+    //private static InputMap inputMap = new InputMap();
+    //private static LoadingCanvas loadingCanvas;
+    //private static SceneCanvas sceneCanvas;
+    //private static BattleCanvas battleCanvas;
 //	private static FontMetrics fontMetrics;
-	//private static GameWindow gameWindow;
-	//private static DisplayMode displayMode;
-	//private static List<Listener> listeners = new ArrayList<Listener>();
-	//private static List<Panel> uiComponents = new ArrayList<Panel>();
+    //private static GameWindow gameWindow;
+    //private static DisplayMode displayMode;
+    //private static List<Listener> listeners = new ArrayList<Listener>();
+    //private static List<Panel> uiComponents = new ArrayList<Panel>();
 //	public static void addWindowListener(WindowListener handler) {
 //		gameWindow.addWindowListener(handler);
 //	}

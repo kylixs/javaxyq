@@ -33,16 +33,18 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class CacheManager {
+
+    public static CacheManager getInstance() {
+        return instance;
+    }
+
     private static final CacheManager instance = new CacheManager();
+
     private final ArrayList<DownloadListener> listeners = new ArrayList<>();
     private String cacheBase;
     private URL documentBase;
 
-    private CacheManager() {// single-ton
-    }
-
-    public static CacheManager getInstance() {
-        return instance;
+    private CacheManager() {
     }
 
     public String getCacheBase() {
@@ -82,7 +84,7 @@ public class CacheManager {
             fireDownloadStarted(filename);
             File file = createFile(filename);
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            log.info("下载资源：" + filename + ", url=" + url);
+            log.info("下载资源: {}, url={}", filename, url);
             // BufferedInputStream bis = new
             // BufferedInputStream(url.openStream());
             InputStream bis = url.openStream();
@@ -100,14 +102,14 @@ public class CacheManager {
                 }
             }
             bos.close();
-            log.info("资源下载完毕：" + filename);
+            log.info("资源下载完毕: {}", filename);
             fireDownloadCompleted(filename);
             return file;
         } catch (IOException e) {
-            log.info("下载资源失败：" + filename + ", error=" + e.getMessage());
+            log.error("下载资源失败: {}, error={}", filename, e.getMessage());
             fireDownloadInterrupted(filename);
             if (!(e instanceof FileNotFoundException)) {
-                e.printStackTrace();
+                log.error("", e);
             }
         }
         return null;

@@ -22,10 +22,10 @@ import com.javaxyq.widget.Sprite;
 public class CharacterImpl implements Character {
 
 	private static final Logger log = Logger.getLogger(CharacterImpl.class.getName());
-	private Object LocationLock = new Object();
-	private Object UpdateLock = new Object();
+	private final Object LocationLock = new Object();
+	private final Object UpdateLock = new Object();
 	
-	private String id;
+	private final String id;
 	
 	private Sprite sprite;
 	
@@ -40,17 +40,17 @@ public class CharacterImpl implements Character {
 	/** 角色动作  */
 	private String action = CharacterActions.STAND;
 	/** 是否继续移动 */
-	private boolean moveon;
+	private boolean moveOn;
 	
-	private LinkedList<Point> footmark;
-	private LinkedList<Point> track;
+	private final LinkedList<Point> footmark;
+	private final LinkedList<Point> track;
 	private long elapsedTime;
 	private int lastFrameIndex;
 	
 	public CharacterImpl(String id) {
 		this.id = id;
-		footmark = new LinkedList<Point>();
-		track = new LinkedList<Point>();
+		footmark = new LinkedList<>();
+		track = new LinkedList<>();
 	}
 	
 	@Override
@@ -236,11 +236,11 @@ public class CharacterImpl implements Character {
 	}
 
 	public boolean isMoveOn() {
-		return moveon;
+		return moveOn;
 	}
 	
-	public void setMoveon(boolean moveon) {
-		this.moveon = moveon;
+	public void setMoveOn(boolean moveOn) {
+		this.moveOn = moveOn;
 	}
 
 	private void updateAnimation(long elapsedTime) {

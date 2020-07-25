@@ -1,8 +1,5 @@
 package com.javaxyq.core;
 
-import java.io.InputStream;
-import java.net.URL;
-
 import com.javaxyq.model.Option;
 import com.javaxyq.profile.Profile;
 import com.javaxyq.profile.ProfileException;

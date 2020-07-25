@@ -33,7 +33,7 @@ import com.javaxyq.widget.Player;
 import com.javaxyq.widget.Sprite;
 import com.javaxyq.widget.SpriteImage;
 import com.javaxyq.widget.TileMap;
-import com.soulnew.AStar;
+import com.javaxyq.algorithm.AStar;
 import lombok.extern.slf4j.Slf4j;
 
 /**

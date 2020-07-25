@@ -20,6 +20,7 @@ import com.javaxyq.event.EventDelegator;
 import com.javaxyq.util.UIUtils;
 import com.javaxyq.widget.Frame;
 import com.javaxyq.widget.Sprite;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 自定义的Button类<br>
@@ -28,6 +29,7 @@ import com.javaxyq.widget.Sprite;
  * @author gdw
  * @date
  */
+@Slf4j
 public class Button extends JButton {
 
 	private static final long serialVersionUID = -1440948304007652916L;
@@ -102,8 +104,7 @@ public class Button extends JButton {
 				setDisabledIcon(new ImageIcon(frames.get(3).getImage()));
 			}
 		} catch (Exception e) {
-			System.err.println("创建Button失败!");
-			e.printStackTrace();
+			log.error("创建Button失败!", e);
 		}
 	}
 

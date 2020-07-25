@@ -34,6 +34,11 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class Toolkit {
+
+    public static Toolkit getInstance() {
+        return instance;
+    }
+
     private static final Toolkit instance = new Toolkit();
 
     private final Map<String, Color> colorMap = new HashMap<>();
@@ -46,10 +51,6 @@ public class Toolkit {
         colorMap.put("blue", Color.BLUE);
         colorMap.put("yellow", Color.YELLOW);
         colorMap.put("green", Color.GREEN);
-    }
-
-    public static Toolkit getInstance() {
-        return instance;
     }
 
     public OptionLabel createOptionLabel(int x, int y, int width, int height, Option option) {
