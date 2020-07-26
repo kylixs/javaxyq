@@ -7,14 +7,15 @@
 
 package com.javaxyq.widget;
 
-import java.awt.Graphics;
-import java.awt.Point;
-
 import com.javaxyq.core.SpriteFactory;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.awt.*;
 
 /**
  * 游戏指针
- * 
+ *
  * @author 龚德伟
  * @history 2008-6-8 龚德伟 新建
  */
@@ -42,52 +43,48 @@ public class Cursor {
     public static final String TEXT_CURSOR = "02";
 
     public static final String PROTECT_CURSOR = "17";
+
+    @Getter
     private SpriteImage pointer;
 
+    @Getter
     private SpriteImage effect;
 
+    @Getter
     private int x;
-
+    @Getter
     private int y;
 
-    /** 点击的场景坐标 */
+    /**
+     * 点击的场景坐标
+     */
+    @Getter
     private int clickX;
-
+    @Getter
     private int clickY;
 
-    /** x偏移量(相对于clickX,为了精确显示点击的效果) */
+    /**
+     * x偏移量(相对于clickX,为了精确显示点击的效果)
+     */
+    @Getter
+    @Setter
     private int offsetX;
-
+    @Getter
+    @Setter
     private int offsetY;
 
     public Cursor(String type, boolean effect) {
-        this.pointer = new SpriteImage(SpriteFactory.loadSprite("/wzife/cursor/"+type+".tcp"));
-        if(effect) {        	
-        	this.effect = new SpriteImage(SpriteFactory.loadSprite("/addon/wave.tcp"));;
-        	this.effect.setVisible(false);
+        this.pointer = new SpriteImage(SpriteFactory.loadSprite("wzife/cursor/" + type + ".tcp"));
+        if (effect) {
+            this.effect = new SpriteImage(SpriteFactory.loadSprite("addon/wave.tcp"));
+            this.effect.setVisible(false);
         }
-    }
-
-    public SpriteImage getPointer() {
-        return pointer;
-    }
-
-    public SpriteImage getEffect() {
-        return effect;
     }
 
     public void setClick(int x, int y) {
         this.clickX = x;
         this.clickY = y;
         this.effect.setVisible(true);
-    }
-
-    public int getClickX() {
-        return clickX;
-    }
-
-    public int getClickY() {
-        return clickY;
     }
 
     public Point getClickPosition() {
@@ -99,34 +96,8 @@ public class Cursor {
         this.offsetY = y;
     }
 
-    public int getOffsetX() {
-        return offsetX;
-    }
-
-    public void setOffsetX(int offsetX) {
-        this.offsetX = offsetX;
-    }
-
-    public int getOffsetY() {
-        return offsetY;
-    }
-
-    public void setOffsetY(int offsetY) {
-        this.offsetY = offsetY;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     /**
      * 设置指针在屏幕的位置
-     * @param x
-     * @param y
      */
     public void setLocation(int x, int y) {
         this.x = x;

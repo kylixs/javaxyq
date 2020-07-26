@@ -12,6 +12,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * 物品实例对象
  *
@@ -20,8 +22,8 @@ import lombok.Setter;
  */
 @Getter
 @EqualsAndHashCode(of = {"itemId", "name"})
-public class ItemInstance {
-
+public class ItemInstance implements Serializable {
+    private static final long serialVersionUID = -4833399832791836608L;
     transient private Item item;
     @Setter
     private int count;

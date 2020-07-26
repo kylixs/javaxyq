@@ -135,12 +135,12 @@ public class CacheManager {
     }
 
     public File getFile(String filename) {
-        File file = null;
-        if (filename.charAt(0) == '/') {
-            filename = filename.substring(1);
+        try {
+            return IoUtil.loadFile(filename);
+        } catch (Exception ex) {
+            log.error("failed to load file: {}", filename);
+            return null;
         }
-
-        return IoUtil.loadFile(filename);
 //		if (documentBase == null) {
 //			file = new File(filename);
 //			return file;

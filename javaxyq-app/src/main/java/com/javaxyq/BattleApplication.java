@@ -64,13 +64,13 @@ public class BattleApplication extends BaseApplication {
 
     @Override
     public void quitBattle() {
-        log.info("quitBattle");
+        log.info("quit battle");
     }
 
     private void initCanvas() {
         //canvas.setBattleBackground(bg);
-        List<Player> team1 = new ArrayList<Player>();
-        List<Player> team2 = new ArrayList<Player>();
+        List<Player> team1 = new ArrayList<>();
+        List<Player> team2 = new ArrayList<>();
 
         String[] elfs = {"2036", "2037", "2009", "2010", "2011", "2012"};
         String[] elfNames = {"大海龟", "巨蛙", "芙蓉仙子", "树怪", "蝴蝶仙子", "花妖"};
@@ -102,9 +102,9 @@ public class BattleApplication extends BaseApplication {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String str = null;
             while ((str = br.readLine()) != null) {
-                String uifile = "ui/" + str;
-                log.info("find ui: " + uifile);
-                loader.loadUI(uifile);
+                String uiFile = "ui/" + str;
+                log.info("find ui: " + uiFile);
+                loader.loadUI(uiFile);
             }
         } catch (IOException e) {
             log.error("", e);

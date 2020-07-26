@@ -12,77 +12,77 @@ import java.awt.Image;
 
 /**
  * TCP动画的帧对象
- * 
+ *
  * @author dewitt
  * @date 2009-12-8 create
  */
 public class TCPFrame extends AbstractWidget {
 
-	private static final long serialVersionUID = 1L;
-	private int x;
-	private int y;
-	private int width;
-	private int height;
-	private Image image;
-	// Reference Pixel(悬挂点)
-	private int refPixelX;
-	private int refPixelY;
+    private static final long serialVersionUID = 1L;
 
-	public TCPFrame(Image image, int x, int y, int width, int height) {
-		this(image, x, y, width, height, 0, 0);
-	}
+    private final int x;
+    private final int y;
+    private final int width;
+    private final int height;
+    private Image image;
+    // Reference Pixel(悬挂点)
+    private final int refPixelX;
+    private final int refPixelY;
 
-	public TCPFrame(Image image, int x, int y, int width, int height, int refPixelX, int refPixelY) {
-		super();
-		this.image = image;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.refPixelX = refPixelX;
-		this.refPixelY = refPixelY;
-	}
+    public TCPFrame(Image image, int x, int y, int width, int height) {
+        this(image, x, y, width, height, 0, 0);
+    }
 
-	public int getX() {
-		return x;
-	}
+    public TCPFrame(Image image, int x, int y, int width, int height, int refPixelX, int refPixelY) {
+        super();
+        this.image = image;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.refPixelX = refPixelX;
+        this.refPixelY = refPixelY;
+    }
 
-	public int getY() {
-		return y;
-	}
+    public int getX() {
+        return x;
+    }
 
-	public int getWidth() {
-		return width;
-	}
+    public int getY() {
+        return y;
+    }
 
-	public int getHeight() {
-		return height;
-	}
+    public int getWidth() {
+        return width;
+    }
 
-	public int getRefPixelX() {
-		return refPixelX;
-	}
+    public int getHeight() {
+        return height;
+    }
 
-	public int getRefPixelY() {
-		return refPixelY;
-	}
+    public int getRefPixelX() {
+        return refPixelX;
+    }
 
-	public Image getImage() {
-		return image;
-	}
+    public int getRefPixelY() {
+        return refPixelY;
+    }
 
-	public void dispose() {
-		image = null;
-	}
+    public Image getImage() {
+        return image;
+    }
 
-	protected void doDraw(Graphics2D g2, int x, int y, int width, int height) {
-		g2.drawImage(image, this.refPixelX + x - this.x, this.refPixelY + y - this.y, null);
-	}
+    public void dispose() {
+        image = null;
+    }
 
-	public boolean contains(int x, int y) {
-		// TODO]
-		// image.getSource().
-		return x >= this.x && y >= this.y && x <= this.x + width && y <= this.y + height;
-	}
+    protected void doDraw(Graphics2D g2, int x, int y, int width, int height) {
+        g2.drawImage(image, this.refPixelX + x - this.x, this.refPixelY + y - this.y, null);
+    }
+
+    public boolean contains(int x, int y) {
+        // TODO
+        return x >= this.x && y >= this.y && x <= this.x + width && y <= this.y + height;
+    }
 
 }

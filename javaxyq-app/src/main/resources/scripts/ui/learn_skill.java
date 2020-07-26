@@ -306,7 +306,7 @@ public class learn_skill extends PanelHandler implements MouseListener,MouseMoti
 			Integer level =  (Integer) vo.getMskillsLevel().get("skill"+s);	
 			sb.append(level.toString()+"/180");
 			properties.put("skillLevel"+s, sb.toString());	
-			String attr = inArray(attrs, skill.getEffection());
+			String attr = inArray(attrs, skill.getAffection());
 			if(attr != null){
 				vo.attrsLevel.put(attr, level.intValue());
 				//vo.setAttrsLevel(vo.attrsLevel);
@@ -387,7 +387,7 @@ public class learn_skill extends PanelHandler implements MouseListener,MouseMoti
 		String des = skill.getDescription();
 		skilldesc.append(linefeed(skilldes,des));			
 		//效果
-		String effect = skill.getEffection();
+		String effect = skill.getAffection();
 		if(!effect.equals("0")){
 			skilldesc.append(linefeed(skilldes,effect));
 		}

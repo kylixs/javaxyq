@@ -4,8 +4,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.Component;
-import java.awt.Font;
-import java.awt.Color;
 import java.awt.FontMetrics;
 
 import javax.swing.AbstractButton;
@@ -19,21 +17,16 @@ import org.apache.commons.jexl2.UnifiedJEXL.Expression;
 
 import java.util.*;
 
-import com.javaxyq.battle.BattleCanvas;
-import com.javaxyq.core.GameMain;
 import com.javaxyq.core.SpriteFactory;
 import com.javaxyq.event.ActionEvent;
 import com.javaxyq.event.PanelEvent;
 import com.javaxyq.event.PanelHandler;
 import com.javaxyq.config.ImageConfig;
-import com.javaxyq.ui.ItemLabel;
 import com.javaxyq.ui.Label;
 import com.javaxyq.ui.Panel;
 import com.javaxyq.util.StringUtils;
 import com.javaxyq.widget.Player;
 import com.javaxyq.model.Skill;
-import com.javaxyq.core.*;
-import com.javaxyq.data.BaseItemDAO;
 import com.javaxyq.data.SkillMain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -254,7 +247,7 @@ public class main_skill extends PanelHandler implements MouseListener,MouseMotio
 			String des = skill.getDescription();
 			sb.append(linefeed(skilldes,des));			
 			//效果
-			String effect = skill.getEffection();
+			String effect = skill.getAffection();
 			if(!effect.equals("0")){
 				sb.append(linefeed(skilldes,effect));
 			}

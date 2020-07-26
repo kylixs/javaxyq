@@ -63,13 +63,13 @@ public class BattlePlayerApplication extends BaseApplication {
 
     @Override
     public void quitBattle() {
-        log.info("quitBattle");
+        log.info("quit battle");
     }
 
     private void initCanvas() {
         //canvas.setBattleBackground(bg);
-        List<Player> team1 = new ArrayList<Player>();
-        List<Player> team2 = new ArrayList<Player>();
+        List<Player> team1 = new ArrayList<>();
+        List<Player> team2 = new ArrayList<>();
 
         String[] elfs = {"2036", "2037", "2009", "2010", "2011", "2012"};
         String[] elfNames = {"大海龟", "巨蛙", "芙蓉仙子", "树怪", "蝴蝶仙子", "花妖"};

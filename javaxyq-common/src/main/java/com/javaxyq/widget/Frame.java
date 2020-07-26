@@ -6,7 +6,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 public class Frame extends AbstractWidget {
-	private static final long serialVersionUID = 2191491798990378838L;
+
+    private static final long serialVersionUID = 2191491798990378838L;
 
 	private BufferedImage image;
 
