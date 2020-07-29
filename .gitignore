@@ -9,3 +9,4 @@ log/
 *.iml
 *.log
 *.db
+lombok.config

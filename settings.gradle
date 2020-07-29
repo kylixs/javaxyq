@@ -4,3 +4,7 @@ include ':javaxyq-app'
 include ':javaxyq-common'
 include ':javaxyq-maker'
 include ':javaxyq-resource-manager'
+
+include ':open-xyq-app'
+include ':open-xyq-core'
+include ':open-xyq-tool'
